@@ -13,6 +13,7 @@ module.exports = {
     },
 
     async index(request,response){
+
         const shopping_carts = await connection('shopping_carts').select('*');
         return response.json(shopping_carts);
     }

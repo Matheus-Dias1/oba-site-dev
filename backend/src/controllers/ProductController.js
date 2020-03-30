@@ -26,10 +26,13 @@ module.exports = {
 
     async index(request,response){
         const {page = 1} = request.query;
+        const [count] = await connection('products').count();
         const products = await connection('products')
             .limit(5)
             .offset((page-1)*5)
             .select('*');
+
+        response.header('X-Total-Count', count['count(*)']);
         return response.json(products);
     }
 };
