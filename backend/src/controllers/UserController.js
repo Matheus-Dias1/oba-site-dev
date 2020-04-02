@@ -10,7 +10,7 @@ module.exports = {
             name,
             email,
             password,
-            phone,
+            phone
         });
         return response.json({ id });
     },

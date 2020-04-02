@@ -5,6 +5,7 @@ exports.up = function(knex) {
         table.float('value').notNullable();
         table.string('payment_method').notNullable();
         table.float('change');
+        table.string('observation');
 
         table.string('id_user').notNullable();
         table.string('id_address').notNullable();

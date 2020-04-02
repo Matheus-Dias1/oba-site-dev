@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
+
+.panel-container{
+  width: 100%;
+  max-width: 1180px;
+  padding: 32px 100px;
+  align-items: center;
+  margin: auto;
+
+}
+
+
+.panel-container header{
+  
+  display: flex;
+  align-items: center;
+}
+
+.panel-container header span{
+  
+  font-size: 20px;
+  margin-left: 24px;
+
+}
+
+.panel-container header a{
+  width: 260px;
+  margin-left: auto;
+  margin-top: 0;
+
+}
+
+.panel-container header .button:hover{
+  color: #fff;
+}
+
+.panel-container header button{
+  height: 60px;
+  width: 60px;
+  border-radius: 4px;
+  border: 1px solid #dcdce6;
+  background: transparent;
+  margin-left: 16px;
+  transition: border-color 0.2s;
+
+}
+.panel-container header button:hover{
+  border-color: #999999;
+}
+
+.panel-container h1{
+  margin-top: 80px;
+  margin-bottom: 24px;
+}
+
+.panel-container ul{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 24px;
+  list-style: none;
+  max-width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+
+}
+
+.panel-container ul li{
+  background: #Fff;
+  padding: 24px;
+  border-radius: 8px;
+  position: relative;
+  
+}
+
+.panel-container ul li button {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  border: 0;
+  transition: opacity 0.2s;
+  background: transparent;
+}
+
+.panel-container ul li img {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  border: 0;
+}
+
+
+.panel-container ul li button:hover{
+  opacity: 90%;
+}
+
+.panel-container ul li button .editButton {
+  position: absolute;
+  right: 40px;
+}
+
+.panel-container ul li strong{
+  display: block;
+  margin-bottom: 16px;
+  color: #41414d;
+}
+
+.panel-container ul li p+strong{
+  margin-top: 32px;
+}
+
+.panel-container ul li p{
+  color: #737380;
+  line-height: 21px;
+  font-size: 16px;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #B30011;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #cc0013;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #B30011;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.menu-link{
+  margin-top: 30px;
+  font: 400 14px Roboto, sans-serif;
+  color: #fff;
+  transition: opacity 0.2s;
+}
+
+.menu-link:hover{
+  color: #fff;
+  opacity: 0.8;
+}
+
+.menu-text{
+  font: 600 20px Roboto, sans-serif;
+  color: #fff;
+}
+
+.menu-link svg{
+  margin-right: 8px;
+}

@@ -8,10 +8,20 @@ module.exports = {
             description,
             measurement_unit,
             price,
+            unit_price,
             picture_path
         } = request.body;
-        const table_size = await connection('products').count('id');
-        const id = (table_size[0]['count(`id`)'] + 1).toString();
+
+        const table_size = await connection('products').count("id").first();
+        const num = table_size['count(`id`)'];
+        var id = 1;
+        if (num > 0){
+            const lastID = await connection('products')
+                .select('id')
+                .offset(num-1)
+                .first();               
+                id = parseInt(lastID['id'])+1;
+        }
         await connection('products').insert({
             id,
             product_name,
@@ -19,6 +29,7 @@ module.exports = {
             description,
             measurement_unit,
             price,
+            unit_price,
             picture_path
         });
         return response.json({ id });

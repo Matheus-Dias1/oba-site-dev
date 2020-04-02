@@ -6,7 +6,8 @@ module.exports = {
             value,
             payment_method,
             change,
-            id_address
+            id_address,
+            observation,
         } = request.body;
         const table_size = await connection('purchases').count('id');
         const id = (table_size[0]['count(`id`)'] + 1).toString();
@@ -29,7 +30,8 @@ module.exports = {
             payment_method,
             change,
             id_user,
-            id_address
+            id_address,
+            observation
         });
 
         await connection('shopping_carts').where('id_user', id_user).delete();

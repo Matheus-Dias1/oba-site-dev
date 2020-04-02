@@ -7,6 +7,7 @@ exports.up = function(knex) {
       table.string('description');
       table.string('measurement_unit').notNullable();
       table.float('price').notNullable();
+      table.float('unit_price');
       table.string('picture_path').notNullable();
     });
   };
