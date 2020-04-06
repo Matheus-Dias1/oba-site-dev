@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen} from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaChartLine} from 'react-icons/fa';
 import logoImg from '../../assets/OBA_logo.svg'
 
 
@@ -19,6 +19,7 @@ export default function Panel() {
                 <Link className='menu-link' to="/panel" ><FaHome size={16} color="FFFFFF" />Início</Link>
                 <Link className='menu-link' to="/panel/purchases"><FaClipboardCheck size={16} color="FFFFFF" />Pedidos</Link>
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>
+                <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
             </Menu>
             <div className="imgLogo">
                 

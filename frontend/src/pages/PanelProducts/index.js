@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt} from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaChartLine} from 'react-icons/fa';
 import { FiTrash2, FiEdit } from 'react-icons/fi';
 import ImgApple from '../../assets/product-imgs/apple.jpg';
 
@@ -11,6 +11,8 @@ import '../../global.css';
 
 
 export default function PanelProducts() {
+
+    const [name] = localStorage.getItem('userName').split(" ");
     return (
         <div className="menu-container">
             <Menu isOpen={ false }>
@@ -18,10 +20,11 @@ export default function PanelProducts() {
                 <Link className='menu-link' to="/panel" ><FaHome size={16} color="FFFFFF" />Início</Link>
                 <Link className='menu-link' to="/panel/purchases"><FaClipboardCheck size={16} color="FFFFFF" />Pedidos</Link>
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>
+                <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
             </Menu>
             <div className="panel-container">
                 <header>
-                    <span>Bem-vindo(a), Matheus.</span>
+                    <span>Bem-vindo(a), {name}.</span>
                     <Link className="button" to="/panel/products/new">Cadastrar novo produto</Link>
                     <button type="button">
                         <FaSignOutAlt size={18} color="B30011" />

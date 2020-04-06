@@ -8,6 +8,7 @@ module.exports = {
             change,
             id_address,
             observation,
+            delivery,
         } = request.body;
         const table_size = await connection('purchases').count('id');
         const id = (table_size[0]['count(`id`)'] + 1).toString();
@@ -31,16 +32,11 @@ module.exports = {
             change,
             id_user,
             id_address,
-            observation
+            observation,
+            delivery,
         });
 
         await connection('shopping_carts').where('id_user', id_user).delete();
-
-        /*
-
-            CADASTRAR ENTREGAS
-
-        */
 
         
         return response.json({ id });

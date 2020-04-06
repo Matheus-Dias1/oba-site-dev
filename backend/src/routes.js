@@ -1,7 +1,6 @@
 const express = require('express');
 const UserController = require('./controllers/UserController');
 const AddressController = require('./controllers/AddressController');
-const DeliveryController = require('./controllers/DeliveryController');
 const ProductController = require('./controllers/ProductController');
 const PurchaseController = require('./controllers/PurchaseController');
 const ShoppingCartController = require('./controllers/ShoppingCartController');
@@ -25,9 +24,6 @@ routes.post('/products', ProductController.create);
 
 routes.get('/purchases', PurchaseController.index);
 routes.post('/purchases', PurchaseController.create);
-
-routes.get('/deliveries', DeliveryController.index);
-routes.post('/deliveries', DeliveryController.create);
 
 routes.get('/shopping_carts', ShoppingCartController.index);
 routes.post('/shopping_carts', ShoppingCartController.create);
