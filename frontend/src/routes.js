@@ -7,6 +7,8 @@ import Panel from './pages/Panel';
 import PanelProducts from './pages/PanelProducts';
 import PanelPurchases from './pages/PanelPurchases';
 import NewProduct from './pages/NewProduct';
+import EditProduct from './pages/EditProduct';
+
 
 
 export default function Routes(){
@@ -19,6 +21,8 @@ export default function Routes(){
                 <Route path='/panel/products' exact component = {PanelProducts} />  
                 <Route path='/panel/purchases' component = {PanelPurchases} />  
                 <Route path='/panel/products/new' component = {NewProduct} />  
+                <Route path='/panel/products/edit' component = {EditProduct} />  
+
             </Switch>
         </BrowserRouter>
     );

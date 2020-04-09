@@ -1,4 +1,5 @@
 const connection = require('../database/connection');
+const multer = require('multer');
 
 module.exports = {
     async create(request, response){
@@ -9,8 +10,24 @@ module.exports = {
             measurement_unit,
             price,
             unit_price,
-            picture_path
+            file
         } = request.body;
+
+
+        const storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+              cb(null, "../assets/");
+            },
+            filename: (req, file, cb) => {
+              cb(null, `${file.fieldname}_${+new Date()}.jpg`);
+            }
+          });
+          const upload = multer({
+            storage
+        });
+
+        upload.single(file);
+
 
         const table_size = await connection('products').count("id").first();
         const num = table_size['count(`id`)'];
@@ -22,6 +39,7 @@ module.exports = {
                 .first();               
                 id = parseInt(lastID['id'])+1;
         }
+        const picture_path = 'ok';
         await connection('products').insert({
             id,
             product_name,
@@ -36,14 +54,25 @@ module.exports = {
     },
 
     async index(request,response){
-        const {page = 1} = request.query;
-        const [count] = await connection('products').count();
-        const products = await connection('products')
-            .limit(5)
-            .offset((page-1)*5)
-            .select('*');
-
-        response.header('X-Total-Count', count['count(*)']);
+        const products = await connection('products').select('*');
         return response.json(products);
+    },
+
+    async delete(request, response){
+        const {id} = request.params;
+        const id_user = request.headers.authorization;
+        const adm = await connection('users')
+            .select('admin')
+            .where('id', id_user)
+            .first();
+
+
+        if (!adm){
+            return response.status(401).json({ error: 'Operation not permitted'});
+        }
+
+        await connection('products').where('id', id).delete();
+
+        return response.status(201).send(); 
     }
 };

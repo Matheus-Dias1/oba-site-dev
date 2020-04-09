@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const UserController = require('./controllers/UserController');
 const AddressController = require('./controllers/AddressController');
 const ProductController = require('./controllers/ProductController');
@@ -20,7 +21,9 @@ routes.delete('/addresses/:id', AddressController.delete);
 
 
 routes.get('/products', ProductController.index);
-routes.post('/products', ProductController.create);
+routes.post('/products', multer().single('file'),ProductController.create);
+routes.delete('/products/:id', ProductController.delete);
+
 
 routes.get('/purchases', PurchaseController.index);
 routes.post('/purchases', PurchaseController.create);

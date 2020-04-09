@@ -70,6 +70,6 @@ module.exports = {
 
         await connection('addresses').where('id', id).delete();
 
-        return response.status(201).send();        
+        return response.status(201).send();       
     },
 };
