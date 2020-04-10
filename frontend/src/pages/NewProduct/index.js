@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory} from 'react-router-dom';
 import { FaArrowCircleLeft, FaFileUpload } from 'react-icons/fa';
 import api from '../../services/api';
 
@@ -7,10 +7,9 @@ import api from '../../services/api';
 import './styles.css';
 
 
-
 export default function NewProduct() {
 
-
+    const history = useHistory();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -18,19 +17,30 @@ export default function NewProduct() {
     const [unit_price, setUnit_price] = useState('');
     const [file, setFile] = useState('');
 
-    async function handleNewProduct(e){
+    async function handleNewProduct(e) {
         e.preventDefault();
-        const data = {
-            product_name: name,
-            description: description,
-            price: parseFloat(price),
-            measurement_unit: measurement_unit.toUpperCase(),
-            unit_price: parseFloat(unit_price),
-            file: file,
-            available: true
-        };
-        console.log(data);
-        await api.post('products', data);
+        const dataS = new FormData();
+        
+        const data = JSON.stringify({
+            "product_name": name,
+            "description": description,
+            "price": parseFloat(price.replace(',', '.')),
+            "measurement_unit": measurement_unit.toUpperCase(),
+            "unit_price": parseFloat(unit_price.replace(',', '.')),
+            "available": true
+        });
+
+        dataS.append('data', data);
+        dataS.append('file', file);
+
+        try {
+            await api.post('products', dataS);
+            alert('Produto cadastrado com sucesso!');
+            history.push('/panel/products');
+        } catch (err) {
+            alert('Erro ao cadastrar produto!\nTente novamente.');
+        }
+
     }
 
     return (

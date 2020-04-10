@@ -1,8 +1,9 @@
 const connection = require('../database/connection');
-const multer = require('multer');
 
 module.exports = {
     async create(request, response){
+
+
         const {
             product_name,
             available,
@@ -10,36 +11,20 @@ module.exports = {
             measurement_unit,
             price,
             unit_price,
-            file
-        } = request.body;
+        } = JSON.parse(request.body.data);
 
-
-        const storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-              cb(null, "../assets/");
-            },
-            filename: (req, file, cb) => {
-              cb(null, `${file.fieldname}_${+new Date()}.jpg`);
-            }
-          });
-          const upload = multer({
-            storage
-        });
-
-        upload.single(file);
-
-
+        
         const table_size = await connection('products').count("id").first();
         const num = table_size['count(`id`)'];
         var id = 1;
         if (num > 0){
             const lastID = await connection('products')
-                .select('id')
+                .select('id', 'product_name')
                 .offset(num-1)
-                .first();               
+                .first();  
                 id = parseInt(lastID['id'])+1;
         }
-        const picture_path = 'ok';
+        const picture_path = request.file.filename;
         await connection('products').insert({
             id,
             product_name,

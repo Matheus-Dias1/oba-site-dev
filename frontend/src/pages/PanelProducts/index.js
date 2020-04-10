@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaChartLine } from 'react-icons/fa';
 import { FiTrash2, FiEdit } from 'react-icons/fi';
-import ImgApple from '../../assets/product-imgs/apple.jpg';
+
 
 import { slide as Menu } from 'react-burger-menu';
 
@@ -13,13 +13,14 @@ import '../../global.css';
 
 
 export default function PanelProducts() {
-    
+
     const [name] = localStorage.getItem('userName').split(" ");
     const [userId] = localStorage.getItem('userId').split(" ");
-
+    const url = 'http://localhost:3333/image/';
     const [products, setProducts] = useState([]);
 
     const history = useHistory();
+
 
     useEffect(() => {
         api.get('products').then(response => {
@@ -27,20 +28,20 @@ export default function PanelProducts() {
         })
     }, [name]);
 
-    async  function handleDeleteProduct (id){
-        try{
-            await api.delete(`products/${id}`,{
+    async function handleDeleteProduct(id) {
+        try {
+            await api.delete(`products/${id}`, {
                 headers: {
                     authorization: userId
                 }
             });
             setProducts(products.filter(product => product.id !== id));
-        }catch (err){
+        } catch (err) {
             alert('Erro ao deletar produto.');
         }
     }
 
-    function handleLogout(){
+    function handleLogout() {
         localStorage.clear();
         history.push('/');
     }
@@ -72,31 +73,32 @@ export default function PanelProducts() {
                             else
                                 up = product.unit_price;
 
-                            function toReais(number){
+                            function toReais(number) {
                                 if (number === '')
                                     return '---'
-                                return number.toFixed(2).replace(/\d(?=(\d{3})+\$&,)/g, '.'); 
+                                return Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(number);
                             }
 
                             return (
                                 <li key={product.id}>
-                                <strong>PRODUTO:</strong>
-                                <p>{product.product_name}</p>
-                                <strong>DESCRIÇÃO:</strong>
-                                <p>{product.description}</p>
-                                <strong>VALOR:</strong>
-                                <p>R$ {toReais(product.price)} / R$ {toReais(up)}</p>
-                                <strong>UNIDADE:</strong>
-                                <p>{product.measurement_unit} / UN</p>
-                                <button onClick= {() => {handleDeleteProduct(product.id)}}type="button">
-                                    <FiTrash2 size={20} color="a8a8b3" />
-                                </button>
-                                <button type="button">
-                                    <FiEdit size={20} color="a8a8b3" className="editButton" />
-                                </button>
-                                <img src={ImgApple} alt="OBA Hortifruti" width="200px" height="200px" />
+                                    <strong>PRODUTO:</strong>
+                                    <p>{product.product_name}</p>
+                                    <strong>DESCRIÇÃO:</strong>
+                                    <p>{product.description}</p>
+                                    <strong>VALOR:</strong>
+                                    <p>{toReais(product.price)} / {toReais(up)}</p>
+                                    <strong>UNIDADE:</strong>
+                                    <p>{product.measurement_unit} / UN</p>
+                                    <button onClick={() => { handleDeleteProduct(product.id) }} type="button">
+                                        <FiTrash2 size={20} color="a8a8b3" />
+                                    </button>
+                                    <button type="button">
+                                        <FiEdit size={20} color="a8a8b3" className="editButton" />
+                                    </button>
+                                   
+                                    <img src={url + product.picture_path} alt="Imagem produto" height="auto" />
 
-                            </li>
+                                </li>
                             )
                         })
                     }

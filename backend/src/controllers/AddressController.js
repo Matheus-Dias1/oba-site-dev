@@ -20,7 +20,7 @@ module.exports = {
         var id = 1;
         if (num > 0){
             const lastID = await connection('addresses')
-                .select('id')
+                .select('id', 'zip_code')
                 .offset(num-1)
                 .first();               
                 id = parseInt(lastID['id'])+1;

@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const multerConfig = require('./config/multer');
 const UserController = require('./controllers/UserController');
 const AddressController = require('./controllers/AddressController');
 const ProductController = require('./controllers/ProductController');
@@ -21,7 +22,7 @@ routes.delete('/addresses/:id', AddressController.delete);
 
 
 routes.get('/products', ProductController.index);
-routes.post('/products', multer().single('file'),ProductController.create);
+routes.post('/products', multer(multerConfig).single('file'),ProductController.create);
 routes.delete('/products/:id', ProductController.delete);
 
 
@@ -39,5 +40,12 @@ routes.get('/profile/shopping_cart', ProfileController.indexShoppingCarts);
 routes.get('/productsPurchases', ProductPurchaseController.index);
 
 routes.post('/session', SessionController.create);
+
+routes.get('/image/:file(*)', (req, res) => {
+    let file = req.params.file;
+    let fileLocation = __dirname + '/assets/' + file;
+    //res.send({image: fileLocation});
+    res.sendFile(`${fileLocation}`)
+})
 
 module.exports = routes;
