@@ -4,6 +4,7 @@ const multerConfig = require('./config/multer');
 const UserController = require('./controllers/UserController');
 const AddressController = require('./controllers/AddressController');
 const ProductController = require('./controllers/ProductController');
+const ProductUpdateController = require('./controllers/ProductUpdateController');
 const PurchaseController = require('./controllers/PurchaseController');
 const ShoppingCartController = require('./controllers/ShoppingCartController');
 const ProductPurchaseController = require('./controllers/ProductPurchaseController');
@@ -20,11 +21,13 @@ routes.get('/addresses', AddressController.index);
 routes.post('/addresses', AddressController.create);
 routes.delete('/addresses/:id', AddressController.delete);
 
-
 routes.get('/products', ProductController.index);
 routes.post('/products', multer(multerConfig).single('file'),ProductController.create);
 routes.delete('/products/:id', ProductController.delete);
+routes.put('/products', ProductController.updateAvailability);
 
+routes.get('/products/edit/:id' , ProductUpdateController.getData);
+routes.put('/products/edit/:id' , ProductUpdateController.update);
 
 routes.get('/purchases', PurchaseController.index);
 routes.post('/purchases', PurchaseController.create);
@@ -44,7 +47,6 @@ routes.post('/session', SessionController.create);
 routes.get('/image/:file(*)', (req, res) => {
     let file = req.params.file;
     let fileLocation = __dirname + '/assets/' + file;
-    //res.send({image: fileLocation});
     res.sendFile(`${fileLocation}`)
 })
 

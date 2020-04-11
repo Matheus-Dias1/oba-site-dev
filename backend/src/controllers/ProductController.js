@@ -3,7 +3,6 @@ const connection = require('../database/connection');
 module.exports = {
     async create(request, response){
 
-
         const {
             product_name,
             available,
@@ -39,8 +38,27 @@ module.exports = {
     },
 
     async index(request,response){
-        const products = await connection('products').select('*');
+        const products = await connection('products')
+            .select('*')
+            .orderBy('available', 'desc');
         return response.json(products);
+    },
+
+    async updateAvailability(request,response){
+        
+        const { id } = request.body;
+
+        let {available} = await connection('products')
+            .select('available')
+            .where('id', id)
+            .first();
+        available = !available;
+
+        await connection('products')
+            .where('id', id)
+            .update({ available: available });
+
+        return response.status(201).send(); 
     },
 
     async delete(request, response){

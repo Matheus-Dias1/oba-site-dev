@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaChartLine } from 'react-icons/fa';
-import { FiTrash2, FiEdit } from 'react-icons/fi';
+import { FiTrash2, FiEdit, FiEyeOff, FiEye } from 'react-icons/fi';
 
 
 import { slide as Menu } from 'react-burger-menu';
@@ -16,17 +16,20 @@ export default function PanelProducts() {
 
     const [name] = localStorage.getItem('userName').split(" ");
     const [userId] = localStorage.getItem('userId').split(" ");
-    const url = 'http://localhost:3333/image/';
     const [products, setProducts] = useState([]);
-
+    const [reload, setReload] = useState(false);
+    const url = 'http://localhost:3333/image/';
     const history = useHistory();
-
+    
 
     useEffect(() => {
         api.get('products').then(response => {
             setProducts(response.data);
+            
         })
-    }, [name]);
+        ;
+
+    }, [reload]);
 
     async function handleDeleteProduct(id) {
         try {
@@ -39,6 +42,22 @@ export default function PanelProducts() {
         } catch (err) {
             alert('Erro ao deletar produto.');
         }
+    }
+
+    async function handleAvailability(id) {
+        const data = { id: id };
+        try {
+            await api.put('products', data);
+            setReload(!reload);
+
+
+        } catch(err){
+            alert('Erro ao mudar visibilidade do produto!');
+        }
+    }
+
+    function handleEditProduct(id) {
+        history.push(`products/edit/${id}`);
     }
 
     function handleLogout() {
@@ -76,26 +95,36 @@ export default function PanelProducts() {
                             function toReais(number) {
                                 if (number === '')
                                     return '---'
-                                return Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(number);
+                                return Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(number);
+                            }
+
+                            function containerStyle(available){
+                                if (!!!available){
+                                    return "notAvailable";
+                                } return "";
                             }
 
                             return (
-                                <li key={product.id}>
+                                <li key={product.id} className={containerStyle(product.available)}>
                                     <strong>PRODUTO:</strong>
                                     <p>{product.product_name}</p>
                                     <strong>DESCRIÇÃO:</strong>
                                     <p>{product.description}</p>
-                                    <strong>VALOR:</strong>
-                                    <p>{toReais(product.price)} / {toReais(up)}</p>
-                                    <strong>UNIDADE:</strong>
-                                    <p>{product.measurement_unit} / UN</p>
+                                    <strong>VALOR / {product.measurement_unit}:</strong>
+                                    <p>{toReais(product.price)}</p>
+                                    <strong>VALOR / UN:</strong>
+                                    <p>{toReais(up)}</p>
                                     <button onClick={() => { handleDeleteProduct(product.id) }} type="button">
                                         <FiTrash2 size={20} color="a8a8b3" />
                                     </button>
                                     <button type="button">
-                                        <FiEdit size={20} color="a8a8b3" className="editButton" />
+                                        <FiEdit onClick={() => { handleEditProduct(product.id) }} size={20} color="a8a8b3" className="editButton" />
                                     </button>
-                                   
+                                    <button type="button">
+                                        {!!product.available && <FiEyeOff onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton" />}
+                                        {!!!product.available && <FiEye onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton" />}
+                                    </button>
+
                                     <img src={url + product.picture_path} alt="Imagem produto" height="auto" />
 
                                 </li>

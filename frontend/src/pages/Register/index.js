@@ -67,8 +67,8 @@ export default function Register() {
                         Voltar para logon
                     </Link>
                 </section>
-                <div className="errorText">
-                    <p>{errorText}</p>
+                <div>
+                    {errorText !== '' && <p className="errorText">{errorText}</p>}
                     <form onSubmit={handleRegister}>
                         <input
                             placeholder="Nome completo"
