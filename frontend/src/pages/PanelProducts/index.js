@@ -121,7 +121,7 @@ export default function PanelProducts() {
                                         <FiEdit onClick={() => { handleEditProduct(product.id) }} size={20} color="a8a8b3" className="editButton" />
                                     </button>
                                     <button type="button">
-                                        {!!product.available && <FiEyeOff onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton" />}
+                                        {!!product.available && <FiEyeOff onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton"/>}
                                         {!!!product.available && <FiEye onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton" />}
                                     </button>
 
