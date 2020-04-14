@@ -40,8 +40,8 @@ routes.get('/profile/addresses', ProfileController.indexAddresses);
 routes.get('/profile/purchases', ProfileController.indexPurchases);
 routes.get('/profile/shopping_cart', ProfileController.indexShoppingCarts);
 
+routes.get('/productsPurchases/:idP', ProductPurchaseController.index);
 
-routes.get('/productsPurchases', ProductPurchaseController.index);
 
 routes.post('/session', SessionController.create);
 
