@@ -9,7 +9,9 @@ module.exports = {
             change,
             id_address,
             observation,
+            id_schedule,
         } = request.body;
+
 
         const [size] = await connection('shopping_carts')
             .where('id_user', id_user)
@@ -36,6 +38,9 @@ module.exports = {
 
         const id_purchase = idPurchase.id;
 
+        await connection('schedule')
+            .where('id', id_schedule)
+            .update({id_purchase:id_purchase});
 
         const products = await connection('shopping_carts')
             .select('id_product', 'amount', 'observation', 'unit')
@@ -66,7 +71,8 @@ module.exports = {
         const purchases = await connection({
             p: 'purchases',
             u: 'users',
-            a: 'addresses'
+            a: 'addresses',
+            s: 'schedule'
          })
             .select({
                 id: 'p.id',
@@ -75,6 +81,8 @@ module.exports = {
                 payment_method: 'p.payment_method',
                 change: 'p.change',
                 observation: 'p.observation',
+                delivery_date: 's.date',
+                delivery_time: 's.time',
                 client: 'u.name',
                 client_phone: 'u.phone',
                 city: 'a.city',
@@ -83,7 +91,8 @@ module.exports = {
                 number: 'a.number',
                 complement: 'a.complement'
             })
-            .whereRaw('p.id_user = u.id and p.id_address = a.id');
+            .whereRaw('p.id_user = u.id and p.id_address = a.id and p.id = s.id_purchase and p.delivered = 0')
+            .orderBy(['s.date', {column:'s.time', order: 'asc'}]);
         
 
         return response.json(purchases);

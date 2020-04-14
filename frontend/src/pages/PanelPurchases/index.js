@@ -1,9 +1,9 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaChartLine , FaClipboardList} from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaChartLine, FaClipboardList } from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
-//import api from '../../services/api';
+import api from '../../services/api';
 
 import './styles.css';
 import '../../global.css';
@@ -11,6 +11,15 @@ import '../../global.css';
 
 export default function PanelPurchases() {
     const [name] = localStorage.getItem('userName').split(" ");
+    const [purchases, setPurchases] = useState([]);
+
+    useEffect(() => {
+        api.get('purchases').then(response => {
+            setPurchases(response.data);
+        });
+
+    }, [name]);
+
     return (
         <div className="menu-container">
             <Menu isOpen={false}>
@@ -32,33 +41,48 @@ export default function PanelPurchases() {
                 </header>
                 <h1>Pedidos em andamento</h1>
                 <ul>
-                <li>
-                        <div>
-                            <strong>COMPRADOR:</strong>
-                            <p>Matheus Dias</p>
-                            <strong>PAGAMENTO:</strong>
-                            <p>Dinheiro</p>
-                            <strong>VALOR:</strong>
-                            <p>R$35,00</p>
-                            <strong>TROCO:</strong>
-                            <p>R$ 15,00</p>
-                        </div>
-                        <div>
-                            <strong>ENDEREÇO:</strong>
-                            <p>Morum Bernardino 250</p>
-                            <strong>ENTREGA:</strong>
-                            <p>15/04/2020</p>
-                            <strong>OBSERVAÇÕES:</strong>
-                            <p>Não entregar na parte da manhã, não tem ninguém em casa, bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla </p>
-                        </div>
+                    {
+                        purchases.map(purchase => {
 
-                        <button type="button">
-                            <FaTruck size={20} color="a8a8b3" />
-                        </button>
-                        <button type="button" className="listButton">
-                            <FaClipboardList size={20} color="a8a8b3" />
-                        </button>
-                    </li>                   
+                            function dateFormater(date){
+                                return Intl.DateTimeFormat('pt-BR').format(new Date(purchase.delivery_date));
+                            }
+                            function timeFormater(time){
+                                const list = time.split(':');
+                                return list[0] + ':' + list[1]
+                            }
+
+                            return (
+                                <li key={purchase.id}>
+                                    <div>
+                                        <strong>COMPRADOR:</strong>
+                                        <p>{purchase.client}</p>
+                                        <strong>PAGAMENTO:</strong>
+                                        <p>{purchase.payment_method}</p>
+                                        <strong>VALOR:</strong>
+                                        <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.value)}</p>
+                                        <strong>TROCO:</strong>
+                                        <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
+                                    </div>
+                                    <div>
+                                        <strong>ENDEREÇO:</strong>
+                                        <p>{purchase.street + ' ' + purchase.number + ', ' + purchase.neighborhood}</p>
+                                        <strong>ENTREGA:</strong>
+                                        <p>{dateFormater(purchase.delivery_date) + ' - ' + timeFormater(purchase.delivery_time)}</p>
+                                        <strong>OBSERVAÇÕES:</strong>
+                                        <p>{purchase.observation}</p>
+                                    </div>
+
+                                    <button type="button">
+                                        <FaTruck size={20} color="a8a8b3" />
+                                    </button>
+                                    <button type="button" className="listButton">
+                                        <FaClipboardList size={20} color="a8a8b3" />
+                                    </button>
+                                </li>
+                            )
+                        })
+                    }
                 </ul>
             </div>
         </div>

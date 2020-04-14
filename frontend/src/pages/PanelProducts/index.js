@@ -17,19 +17,17 @@ export default function PanelProducts() {
     const [name] = localStorage.getItem('userName').split(" ");
     const [userId] = localStorage.getItem('userId').split(" ");
     const [products, setProducts] = useState([]);
-    const [reload, setReload] = useState(false);
     const url = 'http://localhost:3333/image/';
     const history = useHistory();
-    
+
 
     useEffect(() => {
         api.get('products').then(response => {
             setProducts(response.data);
-            
-        })
-        ;
 
-    }, [reload]);
+        });
+
+    }, [products]);
 
     async function handleDeleteProduct(id) {
         try {
@@ -48,10 +46,9 @@ export default function PanelProducts() {
         const data = { id: id };
         try {
             await api.put('products', data);
-            setReload(!reload);
 
 
-        } catch(err){
+        } catch (err) {
             alert('Erro ao mudar visibilidade do produto!');
         }
     }
@@ -98,8 +95,8 @@ export default function PanelProducts() {
                                 return Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(number);
                             }
 
-                            function containerStyle(available){
-                                if (!!!available){
+                            function containerStyle(available) {
+                                if (!!!available) {
                                     return "notAvailable";
                                 } return "";
                             }
@@ -121,7 +118,7 @@ export default function PanelProducts() {
                                         <FiEdit onClick={() => { handleEditProduct(product.id) }} size={20} color="a8a8b3" className="editButton" />
                                     </button>
                                     <button type="button">
-                                        {!!product.available && <FiEyeOff onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton"/>}
+                                        {!!product.available && <FiEyeOff onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton" />}
                                         {!!!product.available && <FiEye onClick={() => { handleAvailability(product.id) }} size={20} color="a8a8b3" className="eyeButton" />}
                                     </button>
 
