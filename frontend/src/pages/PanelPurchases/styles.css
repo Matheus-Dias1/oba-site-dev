@@ -93,6 +93,15 @@
   transition: opacity 0.2s;
   background: transparent;
 }
+.purchase-container ul li button.listButton {
+  position: absolute;
+  top: 23px;
+  right: 64px;
+}
+
+
+
+
 
 .purchase-container ul li img {
   position: absolute;

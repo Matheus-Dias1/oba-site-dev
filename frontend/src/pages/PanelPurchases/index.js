@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaChartLine } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaChartLine , FaClipboardList} from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
 //import api from '../../services/api';
@@ -55,84 +55,10 @@ export default function PanelPurchases() {
                         <button type="button">
                             <FaTruck size={20} color="a8a8b3" />
                         </button>
-
-                    </li>
-                    <li className="delivered"> 
-                        <div>
-                            <strong>COMPRADOR:</strong>
-                            <p>Matheus Dias</p>
-                            <strong>PAGAMENTO:</strong>
-                            <p>Dinheiro</p>
-                            <strong>VALOR:</strong>
-                            <p>R$35,00</p>
-                            <strong>TROCO:</strong>
-                            <p>R$ 15,00</p>
-                        </div>
-                        <div>
-                            <strong>ENDEREÇO:</strong>
-                            <p>Morum Bernardino 250</p>
-                            <strong>ENTREGA:</strong>
-                            <p>15/04/2020</p>
-                            <strong>OBSERVAÇÕES:</strong>
-                            <p>Não entregar na parte da manhã, não tem ninguém em casa, bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla </p>
-                        </div>
-
-                        <button type="button">
-                            <FaTruck size={20} color="a8a8b3" />
+                        <button type="button" className="listButton">
+                            <FaClipboardList size={20} color="a8a8b3" />
                         </button>
-
-                    </li>
-                    <li>
-                        <div className="leftText">
-                            <strong>COMPRADOR:</strong>
-                            <p>Matheus Dias</p>
-                            <strong>PAGAMENTO:</strong>
-                            <p>Dinheiro</p>
-                            <strong>VALOR:</strong>
-                            <p>R$35,00</p>
-                            <strong>TROCO:</strong>
-                            <p>R$ 15,00</p>
-                        </div>
-                        <div>
-                            <strong>ENDEREÇO:</strong>
-                            <p>Morum Bernardino 250</p>
-                            <strong>ENTREGA:</strong>
-                            <p>15/04/2020</p>
-                            <strong>OBSERVAÇÕES:</strong>
-                            <p>Não entregar na parte da manhã, não tem ninguém em casa, bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla </p>
-                        </div>
-
-                        <button type="button">
-                            <FaTruck size={20} color="a8a8b3" />
-                        </button>
-
-                    </li>
-                    <li className="delivered">
-                        <div>
-                            <strong>COMPRADOR:</strong>
-                            <p>Matheus Dias</p>
-                            <strong>PAGAMENTO:</strong>
-                            <p>Dinheiro</p>
-                            <strong>VALOR:</strong>
-                            <p>R$35,00</p>
-                            <strong>TROCO:</strong>
-                            <p>R$ 15,00</p>
-                        </div>
-                        <div>
-                            <strong>ENDEREÇO:</strong>
-                            <p>Morum Bernardino 250</p>
-                            <strong>ENTREGA:</strong>
-                            <p>15/04/2020</p>
-                            <strong>OBSERVAÇÕES:</strong>
-                            <p>Não entregar na parte da manhã, não tem ninguém em casa, bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla  bla bla </p>
-                        </div>
-
-                        <button type="button">
-                            <FaTruck size={20} color="a8a8b3" />
-                        </button>
-
-                    </li>
-                   
+                    </li>                   
                 </ul>
             </div>
         </div>

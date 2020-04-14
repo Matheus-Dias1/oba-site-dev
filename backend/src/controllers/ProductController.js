@@ -13,19 +13,10 @@ module.exports = {
         } = JSON.parse(request.body.data);
 
         
-        const table_size = await connection('products').count("id").first();
-        const num = table_size['count(`id`)'];
-        var id = 1;
-        if (num > 0){
-            const lastID = await connection('products')
-                .select('id', 'product_name')
-                .offset(num-1)
-                .first();  
-                id = parseInt(lastID['id'])+1;
-        }
+        
         const picture_path = request.file.filename;
         await connection('products').insert({
-            id,
+
             product_name,
             available,
             description,
@@ -34,7 +25,7 @@ module.exports = {
             unit_price,
             picture_path
         });
-        return response.json({ id });
+        return response.status(201).send();
     },
 
     async index(request,response){

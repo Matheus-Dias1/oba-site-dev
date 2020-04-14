@@ -1,56 +1,91 @@
 const connection = require('../database/connection');
 
 module.exports = {
-    async create(request, response){
+    async create(request, response) {
+        const id_user = request.headers.authorization;
         const {
             value,
             payment_method,
             change,
             id_address,
             observation,
-            delivery,
         } = request.body;
-        const table_size = await connection('purchases').count('id');
-        const id = (table_size[0]['count(`id`)'] + 1).toString();
-        const id_user = request.headers.authorization;
-        const products = await connection('shopping_carts').select('id_product','amount').where('id_user',id_user);
-        for (var product in products){
-            const amount = products[product]['amount'];
-            const id_product = products[product]['id_product']
-            const id_purchase = id;
-            await connection('productsPurchases').insert({
-                amount,
-                id_purchase,
-                id_product
+
+        const [size] = await connection('shopping_carts')
+            .where('id_user', id_user)
+            .count('*');
+
+        if (size['count(*)'] < 1) {
+            return response.status(400).json({
+                "error": "Não há nenhum item no carrinho"
             });
         }
-
         await connection('purchases').insert({
-            id,
             value,
             payment_method,
             change,
             id_user,
             id_address,
             observation,
-            delivery,
         });
+
+        const idPurchase = await connection('purchases')
+            .select('id')
+            .orderBy('id', 'desc')
+            .first();
+
+        const id_purchase = idPurchase.id;
+
+
+        const products = await connection('shopping_carts')
+            .select('id_product', 'amount', 'observation', 'unit')
+            .where('id_user', id_user);
+        for (var product in products) {
+            let amount = products[product]['amount'];
+            let id_product = products[product]['id_product']
+            let observation = products[product]['observation']
+            let unit = products[product]['unit']
+
+            await connection('productsPurchases').insert({
+                amount,
+                observation,
+                unit,
+                id_purchase,
+                id_product
+            });
+        }
 
         await connection('shopping_carts').where('id_user', id_user).delete();
 
-        
-        return response.json({ id });
+        return response.status(201).send();
     },
 
-    async index(request,response){
-        const {page = 1} = request.query;
-        const [count] = await connection('purchases').count();
-        const purchases = await connection('purchases')
-            .limit(5)
-            .offset((page-1)*5)
-            .select('*');
+    async index(request, response) {
 
-        response.header('X-Total-Count', count['count(*)']);
+    
+        const purchases = await connection({
+            p: 'purchases',
+            u: 'users',
+            a: 'addresses'
+         })
+            .select({
+                id: 'p.id',
+                delivered: 'p.delivered',
+                value: 'p.value',
+                payment_method: 'p.payment_method',
+                change: 'p.change',
+                observation: 'p.observation',
+                client: 'u.name',
+                client_phone: 'u.phone',
+                city: 'a.city',
+                neighborhood: 'a.neighborhood',
+                street: 'a.street',
+                number: 'a.number',
+                complement: 'a.complement'
+            })
+            .whereRaw('p.id_user = u.id and p.id_address = a.id');
+        
+
         return response.json(purchases);
     }
 };

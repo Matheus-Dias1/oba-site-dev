@@ -13,22 +13,9 @@ module.exports = {
             complement
         } = request.body;
 
-
-        const table_size = await connection('addresses').count("id").first();
-        const num = table_size['count(`id`)'];
-        console.log(num);
-        var id = 1;
-        if (num > 0){
-            const lastID = await connection('addresses')
-                .select('id', 'zip_code')
-                .offset(num-1)
-                .first();               
-                id = parseInt(lastID['id'])+1;
-                console.log(id);
-        }
+        
         const id_user = request.headers.authorization;
         await connection('addresses').insert({
-            id,
             zip_code,
             country,
             state,
@@ -39,7 +26,7 @@ module.exports = {
             complement,
             id_user
         });
-        return response.json({ id });
+        return response.status(201).send();
     },
 
     async index(request,response){

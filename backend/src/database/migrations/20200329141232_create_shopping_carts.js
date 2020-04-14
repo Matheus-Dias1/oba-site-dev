@@ -4,6 +4,7 @@ exports.up = function(knex) {
         table.string('id_user').notNullable();
         table.string('id_product').notNullable();
         table.float('amount').notNullable();
+        table.string('observation');
         table.boolean('unit').notNullable(); // UN -> true  KG -> false
 
         table.foreign('id_user').references('users.id');
@@ -15,3 +16,5 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema.dropTable('shopping_carts');
 };
+
+
