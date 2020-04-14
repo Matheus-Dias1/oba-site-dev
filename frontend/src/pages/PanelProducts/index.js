@@ -17,17 +17,19 @@ export default function PanelProducts() {
     const [name] = localStorage.getItem('userName').split(" ");
     const [userId] = localStorage.getItem('userId').split(" ");
     const [products, setProducts] = useState([]);
+    const [reload, setReload] = useState(false);
     const url = 'http://localhost:3333/image/';
     const history = useHistory();
 
-
+ 
     useEffect(() => {
+
         api.get('products').then(response => {
             setProducts(response.data);
-
+    
         });
 
-    }, [products]);
+    }, [reload]);
 
     async function handleDeleteProduct(id) {
         try {
@@ -46,7 +48,7 @@ export default function PanelProducts() {
         const data = { id: id };
         try {
             await api.put('products', data);
-
+            setReload(!reload);
 
         } catch (err) {
             alert('Erro ao mudar visibilidade do produto!');

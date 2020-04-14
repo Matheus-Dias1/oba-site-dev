@@ -65,6 +65,15 @@ module.exports = {
         return response.status(201).send();
     },
 
+    async updateDelivery(request, response){
+        const { id } = request.body;
+        await connection('purchases')
+            .where('id', id)
+            .update({ delivered:  true}); // Só mostra delivered: false no painel
+
+        return response.status(201).send();
+    },
+
     async index(request, response) {
 
     
@@ -91,7 +100,7 @@ module.exports = {
                 number: 'a.number',
                 complement: 'a.complement'
             })
-            .whereRaw('p.id_user = u.id and p.id_address = a.id and p.id = s.id_purchase and p.delivered = 0')
+            .whereRaw('p.id_user = u.id and p.id_address = a.id and p.id = s.id_purchase and p.delivered = false')
             .orderBy(['s.date', {column:'s.time', order: 'asc'}]);
         
 

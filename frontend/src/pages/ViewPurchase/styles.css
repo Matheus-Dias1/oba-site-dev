@@ -1,0 +1,107 @@
+
+  
+  .viewPurchase-container{
+    width: 100%;
+    max-width: 1120px;
+    height: 100vh;
+    margin: 0 auto;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.viewPurchase-container h1{
+  margin-top: 5%;
+  padding-bottom: 8px;
+}
+
+.viewPurchase-container .back-link{
+  margin-bottom: 5%;
+}
+
+.viewPurchase-container .topInfo tr>td {
+  padding-bottom: 8px;
+}
+
+.viewPurchase-container .topInfo tr{
+  width: 100%;
+}
+
+.viewPurchase-container td{
+  padding-right: 12px;
+}
+
+.viewPurchase-container div.topInfo{
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.viewPurchase-container .bottomInfo{
+  margin-top: 24px;
+}
+
+
+
+.viewPurchase-container .bottomInfo table{
+  width: 100%;
+  border-color: #737380;
+  border-collapse: collapse;
+  border-radius: 5px;
+}
+
+
+.viewPurchase-container .bottomInfo tr td strong,
+.viewPurchase-container .bottomInfo tr td p{
+  margin-left: 10px;
+}
+
+.viewPurchase-container .bottomInfo table,
+.viewPurchase-container .bottomInfo tr,
+.viewPurchase-container .bottomInfo td {
+  border-bottom: 1px solid #41414d;
+  height: 25px;
+  vertical-align: center;
+}
+
+.viewPurchase-container .bottomInfo tr:first-child{
+  background-color: #B30011;
+  color: #fff;
+}
+
+
+.viewPurchase-container .bottomInfo tr:first-child td{
+  border: none;
+}
+
+.viewPurchase-container .bottomInfo td{
+
+}
+
+.viewPurchase-container .topInfo tr strong{
+
+  margin-bottom: 16px;
+  color: #41414d;
+}
+
+.viewPurchase-container .topInfo tr p{
+  color: #737380;
+  line-height: 21px;
+  font-size: 16px;
+}
+
+.viewPurchase-container .content{
+    width: 100%;
+    padding: 50px;
+    background: #f0f0f5;
+    box-shadow: 0 0 100px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin: auto;
+
+    
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  
+  

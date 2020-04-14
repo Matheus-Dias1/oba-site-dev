@@ -20,6 +20,16 @@ export default function PanelPurchases() {
 
     }, [name]);
 
+    function handleDelivered(id) {
+        const data = { id: id };
+        try {
+            api.put('purchases/delivery', data);
+            setPurchases(purchases.filter(purchase => purchase.id !== id));
+        } catch (err) {
+            alert('Erro ao marcar compra como entrege.');
+        }
+    }
+
     return (
         <div className="menu-container">
             <Menu isOpen={false}>
@@ -44,10 +54,10 @@ export default function PanelPurchases() {
                     {
                         purchases.map(purchase => {
 
-                            function dateFormater(date){
+                            function dateFormater(date) {
                                 return Intl.DateTimeFormat('pt-BR').format(new Date(purchase.delivery_date));
                             }
-                            function timeFormater(time){
+                            function timeFormater(time) {
                                 const list = time.split(':');
                                 return list[0] + ':' + list[1]
                             }
@@ -73,7 +83,7 @@ export default function PanelPurchases() {
                                         <p>{purchase.observation}</p>
                                     </div>
 
-                                    <button type="button">
+                                    <button type="button" onClick={() => handleDelivered(purchase.id)}>
                                         <FaTruck size={20} color="a8a8b3" />
                                     </button>
                                     <button type="button" className="listButton">

@@ -8,6 +8,9 @@ import PanelProducts from './pages/PanelProducts';
 import PanelPurchases from './pages/PanelPurchases';
 import NewProduct from './pages/NewProduct';
 import EditProduct from './pages/EditProduct';
+import ViewPurchase from './pages/ViewPurchase';
+
+
 
 
 
@@ -19,9 +22,11 @@ export default function Routes(){
                 <Route path='/register' component = {Register} />
                 <Route path='/panel' exact component = {Panel} />  
                 <Route path='/panel/products' exact component = {PanelProducts} />  
-                <Route path='/panel/purchases' component = {PanelPurchases} />  
                 <Route path='/panel/products/new' component = {NewProduct} />  
                 <Route path='/panel/products/edit' component = {EditProduct} />  
+                <Route path='/panel/purchases' exact component = {PanelPurchases} />  
+                <Route path= '/panel/purchases/view' component={ViewPurchase} />
+
 
             </Switch>
         </BrowserRouter>

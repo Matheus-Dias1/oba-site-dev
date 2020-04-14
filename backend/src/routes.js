@@ -31,6 +31,7 @@ routes.put('/products/edit/:id' , ProductUpdateController.update);
 
 routes.get('/purchases', PurchaseController.index);
 routes.post('/purchases', PurchaseController.create);
+routes.put('/purchases/delivery', PurchaseController.updateDelivery);
 
 routes.get('/shopping_carts', ShoppingCartController.index);
 routes.post('/shopping_carts', ShoppingCartController.create);
