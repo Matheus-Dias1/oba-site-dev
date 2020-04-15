@@ -9,6 +9,7 @@ import PanelPurchases from './pages/PanelPurchases';
 import NewProduct from './pages/NewProduct';
 import EditProduct from './pages/EditProduct';
 import ViewPurchase from './pages/ViewPurchase';
+import PrintPurchases from './pages/PrintPurchases';
 
 
 
@@ -26,6 +27,7 @@ export default function Routes(){
                 <Route path='/panel/products/edit' component = {EditProduct} />  
                 <Route path='/panel/purchases' exact component = {PanelPurchases} />  
                 <Route path= '/panel/purchases/view' component={ViewPurchase} />
+                <Route path= '/panel/purchases/print' component={PrintPurchases} />
 
 
             </Switch>

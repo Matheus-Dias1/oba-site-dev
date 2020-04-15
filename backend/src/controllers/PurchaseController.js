@@ -101,7 +101,7 @@ module.exports = {
                 complement: 'a.complement'
             })
             .whereRaw('p.id_user = u.id and p.id_address = a.id and p.id = s.id_purchase and p.delivered = false')
-            .orderBy(['s.date', {column:'s.time', order: 'asc'}]);
+            .orderByRaw('date(s.date) asc');
         
 
         return response.json(purchases);

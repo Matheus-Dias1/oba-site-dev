@@ -48,7 +48,7 @@ export default function PanelPurchases() {
             <div className="purchase-container">
                 <header>
                     <span>Bem-vindo(a), {name}.</span>
-                    <Link className="button" to="/panel/purchases">Imprimir pedidos</Link>
+                    <Link className="button" to="/panel/purchases/print">Imprimir pedidos</Link>
                     <Link className="button" to="/panel/purchases/new">Cadastrar novo pedido</Link>
                     <button type="button">
                         <FaSignOutAlt size={18} color="B30011" />

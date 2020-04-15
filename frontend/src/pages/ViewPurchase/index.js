@@ -73,8 +73,11 @@ export default function PanelPurchases() {
 
     return (
         <div className="viewPurchase-container">
-            <h1><br/><br/>{'Pedido #' + idP}</h1>
+            <Link className="back-link" to="/panel/purchases">
+                <FaArrowCircleLeft size={30} color="E30016" />
+            </Link>
             <div className="content">
+            <h1>{'Pedido #' + idP}</h1>
                 <div className="topInfo">
                     <table>
                         <tbody>
@@ -86,7 +89,7 @@ export default function PanelPurchases() {
                         <tbody>
                             <tr>
                                 <td><strong>ENDEREÇO:</strong></td>
-                                <td><p>{street + ' ' + number + ' (' + complement + '), ' + neighborhood}</p></td>
+                                <td><p>{street + ' ' + number + ' ' + complement + ', ' + neighborhood}</p></td>
                             </tr>
                         </tbody>
                         <tbody>
@@ -160,10 +163,7 @@ export default function PanelPurchases() {
 
 
             </div>
-            <Link className="back-link" to="/panel/purchases">
-                <FaArrowCircleLeft size={16} color="E30016" />
-                Voltar para pedidos
-            </Link>
+            
         </div>
 
     );

@@ -1,47 +1,47 @@
 
   
-  .viewPurchase-container{
+  .printPurchase-container{
     width: 100%;
     max-width: 1120px;
     height: 100vh;
     margin: auto;
 
-    display: flex;
+    display: contents;
     align-items: center;
     justify-content: center;
 }
 
 
 
-.viewPurchase-container .back-link{
+.printPurchase-container .back-link{
   margin-bottom: 5%;
 }
 
-.viewPurchase-container .topInfo tr>td {
+.printPurchase-container .topInfo tr>td {
   padding-bottom: 8px;
 }
 
-.viewPurchase-container .topInfo tr{
+.printPurchase-container .topInfo tr{
   width: 100%;
 }
 
-.viewPurchase-container td{
+.printPurchase-container td{
   padding-right: 12px;
 }
 
-.viewPurchase-container div.topInfo{
+.printPurchase-container div.topInfo{
   display: flex;
   justify-content: space-around;
 }
 
 
-.viewPurchase-container .bottomInfo{
+.printPurchase-container .bottomInfo{
   margin-top: 24px;
 }
 
 
 
-.viewPurchase-container .bottomInfo table{
+.printPurchase-container .bottomInfo table{
   width: 100%;
   border-color: #737380;
   border-collapse: collapse;
@@ -49,42 +49,40 @@
 }
 
 
-.viewPurchase-container .bottomInfo tr td strong,
-.viewPurchase-container .bottomInfo tr td p{
+.printPurchase-container .bottomInfo tr td strong,
+.printPurchase-container .bottomInfo tr td p{
   margin-left: 10px;
 }
 
-.viewPurchase-container .bottomInfo table,
-.viewPurchase-container .bottomInfo tr,
-.viewPurchase-container .bottomInfo td {
+.printPurchase-container .bottomInfo table,
+.printPurchase-container .bottomInfo tr,
+.printPurchase-container .bottomInfo td {
   border-bottom: 1px solid #41414d;
   height: 25px;
   vertical-align: center;
 }
 
-.viewPurchase-container .bottomInfo tbody:first-child{
-  background-color: #B30011;
-  color: #fff;
+
+.printPurchase-container h1 {
+  padding-bottom: 20px;
 }
 
-
-.viewPurchase-container .topInfo tr strong{
+.printPurchase-container .topInfo tr strong{
 
   margin-bottom: 16px;
   color: #41414d;
 }
 
-.viewPurchase-container .topInfo tr p{
+.printPurchase-container .topInfo tr p{
   color: #737380;
   line-height: 21px;
   font-size: 16px;
 }
 
-.viewPurchase-container .content{
+.printPurchase-container .content{
     width: 100%;
     padding: 20px;
     background: #f0f0f5;
-    box-shadow: 0 0 100px rgba(0,0,0,0.1);
     border-radius: 8px;
     margin: auto;
     
@@ -94,14 +92,14 @@
     align-items: center;
 }
   
-.viewPurchase-container .content .obs p{
+.printPurchase-container .content .obs p{
   margin-top: 8px;
   color: #737380;
   line-height: 21px;
   font-size: 16px;
 }
 
-.viewPurchase-container .content .obs strong{
+.printPurchase-container .content .obs strong{
   color:   #41414d;
   font-size: 15px;
 }
