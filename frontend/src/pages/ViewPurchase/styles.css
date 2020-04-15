@@ -11,7 +11,7 @@
 }
 
 .viewPurchase-container h1{
-  margin-top: 5%;
+  
   padding-bottom: 8px;
 }
 
@@ -64,19 +64,11 @@
   vertical-align: center;
 }
 
-.viewPurchase-container .bottomInfo tr:first-child{
+.viewPurchase-container .bottomInfo tbody:first-child{
   background-color: #B30011;
   color: #fff;
 }
 
-
-.viewPurchase-container .bottomInfo tr:first-child td{
-  border: none;
-}
-
-.viewPurchase-container .bottomInfo td{
-
-}
 
 .viewPurchase-container .topInfo tr strong{
 
@@ -103,5 +95,16 @@
     align-items: center;
 }
   
+.viewPurchase-container .content .obs p{
+  margin-top: 8px;
+  color: #737380;
+  line-height: 21px;
+  font-size: 16px;
+}
+
+.viewPurchase-container .content .obs strong{
+  color:   #41414d;
+  font-size: 15px;
+}
   
   

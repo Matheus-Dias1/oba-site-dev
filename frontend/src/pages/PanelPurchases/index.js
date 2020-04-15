@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaChartLine, FaClipboardList } from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
@@ -12,6 +12,7 @@ import '../../global.css';
 export default function PanelPurchases() {
     const [name] = localStorage.getItem('userName').split(" ");
     const [purchases, setPurchases] = useState([]);
+    const history = useHistory();
 
     useEffect(() => {
         api.get('purchases').then(response => {
@@ -28,6 +29,10 @@ export default function PanelPurchases() {
         } catch (err) {
             alert('Erro ao marcar compra como entrege.');
         }
+    }
+
+    function handleClipboard(id){
+        history.push(`purchases/view/${id}`);
     }
 
     return (
@@ -86,7 +91,7 @@ export default function PanelPurchases() {
                                     <button type="button" onClick={() => handleDelivered(purchase.id)}>
                                         <FaTruck size={20} color="a8a8b3" />
                                     </button>
-                                    <button type="button" className="listButton">
+                                    <button type="button" className="listButton" onClick={ () => handleClipboard(purchase.id)}>
                                         <FaClipboardList size={20} color="a8a8b3" />
                                     </button>
                                 </li>
