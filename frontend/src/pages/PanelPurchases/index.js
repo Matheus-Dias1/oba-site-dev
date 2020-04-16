@@ -10,9 +10,15 @@ import '../../global.css';
 
 
 export default function PanelPurchases() {
-    const [name] = localStorage.getItem('userName').split(" ");
-    const [purchases, setPurchases] = useState([]);
     const history = useHistory();
+    try {
+        var [nameJ] = localStorage.getItem('userName').split(" ");
+    } catch (err) {
+        history.push('/');
+    }
+    const name = nameJ;
+    const [purchases, setPurchases] = useState([]);
+
 
     useEffect(() => {
         api.get('purchases').then(response => {
@@ -22,17 +28,24 @@ export default function PanelPurchases() {
     }, [name]);
 
     function handleDelivered(id) {
-        const data = { id: id };
-        try {
-            api.put('purchases/delivery', data);
-            setPurchases(purchases.filter(purchase => purchase.id !== id));
-        } catch (err) {
-            alert('Erro ao marcar compra como entrege.');
+        if (window.confirm('Deseja marcar pedido como entregue?\nPedidos marcados como entregues não poderão ser acessados pelo painel.')) {
+            const data = { id: id };
+            try {
+                api.put('purchases/delivery', data);
+                setPurchases(purchases.filter(purchase => purchase.id !== id));
+            } catch (err) {
+                alert('Erro ao marcar compra como entrege.');
+            }
         }
     }
 
     function handleClipboard(id) {
         history.push(`purchases/view/${id}`);
+    }
+
+    function handleLogout() {
+        localStorage.clear();
+        history.push('/');
     }
 
     return (
@@ -50,7 +63,7 @@ export default function PanelPurchases() {
                     <span>Bem-vindo(a), {name}.</span>
                     <Link className="button" to="/panel/purchases/print">Imprimir pedidos</Link>
                     <Link className="button" to="/panel/purchases/new">Cadastrar novo pedido</Link>
-                    <button type="button">
+                    <button type="button" onClick={() => handleLogout()}>
                         <FaSignOutAlt size={18} color="B30011" />
                     </button>
                 </header>

@@ -14,12 +14,17 @@ import '../../global.css';
 
 export default function PanelProducts() {
 
-    const [name] = localStorage.getItem('userName').split(" ");
-    const [userId] = localStorage.getItem('userId').split(" ");
+    const history = useHistory();
+    try{
+        var [nameJ] = localStorage.getItem('userName').split(" ");
+     }catch (err){
+         history.push('/');
+     }
+
+    const name = nameJ;
     const [products, setProducts] = useState([]);
     const [reload, setReload] = useState(false);
     const url = 'http://localhost:3333/image/';
-    const history = useHistory();
 
  
     useEffect(() => {
@@ -32,16 +37,18 @@ export default function PanelProducts() {
     }, [reload]);
 
     async function handleDeleteProduct(id) {
-        try {
-            await api.delete(`products/${id}`, {
-                headers: {
-                    authorization: userId
-                }
-            });
-            setProducts(products.filter(product => product.id !== id));
-        } catch (err) {
-            alert('Erro ao deletar produto.');
-        }
+        
+        alert('Funcionalidade desativada');
+        // try {
+        //     await api.delete(`products/${id}`, {
+        //         headers: {
+        //             authorization: userId
+        //         }
+        //     });
+        //     setProducts(products.filter(product => product.id !== id));
+        // } catch (err) {
+        //     alert('Erro ao deletar produto.');
+        // }
     }
 
     async function handleAvailability(id) {
