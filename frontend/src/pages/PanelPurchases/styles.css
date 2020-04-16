@@ -7,7 +7,9 @@
   margin: auto;
 
 }
-
+.purchase-container a{
+  text-decoration: none;
+}
 
 .purchase-container header{
   
@@ -100,7 +102,9 @@
 }
 
 
-
+.purchase-container ul li a p{
+  margin-bottom: 32px;
+}
 
 
 .purchase-container ul li img {

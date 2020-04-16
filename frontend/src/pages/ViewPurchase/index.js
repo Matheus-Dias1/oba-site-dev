@@ -73,11 +73,13 @@ export default function PanelPurchases() {
 
     return (
         <div className="viewPurchase-container">
-            <Link className="back-link" to="/panel/purchases">
-                <FaArrowCircleLeft size={30} color="E30016" />
-            </Link>
+            <header>
+                <Link className="back-link" to="/panel/purchases">
+                    <FaArrowCircleLeft size={30} color="E30016" />
+                </Link>
+            </header>
             <div className="content">
-            <h1>{'Pedido #' + idP}</h1>
+                <h1>{'Pedido #' + idP}</h1>
                 <div className="topInfo">
                     <table>
                         <tbody>
@@ -89,7 +91,7 @@ export default function PanelPurchases() {
                         <tbody>
                             <tr>
                                 <td><strong>ENDEREÇO:</strong></td>
-                                <td><p>{street + ' ' + number + ' ' + complement + ', ' + neighborhood}</p></td>
+                                <td><p><a href={'https://www.google.com/maps/search/?api=1&query=' + street + '%20' + number + '%2C' + neighborhood} target="_blank" rel="noopener noreferrer">{street + ' ' + number + ' ' + complement + ', ' + neighborhood}</a></p></td>
                             </tr>
                         </tbody>
                         <tbody>
@@ -163,7 +165,7 @@ export default function PanelPurchases() {
 
 
             </div>
-            
+
         </div>
 
     );

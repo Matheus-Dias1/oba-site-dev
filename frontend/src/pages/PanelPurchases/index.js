@@ -31,7 +31,7 @@ export default function PanelPurchases() {
         }
     }
 
-    function handleClipboard(id){
+    function handleClipboard(id) {
         history.push(`purchases/view/${id}`);
     }
 
@@ -80,8 +80,10 @@ export default function PanelPurchases() {
                                         <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
                                     </div>
                                     <div>
-                                        <strong>ENDEREÇO:</strong>
-                                        <p>{purchase.street + ' ' + purchase.number + ', ' + purchase.neighborhood}</p>
+                                        <a href={'https://www.google.com/maps/search/?api=1&query=' + purchase.street + '%20' + purchase.number + '%2C' + purchase.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">
+                                            <strong>ENDEREÇO:</strong>
+                                            <p>{purchase.street + ' ' + purchase.number + ', ' + purchase.neighborhood} </p>
+                                        </a>
                                         <strong>ENTREGA:</strong>
                                         <p>{dateFormater(purchase.delivery_date) + ' - ' + timeFormater(purchase.delivery_time)}</p>
                                         <strong>OBSERVAÇÕES:</strong>
@@ -91,7 +93,7 @@ export default function PanelPurchases() {
                                     <button type="button" onClick={() => handleDelivered(purchase.id)}>
                                         <FaTruck size={20} color="a8a8b3" />
                                     </button>
-                                    <button type="button" className="listButton" onClick={ () => handleClipboard(purchase.id)}>
+                                    <button type="button" className="listButton" onClick={() => handleClipboard(purchase.id)}>
                                         <FaClipboardList size={20} color="a8a8b3" />
                                     </button>
                                 </li>
