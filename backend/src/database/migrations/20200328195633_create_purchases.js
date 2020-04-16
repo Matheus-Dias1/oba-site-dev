@@ -8,9 +8,9 @@ exports.up = function (knex) {
     table.string('payment_method').notNullable();
     table.float('change');
     table.string('observation');
-    table.string('purchase-time')
+    table.datetime('purchase-time')
       .notNullable()
-      .defaultTo('now');
+      .defaultTo('datetime(now)');
     table.boolean('delivered').notNullable().defaultTo(false);
 
 
