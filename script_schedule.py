@@ -50,7 +50,7 @@ for day in days:
                 + '-'
                 + str(day)
                 + '", "'
-                + time
+                + time.strip()
                 + ':00")'
         )
         if (day == days[-1] and time == timeDeliveries[-1]):

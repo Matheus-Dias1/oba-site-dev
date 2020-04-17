@@ -15,7 +15,7 @@ export default function NewAddress() {
     const [zip_code, setZip_code] = useState('');
     const history = useHistory();
 
-    async function handleAddToCart(e) {
+    async function handleNewAddress(e) {
         e.preventDefault();
         const data = {
             addressData: {
@@ -27,8 +27,8 @@ export default function NewAddress() {
             }
         };
 
-        localStorage.setItem('addressData', data);
-        history.push('/panel/purchase/new/finalize');
+        localStorage.setItem('addressData', JSON.stringify(data));
+        history.push('/panel/purchases/new/clientInfo');
     }
 
     return (
@@ -43,7 +43,7 @@ export default function NewAddress() {
                     </Link>
                 </section>
                 <div>
-                    <form onSubmit={handleAddToCart}>
+                    <form onSubmit={handleNewAddress}>
                         <input
                             placeholder="Bairro"
                             value={neighborhood}
@@ -85,7 +85,7 @@ export default function NewAddress() {
                             value={complement}
                             onChange={e => setComplement(e.target.value)}
                         />
-                        <div className="zipcodeField">
+                        
                             <input
                                 placeholder="CEP"
                                 value={zip_code}
@@ -98,7 +98,7 @@ export default function NewAddress() {
                                     e.target.setCustomValidity("");
                                 }}
                             />
-                        </div>
+                        
 
                         <button className="button" type="submit">Continuar</button>
                     </form>

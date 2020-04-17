@@ -10,6 +10,8 @@ const ShoppingCartController = require('./controllers/ShoppingCartController');
 const ProductPurchaseController = require('./controllers/ProductPurchaseController');
 const ProfileController = require('./controllers/ProfileController');
 const SessionController = require('./controllers/SessionController');
+const ScheduleController = require('./controllers/ScheduleController');
+
 
 
 const routes = express.Router();
@@ -44,8 +46,9 @@ routes.get('/profile/shopping_cart', ProfileController.indexShoppingCarts);
 
 routes.get('/productsPurchases/:idP', ProductPurchaseController.index);
 
-
 routes.post('/session', SessionController.create);
+
+routes.get('/schedule', ScheduleController.index);
 
 routes.get('/image/:file(*)', (req, res) => {
     let file = req.params.file;

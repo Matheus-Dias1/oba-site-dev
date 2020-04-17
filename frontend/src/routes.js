@@ -12,6 +12,7 @@ import ViewPurchase from './pages/ViewPurchase';
 import PrintPurchases from './pages/PrintPurchases';
 import NewShoppingCart from './pages/NewPurchase/NewShoppingCart';
 import NewAddress from './pages/NewPurchase/NewAddress';
+import NewClientInformation from './pages/NewPurchase/NewClientInformation';
 
 
 
@@ -32,7 +33,8 @@ export default function Routes(){
                 <Route path= '/panel/purchases/print' component={PrintPurchases} />
                 <Route path= '/panel/purchases/new/products' component={NewShoppingCart} />
                 <Route path= '/panel/purchases/new/address' component={NewAddress} />
-
+                <Route path= '/panel/purchases/new/clientInfo' component={NewClientInformation} />
+                
 
             </Switch>
         </BrowserRouter>
