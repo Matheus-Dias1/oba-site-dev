@@ -5,7 +5,7 @@ exports.up = function(knex) {
         table.string('id_product').notNullable();
         table.float('amount').notNullable();
         table.string('observation');
-        table.boolean('unit').notNullable(); // UN -> true  KG -> false
+        table.string('unit').notNullable();
 
         table.foreign('id_user').references('users.id');
         table.foreign('id_product').references('products.id');

@@ -35,6 +35,8 @@ routes.put('/purchases/delivery', PurchaseController.updateDelivery);
 
 routes.get('/shopping_carts', ShoppingCartController.index);
 routes.post('/shopping_carts', ShoppingCartController.create);
+routes.delete('/shopping_carts', ShoppingCartController.delete);
+
 
 routes.get('/profile/addresses', ProfileController.indexAddresses);
 routes.get('/profile/purchases', ProfileController.indexPurchases);

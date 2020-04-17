@@ -10,6 +10,7 @@ import NewProduct from './pages/NewProduct';
 import EditProduct from './pages/EditProduct';
 import ViewPurchase from './pages/ViewPurchase';
 import PrintPurchases from './pages/PrintPurchases';
+import NewShoppingCart from './pages/NewPurchase/NewShoppingCart';
 
 
 
@@ -28,6 +29,7 @@ export default function Routes(){
                 <Route path='/panel/purchases' exact component = {PanelPurchases} />  
                 <Route path= '/panel/purchases/view' component={ViewPurchase} />
                 <Route path= '/panel/purchases/print' component={PrintPurchases} />
+                <Route path= '/panel/purchases/new/products' component={NewShoppingCart} />
 
 
             </Switch>

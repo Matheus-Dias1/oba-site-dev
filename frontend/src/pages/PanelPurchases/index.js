@@ -62,7 +62,7 @@ export default function PanelPurchases() {
                 <header>
                     <span>Bem-vindo(a), {name}.</span>
                     <Link className="button" to="/panel/purchases/print">Imprimir pedidos</Link>
-                    <Link className="button" to="/panel/purchases/new">Cadastrar novo pedido</Link>
+                    <Link className="button" to="/panel/purchases/new/products">Cadastrar novo pedido</Link>
                     <button type="button" onClick={() => handleLogout()}>
                         <FaSignOutAlt size={18} color="B30011" />
                     </button>
