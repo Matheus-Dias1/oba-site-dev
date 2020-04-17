@@ -9,7 +9,7 @@ import './styles.css';
 import '../../global.css';
 
 
-export default function PanelPurchases() {
+export default function ViewPurchase() {
     const [items, setItems] = useState([]);
     const [client, setClient] = useState('');
     const [street, setStreet] = useState('');

@@ -7,7 +7,7 @@ import './styles.css';
 import api from '../../../services/api';
 
 
-export default function Register() {
+export default function NewShoppingCart() {
 
     const history = useHistory();
     try {
@@ -28,10 +28,10 @@ export default function Register() {
     useEffect(() => {
 
         api.delete('shopping_carts', {
-            headers:{
+            headers: {
                 authorization: parseInt(userId)
             }
-        }).then();
+        });
 
         api.get('products').then(response => {
             setProducts(response.data);
@@ -50,8 +50,12 @@ export default function Register() {
 
 
     async function handleAddToCart(e) {
-
         e.preventDefault();
+        if (selectedUnit === 'UN' && amount.includes(',')){
+            alert('Não é possível comprar frações de produtos unitários.');
+            return;
+        }
+
         const data = {
             "id_product": parseInt(selectedId),
             "amount": parseFloat(amount.replace(',', '.')),
@@ -59,7 +63,7 @@ export default function Register() {
             "observation": observation,
 
         };
-        try{
+        try {
             const res = await api.post('/shopping_carts', data, {
                 headers: {
                     authorization: userId
@@ -69,17 +73,19 @@ export default function Register() {
             setTotalValue(totalValue + res.data.value);
             setAmount('');
             setObservation('');
-        } catch(err){
+        } catch (err) {
             alert('Erro, confira os dados e tente novamente');
         }
     }
 
     function toNewAddress() {
+        localStorage.setItem('cartValue', totalValue);
         history.push('/panel/purchases/new/address');
     }
 
     function handleValueChange(e) {
-        setAmount(e.target.value);
+        if (selectedUnit === 'UN') setAmount(e.target.value.replace(',', ''));
+        else setAmount(e.target.value);
     }
     return (
         <div className="addToCart-container">
@@ -93,7 +99,7 @@ export default function Register() {
                     </Link>
                 </section>
                 <div>
-                    <form onSubmit={handleAddToCart}>
+                    <form>
                         <div className="formCell">
                             <select id="product" className="selectProduct" defaultValue="default" onChange={e => setSelectedId(e.target.value)}>
                                 <option value="default">Produto</option>
@@ -105,12 +111,7 @@ export default function Register() {
                                     })
                                 }
                             </select>
-                            <input
-                                className="inputAmount"
-                                placeholder="Quantidade"
-                                value={amount}
-                                onChange={e => handleValueChange(e)}
-                            />
+
                             {selectedId === 'default' && <select id="unit" disabled className="selectUnit" defaultValue="1" >
                                 <option value="1"></option>
                             </select>}
@@ -119,7 +120,12 @@ export default function Register() {
                                 <option value={products[findWithAttr(products, "id", parseInt(selectedId))].measurement_unit}>{products[findWithAttr(products, "id", parseInt(selectedId))].measurement_unit}</option>
                                 {products[findWithAttr(products, "id", parseInt(selectedId))].unit_price !== null && <option value="UN">UN</option>}
                             </select>}
-
+                            <input
+                                className="inputAmount"
+                                placeholder="Quantidade"
+                                value={amount}
+                                onChange={e => handleValueChange(e)}
+                            />
                         </div>
                         <textarea
                             placeholder="Observação sobre produto"

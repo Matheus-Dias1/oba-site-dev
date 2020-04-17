@@ -8,7 +8,7 @@ import api from '../../services/api';
 import './styles.css';
 
 
-export default function PanelPurchases() {
+export default function PrintPurchases() {
     const [purchases, setPurchases] = useState([]);
     const history = useHistory();
 

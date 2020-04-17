@@ -7,7 +7,7 @@ import api from '../../services/api';
 import './styles.css';
 
 
-export default function NewProduct() {
+export default function EditProduct() {
 
     const history = useHistory();
     const [id, setId] = useState('');

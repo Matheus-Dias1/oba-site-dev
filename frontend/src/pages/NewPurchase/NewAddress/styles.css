@@ -1,0 +1,82 @@
+.newAddress-container{
+    width: 100%;
+    max-width: 1120px;
+    height: 100vh;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.newAddress-container .content{
+    width: 100%;
+    padding: 96px;
+    background: #f0f0f5;
+    box-shadow: 0 0 100px rgba(0,0,0,0.1);
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.newAddress-container .content section{
+    width: 100%;
+    max-width: 380px;
+}
+
+.newAddress-container .content section h1{
+    margin: 32px 0 18px;
+    font-size: 32px;
+}
+
+.newAddress-container .content section p{
+    font-size: 18px;
+    color: #737380;
+    line-height: 32px;
+}
+
+.newAddress-container .content section form{
+    width: 100%;
+    max-width: 450px;
+}
+
+.newAddress-container .content form input, select, textarea, .valueText{
+    margin-top: 8px;
+}
+    
+.newAddress-container .content .selectProduct{
+    width: 40%;
+}
+
+.newAddress-container .content .inputAmount{
+    width: 35%;
+}
+
+.newAddress-container .content .selectUnit{
+    width: 100px;
+}
+
+.newAddress-container .content .formCell, .buttons, .valueText{
+    display: flex;
+    justify-content: space-between;
+}
+.newAddress-container .valueText strong{
+    color: #41414d;
+    font-size: 15px;
+}
+
+.newAddress-container .content .buttons button+button{
+    margin-left: 25px;
+}
+
+.newAddress-container .errorText{
+    text-align: center;
+    font-weight: 500;
+    color: #fff;
+    font-size: 20px;
+    background-color: #E30016;
+    border-radius: 4px;
+    padding: 2px 2px;
+}

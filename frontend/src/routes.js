@@ -11,6 +11,7 @@ import EditProduct from './pages/EditProduct';
 import ViewPurchase from './pages/ViewPurchase';
 import PrintPurchases from './pages/PrintPurchases';
 import NewShoppingCart from './pages/NewPurchase/NewShoppingCart';
+import NewAddress from './pages/NewPurchase/NewAddress';
 
 
 
@@ -30,6 +31,7 @@ export default function Routes(){
                 <Route path= '/panel/purchases/view' component={ViewPurchase} />
                 <Route path= '/panel/purchases/print' component={PrintPurchases} />
                 <Route path= '/panel/purchases/new/products' component={NewShoppingCart} />
+                <Route path= '/panel/purchases/new/address' component={NewAddress} />
 
 
             </Switch>
