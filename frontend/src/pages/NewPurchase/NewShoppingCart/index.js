@@ -117,7 +117,7 @@ export default function Register() {
                             {selectedId !== 'default' && <select id="unit" className="selectUnit" defaultValue="1" onChange={e => setSelectedUnit(e.target.value)}>
                                 <option value="1"></option>
                                 <option value={products[findWithAttr(products, "id", parseInt(selectedId))].measurement_unit}>{products[findWithAttr(products, "id", parseInt(selectedId))].measurement_unit}</option>
-                                <option value="UN">UN</option>
+                                {products[findWithAttr(products, "id", parseInt(selectedId))].unit_price !== null && <option value="UN">UN</option>}
                             </select>}
 
                         </div>
