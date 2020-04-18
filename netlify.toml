@@ -1,3 +1,0 @@
-[context.production]
-  base = "/frontend"
-  command = "npm run build"

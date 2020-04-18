@@ -37,7 +37,7 @@ export default function Logon() {
                 <form onSubmit={handleLogin}>
                     <h1>Faça seu logon</h1>
                     <input
-                        placeholder="E-maill"
+                        placeholder="E-mail"
                         defaultValue={email}
                         onChange={e => setEmail(e.target.value)}
                     />
