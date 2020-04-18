@@ -53,7 +53,7 @@
 }
 
 .newPaymentInfo-container .content select.disabled{
-    opacity: 60%;
+    opacity: 0.6;
 }
 
 .newPaymentInfo-container .content .valueText{

@@ -51,7 +51,7 @@
 }
 
 .newClientInfo-container .content select.disabled{
-    opacity: 60%;
+    opacity: 0.6;
 }
 
 .newClientInfo-container .content .formCell{
