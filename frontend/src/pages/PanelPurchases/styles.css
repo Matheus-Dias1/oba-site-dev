@@ -83,8 +83,9 @@
   opacity: 0.3;
 }
 
-.purchase-container ul li div:first-child{
+.purchase-container ul li div{
   width: 50%;
+  word-wrap: break-word
 }
 
 .purchase-container ul li button {

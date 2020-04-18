@@ -18,13 +18,11 @@ export default function NewAddress() {
     async function handleNewAddress(e) {
         e.preventDefault();
         const data = {
-            addressData: {
                 street: street,
                 number: number,
                 complement: complement,
                 neighborhood: neighborhood,
                 zip_code: zip_code
-            }
         };
 
         localStorage.setItem('addressData', JSON.stringify(data));

@@ -36,100 +36,193 @@ export default function PrintPurchases() {
                         const list = time.split(':');
                         const fTime = list[0] + ':' + list[1];
                         return Intl.DateTimeFormat('pt-BR').format(new Date(date)) + ' - ' + fTime
-                        
+
                     }
 
+                    try {
+                        const obsData = JSON.parse(purchase.data.observation)
+                        return (
+                            <div className="content" key={purchases.indexOf(purchase)}>
+                                <h1>{'Pedido #' + formatId(purchase.data.id)}</h1>
+                                <div className="topInfo">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>COMPRADOR:</strong></td>
+                                                <td><p>{obsData.client}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>ENDEREÇO:</strong></td>
+                                                <td><p>{obsData.street + ' ' + obsData.number + ' ' + obsData.complement + ', ' + obsData.neighborhood}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>ENTREGA:</strong></td>
+                                                <td><p>{formatDateTime(purchase.data.delivery_date, purchase.data.delivery_time)}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>TELEFONE:</strong></td>
+                                                <td><p>{obsData.phone}</p></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                    return (
-                        <div className="content" key={purchases.indexOf(purchase)}>
-                            <h1>{'Pedido #' + formatId(purchase.data.id)}</h1>
-                            <div className="topInfo">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>COMPRADOR:</strong></td>
-                                            <td><p>{purchase.data.client}</p></td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>ENDEREÇO:</strong></td>
-                                            <td><p>{purchase.data.street + ' ' + purchase.data.number + ' ' + purchase.data.complement + ', ' + purchase.data.neighborhood}</p></td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>ENTREGA:</strong></td>
-                                            <td><p>{formatDateTime(purchase.data.delivery_date, purchase.data.delivery_time)}</p></td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>TELEFONE:</strong></td>
-                                            <td><p>{purchase.data.client_phone}</p></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>VALOR:</strong></td>
+                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value)}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>PAGAMENTO:</strong></td>
+                                                <td><p>{purchase.data.payment_method}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>TROCO:</strong></td>
+                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.change)}</p></td>
+                                            </tr>
+                                        </tbody>
 
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>VALOR:</strong></td>
-                                            <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value)}</p></td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>PAGAMENTO:</strong></td>
-                                            <td><p>{purchase.data.payment_method}</p></td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>TROCO:</strong></td>
-                                            <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.change)}</p></td>
-                                        </tr>
-                                    </tbody>
+                                    </table>
 
-                                </table>
+                                </div>
+
+                                <div className="bottomInfo">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td width="25%"><strong>PRODUTO</strong></td>
+                                                <td width="15%"><strong>QUANTIDADE</strong></td>
+                                                <td width="15%"><strong>MEDIDA</strong></td>
+                                                <td><strong>OBSERVAÇÃO</strong></td>
+                                            </tr>
+                                        </tbody>
+                                        {
+                                            purchase.items.map(item => {
+                                                return (
+                                                    <tbody key={purchase.items.indexOf(item)}>
+                                                        <tr>
+                                                            <td><p>{item.product}</p></td>
+                                                            <td><p>{String(item.amount).replace('.', ',')}</p></td>
+                                                            <td><p>{item.unit}</p></td>
+                                                            <td><p>{item.observation}</p></td>
+                                                        </tr>
+                                                    </tbody>
+                                                )
+                                            })
+                                        }
+                                    </table>
+                                    {!!obsData.observation === true && <div className="obs">
+                                        <strong><br /><br />OBSERVAÇÕES:</strong>
+                                        <p>{obsData.observation}</p>
+                                    </div>}
+                                </div>
+
+
 
                             </div>
+                        )
+                    } catch (err) {
+                        return (
+                            <div className="content" key={purchases.indexOf(purchase)}>
+                                <h1>{'Pedido #' + formatId(purchase.data.id)}</h1>
+                                <div className="topInfo">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>COMPRADOR:</strong></td>
+                                                <td><p>{purchase.data.client}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>ENDEREÇO:</strong></td>
+                                                <td><p>{purchase.data.street + ' ' + purchase.data.number + ' ' + purchase.data.complement + ', ' + purchase.data.neighborhood}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>ENTREGA:</strong></td>
+                                                <td><p>{formatDateTime(purchase.data.delivery_date, purchase.data.delivery_time)}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>TELEFONE:</strong></td>
+                                                <td><p>{purchase.data.client_phone}</p></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                            <div className="bottomInfo">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td width="25%"><strong>PRODUTO</strong></td>
-                                            <td width="15%"><strong>QUANTIDADE</strong></td>
-                                            <td width="15%"><strong>MEDIDA</strong></td>
-                                            <td><strong>OBSERVAÇÃO</strong></td>
-                                        </tr>
-                                    </tbody>
-                                    {
-                                        purchase.items.map(item => {
-                                            return (
-                                                <tbody key={purchase.items.indexOf(item)}>
-                                                    <tr>
-                                                        <td><p>{item.product}</p></td>
-                                                        <td><p>{String(item.amount).replace('.', ',')}</p></td>
-                                                        <td><p>{item.unit}</p></td>
-                                                        <td><p>{item.observation}</p></td>
-                                                    </tr>
-                                                </tbody>
-                                            )
-                                        })
-                                    }
-                                </table>
-                                {!!purchase.data.observation === true && <div className="obs">
-                                    <strong><br /><br />OBSERVAÇÕES:</strong>
-                                    <p>{purchase.data.observation}</p>
-                                </div>}
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>VALOR:</strong></td>
+                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value)}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>PAGAMENTO:</strong></td>
+                                                <td><p>{purchase.data.payment_method}</p></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>TROCO:</strong></td>
+                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.change)}</p></td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                                <div className="bottomInfo">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td width="25%"><strong>PRODUTO</strong></td>
+                                                <td width="15%"><strong>QUANTIDADE</strong></td>
+                                                <td width="15%"><strong>MEDIDA</strong></td>
+                                                <td><strong>OBSERVAÇÃO</strong></td>
+                                            </tr>
+                                        </tbody>
+                                        {
+                                            purchase.items.map(item => {
+                                                return (
+                                                    <tbody key={purchase.items.indexOf(item)}>
+                                                        <tr>
+                                                            <td><p>{item.product}</p></td>
+                                                            <td><p>{String(item.amount).replace('.', ',')}</p></td>
+                                                            <td><p>{item.unit}</p></td>
+                                                            <td><p>{item.observation}</p></td>
+                                                        </tr>
+                                                    </tbody>
+                                                )
+                                            })
+                                        }
+                                    </table>
+                                    {!!purchase.data.observation === true && <div className="obs">
+                                        <strong><br /><br />OBSERVAÇÕES:</strong>
+                                        <p>{purchase.data.observation}</p>
+                                    </div>}
+                                </div>
+
+
+
                             </div>
-
-
-
-                        </div>
-                    )
+                        )
+                    }
                 })
             }
         </div>

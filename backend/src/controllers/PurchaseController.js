@@ -9,15 +9,25 @@ module.exports = {
             change,
             id_address,
             observation,
-            id_schedule,
+            date,
+            time,
         } = request.body;
 
+        const [id_schedule] = await connection('schedule')
+            .where({
+                date: date,
+                time: time
+            })
+            .select('id');
+        
 
         const [size] = await connection('shopping_carts')
             .where('id_user', id_user)
             .count('*');
+        
 
         if (size['count(*)'] < 1) {
+
             return response.status(400).json({
                 "error": "Não há nenhum item no carrinho"
             });
@@ -37,10 +47,13 @@ module.exports = {
             .first();
 
         const id_purchase = idPurchase.id;
-
+        
         await connection('schedule')
-            .where('id', id_schedule)
-            .update({id_purchase:id_purchase});
+            .update('id_purchase', id_purchase)
+            .where({
+                date: date,
+                time: time
+            });
 
         const products = await connection('shopping_carts')
             .select('id_product', 'amount', 'observation', 'unit')

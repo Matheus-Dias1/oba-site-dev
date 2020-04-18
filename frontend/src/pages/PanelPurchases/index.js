@@ -72,6 +72,73 @@ export default function PanelPurchases() {
                     {
                         purchases.map(purchase => {
 
+                            try {
+                                const obsData = JSON.parse(purchase.observation);
+                                return (
+                                    <li key={purchase.id}>
+                                        <div>
+                                            <strong>COMPRADOR:</strong>
+                                            <p>{obsData.client}</p>
+                                            <strong>PAGAMENTO:</strong>
+                                            <p>{purchase.payment_method}</p>
+                                            <strong>VALOR:</strong>
+                                            <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.value)}</p>
+                                            <strong>TROCO:</strong>
+                                            <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
+                                        </div>
+                                        <div>
+                                            <a href={'https://www.google.com/maps/search/?api=1&query=' + obsData.street + '%20' + obsData.number + '%2C' + obsData.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">
+                                                <strong>ENDEREÇO:</strong>
+                                                <p>{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
+                                            </a>
+                                            <strong>ENTREGA:</strong>
+                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + timeFormater(purchase.delivery_time)}</p>
+                                            <strong>OBSERVAÇÕES:</strong>
+                                            <p>{obsData.observation}</p>
+                                        </div>
+
+                                        <button type="button" onClick={() => handleDelivered(purchase.id)}>
+                                            <FaTruck size={20} color="a8a8b3" />
+                                        </button>
+                                        <button type="button" className="listButton" onClick={() => handleClipboard(purchase.id)}>
+                                            <FaClipboardList size={20} color="a8a8b3" />
+                                        </button>
+                                    </li>
+                                )
+                            } catch (err) {
+                                return (
+                                    <li key={purchase.id}>
+                                        <div>
+                                            <strong>COMPRADOR:</strong>
+                                            <p>{purchase.client}</p>
+                                            <strong>PAGAMENTO:</strong>
+                                            <p>{purchase.payment_method}</p>
+                                            <strong>VALOR:</strong>
+                                            <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.value)}</p>
+                                            <strong>TROCO:</strong>
+                                            <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
+                                        </div>
+                                        <div>
+                                            <a href={'https://www.google.com/maps/search/?api=1&query=' + purchase.street + '%20' + purchase.number + '%2C' + purchase.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">
+                                                <strong>ENDEREÇO:</strong>
+                                                <p>{purchase.street + ' ' + purchase.number + ', ' + purchase.neighborhood} </p>
+                                            </a>
+                                            <strong>ENTREGA:</strong>
+                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + timeFormater(purchase.delivery_time)}</p>
+                                            <strong>OBSERVAÇÕES:</strong>
+                                            <p>{purchase.observation}</p>
+                                        </div>
+
+                                        <button type="button" onClick={() => handleDelivered(purchase.id)}>
+                                            <FaTruck size={20} color="a8a8b3" />
+                                        </button>
+                                        <button type="button" className="listButton" onClick={() => handleClipboard(purchase.id)}>
+                                            <FaClipboardList size={20} color="a8a8b3" />
+                                        </button>
+                                    </li>
+                                )
+                            }
+
                             function dateFormater(date) {
                                 return Intl.DateTimeFormat('pt-BR').format(new Date(purchase.delivery_date));
                             }
@@ -80,37 +147,7 @@ export default function PanelPurchases() {
                                 return list[0] + ':' + list[1]
                             }
 
-                            return (
-                                <li key={purchase.id}>
-                                    <div>
-                                        <strong>COMPRADOR:</strong>
-                                        <p>{purchase.client}</p>
-                                        <strong>PAGAMENTO:</strong>
-                                        <p>{purchase.payment_method}</p>
-                                        <strong>VALOR:</strong>
-                                        <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.value)}</p>
-                                        <strong>TROCO:</strong>
-                                        <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
-                                    </div>
-                                    <div>
-                                        <a href={'https://www.google.com/maps/search/?api=1&query=' + purchase.street + '%20' + purchase.number + '%2C' + purchase.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">
-                                            <strong>ENDEREÇO:</strong>
-                                            <p>{purchase.street + ' ' + purchase.number + ', ' + purchase.neighborhood} </p>
-                                        </a>
-                                        <strong>ENTREGA:</strong>
-                                        <p>{dateFormater(purchase.delivery_date) + ' - ' + timeFormater(purchase.delivery_time)}</p>
-                                        <strong>OBSERVAÇÕES:</strong>
-                                        <p>{purchase.observation}</p>
-                                    </div>
 
-                                    <button type="button" onClick={() => handleDelivered(purchase.id)}>
-                                        <FaTruck size={20} color="a8a8b3" />
-                                    </button>
-                                    <button type="button" className="listButton" onClick={() => handleClipboard(purchase.id)}>
-                                        <FaClipboardList size={20} color="a8a8b3" />
-                                    </button>
-                                </li>
-                            )
                         })
                     }
                 </ul>

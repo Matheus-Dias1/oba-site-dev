@@ -49,16 +49,27 @@ export default function ViewPurchase() {
                 change,
                 observation
             } = data;
-            setClient(client);
-            setStreet(street);
-            setNumber(number);
-            setComplement(complement);
-            setNeighborhood(neighborhood);
-            setClient_phone(client_phone);
-            setPayment_method(payment_method);
-            setObservation(observation);
-            setItems(items);
 
+            try {
+                const obsData = JSON.parse(observation);
+                setClient(obsData.client);
+                setStreet(obsData.street);
+                setNumber(obsData.number);
+                setComplement(obsData.complement);
+                setNeighborhood(obsData.neighborhood);
+                setClient_phone(obsData.phone);
+                setObservation(obsData.observation);
+            } catch (err) {
+                setClient(client);
+                setStreet(street);
+                setNumber(number);
+                setComplement(complement);
+                setNeighborhood(neighborhood);
+                setClient_phone(client_phone);
+                setObservation(observation);
+            }
+            setPayment_method(payment_method);
+            setItems(items);
             var fId = String(id) + "", needed = 5 - fId.length;
             if (needed > 0) fId = (Math.pow(10, needed) + "").slice(1) + fId;
             setId(fId);
@@ -67,6 +78,7 @@ export default function ViewPurchase() {
             const list = delivery_time.split(':');
             const fTime = list[0] + ':' + list[1];
             setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + ' - ' + fTime);
+
         })
     }, []);
 

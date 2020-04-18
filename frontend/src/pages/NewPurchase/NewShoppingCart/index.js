@@ -29,7 +29,7 @@ export default function NewShoppingCart() {
 
         api.delete('shopping_carts', {
             headers: {
-                authorization: parseInt(userId)
+                authorization: 0
             }
         });
 
@@ -66,7 +66,7 @@ export default function NewShoppingCart() {
         try {
             const res = await api.post('/shopping_carts', data, {
                 headers: {
-                    authorization: userId
+                    authorization: 0
                 }
             });
             setProductValue(res.data.value);

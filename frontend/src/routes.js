@@ -13,6 +13,7 @@ import PrintPurchases from './pages/PrintPurchases';
 import NewShoppingCart from './pages/NewPurchase/NewShoppingCart';
 import NewAddress from './pages/NewPurchase/NewAddress';
 import NewClientInformation from './pages/NewPurchase/NewClientInformation';
+import NewPaymentInfo from './pages/NewPurchase/NewPaymentInfo';
 
 
 
@@ -34,6 +35,7 @@ export default function Routes(){
                 <Route path= '/panel/purchases/new/products' component={NewShoppingCart} />
                 <Route path= '/panel/purchases/new/address' component={NewAddress} />
                 <Route path= '/panel/purchases/new/clientInfo' component={NewClientInformation} />
+                <Route path= '/panel/purchases/new/payment' component={NewPaymentInfo} />
                 
 
             </Switch>
