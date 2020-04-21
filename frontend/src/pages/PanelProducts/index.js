@@ -24,7 +24,7 @@ export default function PanelProducts() {
     const name = nameJ;
     const [products, setProducts] = useState([]);
     const [reload, setReload] = useState(false);
-    const url = 'https://oba-backend.herokuapp.com/image/';
+    const url = 'http://localhost:3333/image/';
 
  
     useEffect(() => {
