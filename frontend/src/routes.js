@@ -14,6 +14,7 @@ import NewShoppingCart from './pages/NewPurchase/NewShoppingCart';
 import NewAddress from './pages/NewPurchase/NewAddress';
 import NewClientInformation from './pages/NewPurchase/NewClientInformation';
 import NewPaymentInfo from './pages/NewPurchase/NewPaymentInfo';
+import AddToSchedule from './pages/AddToSchedule';
 
 
 
@@ -36,6 +37,7 @@ export default function Routes(){
                 <Route path= '/panel/purchases/new/address' component={NewAddress} />
                 <Route path= '/panel/purchases/new/clientInfo' component={NewClientInformation} />
                 <Route path= '/panel/purchases/new/payment' component={NewPaymentInfo} />
+                <Route path= '/panel/schedule' component={AddToSchedule} />
                 
 
             </Switch>

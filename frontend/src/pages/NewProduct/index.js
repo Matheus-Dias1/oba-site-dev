@@ -15,6 +15,7 @@ export default function NewProduct() {
     const [price, setPrice] = useState('');
     const [measurement_unit, setMeasurement_unit] = useState('KG');
     const [unit_price, setUnit_price] = useState('');
+    const [category, setCategory] = useState('');
     const [file, setFile] = useState('');
 
     async function handleNewProduct(e) {
@@ -27,7 +28,8 @@ export default function NewProduct() {
             "price": parseFloat(price.replace(',', '.')),
             "measurement_unit": measurement_unit.toUpperCase(),
             "unit_price": parseFloat(unit_price.replace(',', '.')),
-            "available": true
+            "available": true,
+            "category": formatCategory(category),
         });
 
         dataS.append('data', data);
@@ -41,6 +43,10 @@ export default function NewProduct() {
             alert('Erro ao cadastrar produto!\nTente novamente.');
         }
 
+    }
+
+    function formatCategory(ctgry){
+        return ctgry;
     }
 
     return (
@@ -66,6 +72,11 @@ export default function NewProduct() {
                         onInput={function (e) {
                             e.target.setCustomValidity("");
                         }}
+                    />
+                    <input
+                        placeholder="Categoria. Ex: fruta,vegetal,carne..."
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}
                     />
                     <textarea
                         placeholder="Descrição do produto"

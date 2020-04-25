@@ -10,8 +10,11 @@ exports.up = function (knex) {
     table.string('observation');
     table.datetime('purchase-time')
       .notNullable()
-      .defaultTo('datetime(now)');
+      .defaultTo(knex.fn.now());
     table.boolean('delivered').notNullable().defaultTo(false);
+    table.date('delivery_date').notNullable();
+    table.string('delivery_period').notNullable();
+
 
 
     table.foreign('id_user').references('users.id');

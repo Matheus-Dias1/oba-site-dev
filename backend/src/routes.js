@@ -49,6 +49,7 @@ routes.get('/productsPurchases/:idP', ProductPurchaseController.index);
 routes.post('/session', SessionController.create);
 
 routes.get('/schedule', ScheduleController.index);
+routes.post('/schedule', ScheduleController.create);
 
 routes.get('/image/:file(*)', (req, res) => {
     let file = req.params.file;

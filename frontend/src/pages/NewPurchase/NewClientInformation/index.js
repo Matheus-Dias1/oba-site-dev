@@ -16,7 +16,6 @@ export default function NewClientInformation() {
         history.push('/');
     }
     const [selectedDate, setSelectedDate] = useState('default');
-    const [selectedTime, setSelectedTime] = useState('default');
     const [dateTime, setDateTime] = useState([]);
     const [clientName, setClientName] = useState('');
     const [clientPhone, setClientPhone] = useState('');
@@ -31,35 +30,27 @@ export default function NewClientInformation() {
 
     }, [userId]);
 
-    function findWithAttr(array, attr, value) {
-        for (var i = 0; i < array.length; i += 1) {
-            if (array[i][attr] === value) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
 
     async function handleClientInfo(e) {
         e.preventDefault();
 
-        if (selectedDate === 'default' || selectedTime === 'default'){
+        if (selectedDate === 'default') {
             alert('Escolha um horário válido.');
             return;
         }
+
         const data = {
             clientName,
             clientPhone,
-            selectedDate,
-            selectedTime,
+            "selectedDate": dateTime[selectedDate].date,
+            "selectedTime": dateTime[selectedDate].period,
             observation
         };
 
         console.log(data);
         localStorage.setItem('clientInfoData', JSON.stringify(data));
         history.push('/panel/purchases/new/payment');
-    
+
     }
 
     return (
@@ -99,43 +90,17 @@ export default function NewClientInformation() {
                                 e.target.setCustomValidity("");
                             }}
                         />
-                        <div className="formCell">
-                            <select id="selectedDate" defaultValue="default" onChange={e => setSelectedDate(e.target.value)}>
-                                <option value="default">Data</option>
-                                {
-                                    dateTime.map(date => {
-                                        return (
-                                            <option key={dateTime.indexOf(date)} value={date.date}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</option>
-                                        )
-                                    })
-                                }
-                            </select>
+                        <select id="selectedDate" defaultValue="default" onChange={e => setSelectedDate(e.target.value)}>
+                            <option value="default">Entrega</option>
+                            {
+                                dateTime.map(date => {
+                                    return (
+                                        <option key={dateTime.indexOf(date)} value={dateTime.indexOf(date)}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date)) + (date.period === 'morning' ? ' - Manhã' : ' - Tarde')}</option>
+                                    )
+                                })
+                            }
+                        </select>
 
-                            {selectedDate === 'default' && <select id="selectedTime" disabled className="disabled" defaultValue="default" >
-                                <option value="default">Horário</option>
-                            </select>}
-                            {selectedDate !== 'default' && <select id="unit" defaultValue="default" onChange={e => setSelectedTime(e.target.value)}>
-                                <option value="default">Horário</option>
-                                {
-                                    dateTime[findWithAttr(dateTime, "date", selectedDate)].times.map(time => {
-                                        
-                                        function formatTime(time){
-                                            const list = time.split(':');
-                                            return list[0] + ':' + list[1];
-                                        }
-                                       
-                                        return (
-                                            <option
-                                                key={dateTime[findWithAttr(dateTime, "date", selectedDate)].times.indexOf(time)}
-                                                value={time}>
-                                                {formatTime(time)}
-                                            </option>
-                                        )
-                                    })
-                                }
-                            </select>}
-
-                        </div>
                         <textarea
                             placeholder="Observações sobre a entrega"
                             value={observation}

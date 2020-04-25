@@ -1,4 +1,4 @@
-.newClientInfo-container{
+.schedule-container{
     width: 100%;
     max-width: 1120px;
     height: 100vh;
@@ -9,7 +9,7 @@
     justify-content: center;
 }
 
-.newClientInfo-container .content{
+.schedule-container .content{
     width: 100%;
     padding: 96px;
     background: #f0f0f5;
@@ -21,38 +21,38 @@
     align-items: center;
 }
 
-.newClientInfo-container .content section{
+.schedule-container .content section{
     width: 100%;
     max-width: 380px;
 }
 
-.newClientInfo-container .content section h1{
+.schedule-container .content section h1{
     margin: 32px 0 18px;
     font-size: 32px;
 }
 
-.newClientInfo-container .content section p{
+.schedule-container .content section p{
     font-size: 18px;
     color: #737380;
     line-height: 32px;
 }
 
-.newClientInfo-container .content section form{
+.schedule-container .content section form{
     width: 100%;
     max-width: 450px;
 }
 
-.newClientInfo-container .content form input, select, textarea, .valueText{
+.schedule-container .content form input{
     margin-top: 8px;
 }
     
-.newClientInfo-container .content select{
-    width: 100%;
+
+.schedule-container .errorText{
+    text-align: center;
+    font-weight: 500;
+    color: #fff;
+    font-size: 20px;
+    background-color: #E30016;
+    border-radius: 4px;
+    padding: 2px 2px;
 }
-
-
-.newClientInfo-container .valueText strong{
-    color: #41414d;
-    font-size: 15px;
-}
-

@@ -86,6 +86,7 @@
 
 .panel-container ul li img {
   position: absolute;
+  border-radius: 8px;
   width: 40%;
   right: 24px;
   bottom: 24px;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaChartLine, FaClipboardList } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck,FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
 import api from '../../services/api';
@@ -56,6 +56,7 @@ export default function PanelPurchases() {
                 <Link className='menu-link' to="/panel/purchases"><FaClipboardCheck size={16} color="FFFFFF" />Pedidos</Link>
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
+                <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
 
             </Menu>
             <div className="purchase-container">
@@ -92,7 +93,7 @@ export default function PanelPurchases() {
                                                 <p>{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
                                             </a>
                                             <strong>ENTREGA:</strong>
-                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + timeFormater(purchase.delivery_time)}</p>
+                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'Manhã' : 'Tarde')}</p>
                                             <strong>OBSERVAÇÕES:</strong>
                                             <p>{obsData.observation}</p>
                                         </div>
@@ -124,7 +125,7 @@ export default function PanelPurchases() {
                                                 <p>{purchase.street + ' ' + purchase.number + ', ' + purchase.neighborhood} </p>
                                             </a>
                                             <strong>ENTREGA:</strong>
-                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + timeFormater(purchase.delivery_time)}</p>
+                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'MANHÃ' : 'TARDE')}</p>
                                             <strong>OBSERVAÇÕES:</strong>
                                             <p>{purchase.observation}</p>
                                         </div>
@@ -142,11 +143,7 @@ export default function PanelPurchases() {
                             function dateFormater(date) {
                                 return Intl.DateTimeFormat('pt-BR').format(new Date(purchase.delivery_date));
                             }
-                            function timeFormater(time) {
-                                const list = time.split(':');
-                                return list[0] + ':' + list[1]
-                            }
-
+                            
 
                         })
                     }

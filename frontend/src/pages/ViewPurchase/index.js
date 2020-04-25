@@ -42,7 +42,7 @@ export default function ViewPurchase() {
                 complement,
                 neighborhood,
                 delivery_date,
-                delivery_time,
+                delivery_period,
                 client_phone,
                 value,
                 payment_method,
@@ -75,9 +75,8 @@ export default function ViewPurchase() {
             setId(fId);
             setValue(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value));
             setChange(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(change));
-            const list = delivery_time.split(':');
-            const fTime = list[0] + ':' + list[1];
-            setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + ' - ' + fTime);
+
+            setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + (delivery_period === 'morning' ? ' - Manhã' : ' - Tarde'));
 
         })
     }, []);

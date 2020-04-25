@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaChartLine } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import { FiTrash2, FiEdit, FiEyeOff, FiEye } from 'react-icons/fi';
 
 
@@ -73,12 +73,14 @@ export default function PanelProducts() {
 
     return (
         <div className="menu-container">
-            <Menu isOpen={false}>
+            <Menu isOpen={ true }>
                 <h1 className="menu-text">OBA Hortifruti</h1>
+                
                 <Link className='menu-link' to="/panel" ><FaHome size={16} color="FFFFFF" />Início</Link>
                 <Link className='menu-link' to="/panel/purchases"><FaClipboardCheck size={16} color="FFFFFF" />Pedidos</Link>
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
+                <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
             </Menu>
             <div className="panel-container">
                 <header>

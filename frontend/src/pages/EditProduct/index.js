@@ -16,6 +16,7 @@ export default function EditProduct() {
     const [price, setPrice] = useState('');
     const [measurement_unit, setMeasurement_unit] = useState('');
     const [unit_price, setUnit_price] = useState('');
+    const [category, setCategory] = useState('');
 
 
     useEffect(() => {
@@ -26,9 +27,11 @@ export default function EditProduct() {
                 measurement_unit,
                 price,
                 product_name,
-                unit_price
+                unit_price,
+                category,
             } = response.data;
 
+            setCategory(category);
             setId(id);
             setName(product_name);
             setDescription(description);
@@ -45,6 +48,10 @@ export default function EditProduct() {
         })
     }, []);
 
+    function formatCategory(ctgry){
+        return ctgry;
+    }
+
     async function handleEditProduct(e) {
         e.preventDefault();
 
@@ -54,12 +61,12 @@ export default function EditProduct() {
             "price": parseFloat(price.replace('.', '').replace(',', '.')),
             "measurement_unit": measurement_unit.toUpperCase(),
             "unit_price": parseFloat(unit_price.replace('.', '').replace(',', '.')),
+            "category": formatCategory(category),
         };
 
 
         try {
             await api.put('products/edit/' + id,data);
-            alert('Produto alterado com sucesso!');
             history.push('/panel/products');
         } catch (err) {
             alert('Erro ao alterar produto!\nTente novamente.');
@@ -90,6 +97,11 @@ export default function EditProduct() {
                         onInput={function (e) {
                             e.target.setCustomValidity("");
                         }}
+                    />
+                    <input
+                        placeholder="Categoria. Ex: fruta,vegetal,carne..."
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}
                     />
                     <textarea
                         placeholder="Descrição do produto"

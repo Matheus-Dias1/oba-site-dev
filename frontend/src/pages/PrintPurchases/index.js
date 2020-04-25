@@ -32,15 +32,14 @@ export default function PrintPurchases() {
                         if (needed > 0) fId = (Math.pow(10, needed) + "").slice(1) + fId;
                         return fId;
                     }
-                    function formatDateTime(date, time) {
-                        const list = time.split(':');
-                        const fTime = list[0] + ':' + list[1];
-                        return Intl.DateTimeFormat('pt-BR').format(new Date(date)) + ' - ' + fTime
+                    function formatDateTime(date, period) {
+
+                        return Intl.DateTimeFormat('pt-BR').format(new Date(date)) + (period === 'morning' ? ' - Manhã' : ' - Tarde')
 
                     }
 
                     try {
-                        const obsData = JSON.parse(purchase.data.observation)
+                        const obsData = JSON.parse(purchase.data.observation);
                         return (
                             <div className="content" key={purchases.indexOf(purchase)}>
                                 <h1>{'Pedido #' + formatId(purchase.data.id)}</h1>
@@ -61,7 +60,7 @@ export default function PrintPurchases() {
                                         <tbody>
                                             <tr>
                                                 <td><strong>ENTREGA:</strong></td>
-                                                <td><p>{formatDateTime(purchase.data.delivery_date, purchase.data.delivery_time)}</p></td>
+                                                <td><p>{formatDateTime(purchase.data.delivery_date, purchase.data.delivery_period)}</p></td>
                                             </tr>
                                         </tbody>
                                         <tbody>
@@ -132,6 +131,7 @@ export default function PrintPurchases() {
                             </div>
                         )
                     } catch (err) {
+                        console.log(purchase);
                         return (
                             <div className="content" key={purchases.indexOf(purchase)}>
                                 <h1>{'Pedido #' + formatId(purchase.data.id)}</h1>
@@ -152,7 +152,7 @@ export default function PrintPurchases() {
                                         <tbody>
                                             <tr>
                                                 <td><strong>ENTREGA:</strong></td>
-                                                <td><p>{formatDateTime(purchase.data.delivery_date, purchase.data.delivery_time)}</p></td>
+                                                <td><p>{formatDateTime(purchase.data.delivery_date, purchase.data.delivery_period)}</p></td>
                                             </tr>
                                         </tbody>
                                         <tbody>

@@ -23,7 +23,6 @@ export default function NewPaymentInfo() {
 
     async function handlePaymentInfo(e) {
         e.preventDefault();
-        console.log(change);
         const addData = JSON.parse(localStorage.getItem('addressData'));
         const cliData = JSON.parse(localStorage.getItem('clientInfoData'));
 
@@ -51,8 +50,8 @@ export default function NewPaymentInfo() {
             change: ((change === '') ? 0 : parseFloat((parseFloat(change.replace(',','.'))-totalValue).toFixed(2))),
             id_address: 0,
             observation: JSON.stringify(observation),
-            date: date,
-            time: time
+            delivery_date: date,
+            delivery_period: time
         };
 
 

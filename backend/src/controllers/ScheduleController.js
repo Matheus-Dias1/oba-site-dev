@@ -1,33 +1,56 @@
 const connection = require('../database/connection');
 
+
 module.exports = {
     async index(request, response) {
-        const dates = await connection('schedule')
-            .select('date')
-            .where('id_purchase', null)
-            .distinct();
+        try {
+            const dates = await connection('schedule')
+                .select('*')
+                .whereRaw("morning_deliveries > 0 or afternoon_deliveries > 0");
 
-        const schedule = await connection('schedule')
-            .select('*')
-            .where('id_purchase', null)
-
-
-
-        var res = [];
-        var times = [];
-        for (i in dates) {
-            times = [];
-            for (j in schedule){
-                if(dates[i].date === schedule[j].date)
-                    times.push(schedule[j].time);
+            var res = [];
+            for (i in dates) {
+                if (Date.parse(dates[i].date) >= new Date().setHours(0, 0, 0, 0)) {
+                    if (dates[i].morning_deliveries > 0) {
+                        res.push({
+                            date: dates[i].date,
+                            period: 'morning'
+                        })
+                    }
+                    if (dates[i].afternoon_deliveries > 0) {
+                        res.push({
+                            date: dates[i].date,
+                            period: 'afternoon'
+                        })
+                    }
+                }
             }
-            res.push({
-                date: dates[i].date,
-                times: times
-            })
+            return response.json(res);
+        } catch (err) {
+            console.log(err)
+            return response.status(422).send();
         }
+    },
+    async create(request, response) {
+        const {
+            date,
+            afternoon_deliveries,
+            morning_deliveries,
+        } = request.body;
 
 
-        return response.json(res);
+        try {
+            await connection('schedule')
+                .insert({
+                    date,
+                    afternoon_deliveries,
+                    morning_deliveries,
+                })
+            return response.status(201).send();
+        } catch (err) {
+            return response.status(422).send();
+        }
     }
+
+
 };
