@@ -20,6 +20,27 @@ module.exports = {
 
     },
 
+    async indexProducts(request, response) {
+        const { page = 1 } = request.query;
+        const id_user = request.headers.authorization;
+        try {
+            const [count] = await connection('products')
+            .where('available', true)
+            .count();
+            const addresses = await connection('products')
+                .limit(5)
+                .offset((page - 1) * 5)
+                .select('*')
+                .where('available', true);
+
+            response.header('X-Total-Count', count['count(*)']);
+            return response.json(addresses);
+        } catch (err) {
+            return response.status(422).send();
+        }
+
+    },
+
     async indexPurchases(request, response) {
         const { page = 1 } = request.query;
         const id_user = request.headers.authorization;

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaClipboardCheck, FaBoxOpen, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import api from '../../services/api';
 
-
 import { slide as Menu } from 'react-burger-menu';
 
 import './styles.css';
@@ -60,13 +59,14 @@ export default function AddToSchedule() {
                     <div>
                         {errorText !== '' && <p className="errorText">{errorText}</p>}
                         <form onSubmit={handleSchedule}>
+
                             <input
                                 placeholder="DD/MM/AAAA"
                                 value={date}
                                 onChange={e => setDate(e.target.value)}
                                 required
                                 onInvalid={function (e) {
-                                    e.target.setCustomValidity("Digite o ano");
+                                    e.target.setCustomValidity("Digite a data");
                                 }}
                                 onInput={function (e) {
                                     e.target.setCustomValidity("");

@@ -11,6 +11,7 @@ const ProductPurchaseController = require('./controllers/ProductPurchaseControll
 const ProfileController = require('./controllers/ProfileController');
 const SessionController = require('./controllers/SessionController');
 const ScheduleController = require('./controllers/ScheduleController');
+const AuthTokenController = require('./controllers/AuthTokenController');
 
 
 
@@ -19,17 +20,17 @@ const routes = express.Router();
 routes.get('/users', UserController.index);
 routes.post('/users', UserController.create);
 
-routes.get('/addresses', AddressController.index);
+routes.get('/addresses', AuthTokenController.authenticateToken, AddressController.index);
 routes.post('/addresses', AddressController.create);
 routes.delete('/addresses/:id', AddressController.delete);
 
 routes.get('/products', ProductController.index);
-routes.post('/products', multer(multerConfig).single('file'),ProductController.create);
+routes.post('/products', multer(multerConfig).single('file'), ProductController.create);
 routes.delete('/products/:id', ProductController.delete);
 routes.put('/products', ProductController.updateAvailability);
 
-routes.get('/products/edit/:id' , ProductUpdateController.getData);
-routes.put('/products/edit/:id' , ProductUpdateController.update);
+routes.get('/products/details/:id', ProductUpdateController.getData);
+routes.put('/products/edit/:id', ProductUpdateController.update);
 
 routes.get('/purchases', PurchaseController.index);
 routes.post('/purchases', PurchaseController.create);
@@ -43,6 +44,7 @@ routes.delete('/shopping_carts', ShoppingCartController.delete);
 routes.get('/profile/addresses', ProfileController.indexAddresses);
 routes.get('/profile/purchases', ProfileController.indexPurchases);
 routes.get('/profile/shopping_cart', ProfileController.indexShoppingCarts);
+routes.get('/profile/products', ProfileController.indexProducts);
 
 routes.get('/productsPurchases/:idP', ProductPurchaseController.index);
 
@@ -52,9 +54,13 @@ routes.get('/schedule', ScheduleController.index);
 routes.post('/schedule', ScheduleController.create);
 
 routes.get('/image/:file(*)', (req, res) => {
-    let file = req.params.file;
-    let fileLocation = __dirname + '/assets/' + file;
-    res.sendFile(`${fileLocation}`)
+    try {
+        let file = req.params.file;
+        let fileLocation = __dirname + '/assets/' + file;
+        res.sendFile(`${fileLocation}`)
+    } catch(err){
+        res.status(422).send();
+    }
 })
 
 module.exports = routes;

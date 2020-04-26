@@ -1,5 +1,8 @@
 const connection = require('../database/connection');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 
 module.exports = {
     async create(request, response) {
@@ -18,11 +21,15 @@ module.exports = {
 
             bcrypt.compare(password, user.password, function (err, doesMatch) {
                 if (doesMatch) {
-                    return response.json({
+
+                    data = {
                         name: user.name,
                         id: user.id,
                         admin: user.admin,
-                    });
+                    };
+                    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'365d'})
+
+                    return response.json({accessToken:accessToken});
                 } else {
                     return response.status(400).json({
                         error: 'password is incorrect'

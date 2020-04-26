@@ -20,7 +20,7 @@ export default function EditProduct() {
 
 
     useEffect(() => {
-        api.get('products/edit/' + window.location.pathname.split("/").pop()).then(response => {
+        api.get('products/details/' + window.location.pathname.split("/").pop()).then(response => {
             const {
                 id,
                 description,
