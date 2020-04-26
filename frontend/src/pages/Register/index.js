@@ -34,7 +34,7 @@ export default function Register() {
             };
             try {
                 const response = await api.post('users', data);
-                if (response.data.status === 'success') {
+                if (response.data.status === 'success') { 
                     alert("Usuário cadastrado com sucesso.");
                     history.push('/');
                 }

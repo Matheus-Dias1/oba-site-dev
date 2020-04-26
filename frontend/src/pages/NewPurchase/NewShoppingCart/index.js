@@ -10,9 +10,9 @@ import api from '../../../services/api';
 export default function NewShoppingCart() {
 
     const history = useHistory();
-    try {
-        var [userId] = localStorage.getItem('userId');
-    } catch (err) {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
         history.push('/');
     }
     const [amount, setAmount] = useState('');
@@ -27,17 +27,35 @@ export default function NewShoppingCart() {
 
     useEffect(() => {
 
-        api.delete('shopping_carts', {
-            headers: {
-                authorization: 0
-            }
-        });
+        try {
+            api.delete('shopping_carts', {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            });
 
-        api.get('products').then(response => {
-            setProducts(response.data);
-        });
+            api.get('products', {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).then(response => {
+                setProducts(response.data);
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            });
+        } catch (err) {
+            alert('Erro ao esvaziar o carrinho ou recuperar produtos')
+        }
 
-    }, [userId]);
+    }, [accessToken, history]);
 
     function findWithAttr(array, attr, value) {
         for (var i = 0; i < array.length; i += 1) {
@@ -51,7 +69,7 @@ export default function NewShoppingCart() {
 
     async function handleAddToCart(e) {
         e.preventDefault();
-        if (selectedUnit === 'UN' && amount.includes(',')){
+        if (selectedUnit === 'UN' && amount.includes(',')) {
             alert('Não é possível comprar frações de produtos unitários.');
             return;
         }
@@ -66,7 +84,7 @@ export default function NewShoppingCart() {
         try {
             const res = await api.post('/shopping_carts', data, {
                 headers: {
-                    authorization: 0
+                    authorization: 'Bearer ' + accessToken
                 }
             });
             setProductValue(res.data.value);

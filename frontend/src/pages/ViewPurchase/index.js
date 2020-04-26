@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 
 
@@ -10,6 +10,12 @@ import '../../global.css';
 
 
 export default function ViewPurchase() {
+    const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
     const [items, setItems] = useState([]);
     const [client, setClient] = useState('');
     const [street, setStreet] = useState('');
@@ -24,10 +30,13 @@ export default function ViewPurchase() {
     const [dateTime, setDateTime] = useState('');
     const [idP, setId] = useState('');
 
-
     useEffect(() => {
 
-        api.get(`productsPurchases/${window.location.pathname.split("/").pop()}`).then(response => {
+        api.get(`productsPurchases/${window.location.pathname.split("/").pop()}`, {
+            headers: {
+                authorization: 'Bearer ' + accessToken,
+            }
+        }).then(response => {
             const {
                 items,
                 data,
@@ -78,8 +87,13 @@ export default function ViewPurchase() {
 
             setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + (delivery_period === 'morning' ? ' - Manhã' : ' - Tarde'));
 
+        }).catch(err => {
+            if (err.response.status === 401 || err.response.status === 403) {
+                alert('Você não tem permissão para acessar essa página');
+                history.push('/');
+            } else throw err;
         })
-    }, []);
+    }, [history, accessToken]);
 
 
     return (

@@ -27,7 +27,7 @@ module.exports = {
                         id: user.id,
                         admin: user.admin,
                     };
-                    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'365d'})
+                    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'365d'})
 
                     return response.json({name: user.name, accessToken:accessToken, admin:user.admin});
                 } else {

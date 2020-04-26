@@ -36,7 +36,7 @@ export default function PanelPurchases() {
                 if (err.response.status === 401 || err.response.status === 403) {
                     alert('Você não tem permissão para acessar essa página');
                     history.push('/');
-                }
+                } else throw err;
             });
         } catch (err) {
             alert('Erro ao carregar pedidos.')
@@ -56,7 +56,7 @@ export default function PanelPurchases() {
                     if (err.response.status === 401 || err.response.status === 403) {
                         alert('Você não tem permissão para acessar essa página');
                         history.push('/');
-                    }
+                    } else throw err;
                 });
                 setPurchases(purchases.filter(purchase => purchase.id !== id));
             } catch (err) {

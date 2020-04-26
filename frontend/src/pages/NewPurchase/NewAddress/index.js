@@ -14,6 +14,11 @@ export default function NewAddress() {
     const [neighborhood, setNeighborhood] = useState('');
     const [zip_code, setZip_code] = useState('');
     const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
 
     async function handleNewAddress(e) {
         e.preventDefault();

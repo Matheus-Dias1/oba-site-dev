@@ -10,6 +10,11 @@ import './styles.css';
 export default function EditProduct() {
 
     const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -20,7 +25,11 @@ export default function EditProduct() {
 
 
     useEffect(() => {
-        api.get('products/details/' + window.location.pathname.split("/").pop()).then(response => {
+        api.get('products/details/' + window.location.pathname.split("/").pop(), {
+            headers: {
+                authorization: 'Bearer ' + accessToken
+            }
+        }).then(response => {
             const {
                 id,
                 description,
@@ -45,10 +54,15 @@ export default function EditProduct() {
                 .replace('.', ',')
             );
 
+        }).catch(err => {
+            if (err.response.status === 401 || err.response.status === 403) {
+                alert('Você não tem permissão para acessar essa página');
+                history.push('/');
+            } else throw err;
         })
-    }, []);
+    }, [accessToken,history]);
 
-    function formatCategory(ctgry){
+    function formatCategory(ctgry) {
         return ctgry;
     }
 
@@ -66,7 +80,16 @@ export default function EditProduct() {
 
 
         try {
-            await api.put('products/edit/' + id,data);
+            await api.put('products/edit/' + id, data, {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            });
             history.push('/panel/products');
         } catch (err) {
             alert('Erro ao alterar produto!\nTente novamente.');

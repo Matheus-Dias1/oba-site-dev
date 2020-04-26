@@ -15,6 +15,11 @@ export default function NewPaymentInfo() {
     const [change, setChange] = useState('');
     const [payment_method, setPayment_method] = useState('default');
     const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
 
     function valueDelivery() {
         //const val = localStorage.getItem('addressData');
@@ -40,14 +45,14 @@ export default function NewPaymentInfo() {
         const date = cliData.selectedDate;
         const time = cliData.selectedTime;
 
-        if (change !== '' && totalValue > parseFloat(change.replace(',','.'))){
+        if (change !== '' && totalValue > parseFloat(change.replace(',', '.'))) {
             alert('"Troco para" deve conter um valor maior que o valor total do pedido.')
             return;
         }
         const data = {
             value: totalValue,
             payment_method: payment_method,
-            change: ((change === '') ? 0 : parseFloat((parseFloat(change.replace(',','.'))-totalValue).toFixed(2))),
+            change: ((change === '') ? 0 : parseFloat((parseFloat(change.replace(',', '.')) - totalValue).toFixed(2))),
             id_address: 0,
             observation: JSON.stringify(observation),
             delivery_date: date,
@@ -55,15 +60,24 @@ export default function NewPaymentInfo() {
         };
 
 
-        await api.post('/purchases', data, {
-            headers:{
-                authorization: 0
-            }
-        })
-        localStorage.removeItem('addressData');
-        localStorage.removeItem('clientInfoData');
-        localStorage.removeItem('cartValue');
-        history.push('/panel/purchases');
+        try {
+            await api.post('/purchases', data, {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            })
+            localStorage.removeItem('addressData');
+            localStorage.removeItem('clientInfoData');
+            localStorage.removeItem('cartValue');
+            history.push('/panel/purchases');
+        } catch(err){
+            alert('Erro ao concluir a compra.');
+        }
 
     }
 

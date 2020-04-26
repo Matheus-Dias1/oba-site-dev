@@ -15,29 +15,42 @@ import '../../global.css';
 export default function PanelProducts() {
 
     const history = useHistory();
-    try{
-        var [nameJ] = localStorage.getItem('userName').split(" ");
-     }catch (err){
-         history.push('/');
-     }
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
+    var [name] = localStorage.getItem('userName').split(" ");
 
-    const name = nameJ;
+
     const [products, setProducts] = useState([]);
     const [reload, setReload] = useState(false);
     const url = 'http://localhost:3333/image/';
 
- 
+
     useEffect(() => {
 
-        api.get('products').then(response => {
-            setProducts(response.data);
-    
-        });
+        try {
+            api.get('products', {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).then(response => {
+                setProducts(response.data);
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            });
+        } catch (err) {
+            alert('Erro ao recuperar produtos.');
+        }
 
-    }, [reload]);
+    }, [reload, history, accessToken]);
 
     async function handleDeleteProduct(id) {
-        
+
         alert('Funcionalidade desativada');
         // try {
         //     await api.delete(`products/${id}`, {
@@ -54,7 +67,17 @@ export default function PanelProducts() {
     async function handleAvailability(id) {
         const data = { id: id };
         try {
-            await api.put('products', data);
+            await api.put('products', data, {
+                headers: {
+                    authorization: accessToken
+                }
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            }
+            );
             setReload(!reload);
 
         } catch (err) {
@@ -73,9 +96,9 @@ export default function PanelProducts() {
 
     return (
         <div className="menu-container">
-            <Menu isOpen={ true }>
+            <Menu isOpen={true}>
                 <h1 className="menu-text">OBA Hortifruti</h1>
-                
+
                 <Link className='menu-link' to="/panel" ><FaHome size={16} color="FFFFFF" />Início</Link>
                 <Link className='menu-link' to="/panel/purchases"><FaClipboardCheck size={16} color="FFFFFF" />Pedidos</Link>
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>

@@ -16,7 +16,7 @@ export default function Panel() {
     if (accessToken === null){
         localStorage.clear();
         history.push('/');
-    }
+    } 
     return (
         <div>
             <Menu isOpen={ true }>

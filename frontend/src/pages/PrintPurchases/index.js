@@ -9,18 +9,32 @@ import './styles.css';
 
 
 export default function PrintPurchases() {
-    const [purchases, setPurchases] = useState([]);
     const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
+    const [purchases, setPurchases] = useState([]);
 
 
 
     useEffect(() => {
-        api.get('productsPurchases/-1').then(response => {
+        api.get('productsPurchases/-1', {
+            headers: {
+                authorization: 'Bearer ' + accessToken,
+            }
+        }).then(response => {
             setPurchases(response.data);
             window.print();
             history.push('/panel/purchases');
+        }).catch(err => {
+            if (err.response.status === 401 || err.response.status === 403) {
+                alert('Você não tem permissão para acessar essa página');
+                history.push('/');
+            } else throw err;
         })
-    }, [history]);
+    }, [history, accessToken]);
 
 
     return (
@@ -131,7 +145,6 @@ export default function PrintPurchases() {
                             </div>
                         )
                     } catch (err) {
-                        console.log(purchase);
                         return (
                             <div className="content" key={purchases.indexOf(purchase)}>
                                 <h1>{'Pedido #' + formatId(purchase.data.id)}</h1>

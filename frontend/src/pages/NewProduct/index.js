@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FaArrowCircleLeft, FaFileUpload } from 'react-icons/fa';
 import api from '../../services/api';
 
@@ -10,6 +10,11 @@ import './styles.css';
 export default function NewProduct() {
 
     const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -21,7 +26,7 @@ export default function NewProduct() {
     async function handleNewProduct(e) {
         e.preventDefault();
         const dataS = new FormData();
-        
+
         const data = JSON.stringify({
             "product_name": name,
             "description": description,
@@ -36,7 +41,16 @@ export default function NewProduct() {
         dataS.append('file', file);
 
         try {
-            await api.post('products', dataS);
+            await api.post('products', dataS, {
+                headers: {
+                    authorization: 'Bearer ' + accessToken,
+                }
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            });
             alert('Produto cadastrado com sucesso!');
             history.push('/panel/products');
         } catch (err) {
@@ -45,7 +59,7 @@ export default function NewProduct() {
 
     }
 
-    function formatCategory(ctgry){
+    function formatCategory(ctgry) {
         return ctgry;
     }
 

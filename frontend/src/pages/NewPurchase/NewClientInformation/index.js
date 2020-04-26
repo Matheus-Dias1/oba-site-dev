@@ -10,9 +10,9 @@ import api from '../../../services/api';
 export default function NewClientInformation() {
 
     const history = useHistory();
-    try {
-        var [userId] = localStorage.getItem('userId');
-    } catch (err) {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
         history.push('/');
     }
     const [selectedDate, setSelectedDate] = useState('default');
@@ -24,11 +24,20 @@ export default function NewClientInformation() {
 
 
     useEffect(() => {
-        api.get('schedule').then(response => {
+        api.get('schedule', {
+            headers: {
+                authorization: 'Bearer ' + accessToken
+            }
+        }).then(response => {
             setDateTime(response.data);
+        }).catch(err => {
+            if (err.response.status === 401 || err.response.status === 403) {
+                alert('Você não tem permissão para acessar essa página');
+                history.push('/');
+            }  else throw err;
         });
 
-    }, [userId]);
+    }, [accessToken, history]);
 
 
     async function handleClientInfo(e) {

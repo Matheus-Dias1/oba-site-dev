@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FaHome, FaClipboardCheck, FaBoxOpen, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import api from '../../services/api';
 
@@ -14,6 +14,12 @@ export default function AddToSchedule() {
     const [date, setDate] = useState('');
     const [morning_deliveries, setMorning_deliveries] = useState('');
     const [afternoon_deliveries, setAfternoon_deliveries] = useState('');
+    const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
 
     async function handleSchedule(e) {
         e.preventDefault();
@@ -29,7 +35,16 @@ export default function AddToSchedule() {
             "afternoon_deliveries": parseInt(afternoon_deliveries),
         };
         try {
-            await api.post('/schedule', data);
+            await api.post('/schedule', data, {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }.catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            }));
             setMorning_deliveries('');
             setAfternoon_deliveries('');
             setDate('');
