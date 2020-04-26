@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck,FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
 import api from '../../services/api';
@@ -11,30 +11,56 @@ import '../../global.css';
 
 export default function PanelPurchases() {
     const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null) {
+        localStorage.clear();
+        history.push('/');
+    }
     try {
-        var [nameJ] = localStorage.getItem('userName').split(" ");
+        var [name] = localStorage.getItem('userName').split(" ");
     } catch (err) {
         history.push('/');
     }
-    const name = nameJ;
     const [purchases, setPurchases] = useState([]);
 
 
     useEffect(() => {
-        api.get('purchases').then(response => {
-            setPurchases(response.data);
-        });
+        try {
+            api.get('purchases', {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).then(response => {
+                setPurchases(response.data);
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                }
+            });
+        } catch (err) {
+            alert('Erro ao carregar pedidos.')
+        }
 
-    }, [name]);
+    }, [name, history, accessToken]);
 
     function handleDelivered(id) {
         if (window.confirm('Deseja marcar pedido como entregue?\nPedidos marcados como entregues não poderão ser acessados pelo painel.')) {
             const data = { id: id };
             try {
-                api.put('purchases/delivery', data);
+                api.put('purchases/delivery', data, {
+                    headers: {
+                        authorization: 'Bearer ' + accessToken
+                    }
+                }).catch(err => {
+                    if (err.response.status === 401 || err.response.status === 403) {
+                        alert('Você não tem permissão para acessar essa página');
+                        history.push('/');
+                    }
+                });
                 setPurchases(purchases.filter(purchase => purchase.id !== id));
             } catch (err) {
-                alert('Erro ao marcar compra como entrege.');
+                alert('Erro ao marcar compra como entregue.');
             }
         }
     }
@@ -143,7 +169,7 @@ export default function PanelPurchases() {
                             function dateFormater(date) {
                                 return Intl.DateTimeFormat('pt-BR').format(new Date(purchase.delivery_date));
                             }
-                            
+
 
                         })
                     }

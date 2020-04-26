@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FaHome, FaClipboardCheck, FaBoxOpen, FaChartLine, FaCalendarAlt} from 'react-icons/fa';
 import logoImg from '../../assets/OBA_logo.svg'
 
@@ -10,7 +10,13 @@ import './styles.css';
 import '../../global.css';
 
 
-export default function Panel() {
+export default function Panel() { 
+    const history = useHistory();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null){
+        localStorage.clear();
+        history.push('/');
+    }
     return (
         <div>
             <Menu isOpen={ true }>

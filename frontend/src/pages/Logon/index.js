@@ -17,7 +17,7 @@ export default function Logon() {
         e.preventDefault();
         try {
             const response = await api.post('session', { email, password });
-            localStorage.setItem('userId', response.data.id);
+            localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('userName', response.data.name);
             if (response.data.admin){
                 history.push('panel');

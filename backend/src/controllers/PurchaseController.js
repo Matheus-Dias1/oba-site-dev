@@ -7,7 +7,7 @@ module.exports = {
     async create(request, response) {
         try {
             await connection.transaction(async connection => {
-                const id_user = request.headers.authorization;
+                const id_user = request.data.id;
                 const {
                     value,
                     payment_method,
@@ -104,6 +104,8 @@ module.exports = {
     },
 
     async updateDelivery(request, response) {
+        const admin = request.data.admin;
+        if (admin!==1) return response.status(401).send();
         const { id } = request.body;
         try {
             await connection('purchases')
@@ -118,7 +120,8 @@ module.exports = {
     },
 
     async index(request, response) {
-
+        const admin = request.data.admin;
+        if (admin!==1) return response.status(401).send();
         try {
             const purchases = await connection({
                 p: 'purchases',

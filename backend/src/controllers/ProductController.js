@@ -17,7 +17,8 @@ module.exports = {
 
             return str;
         }
-
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
         const {
             product_name,
             available,
@@ -51,6 +52,8 @@ module.exports = {
     },
 
     async index(request, response) {
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
         try {
             const products = await connection('products')
                 .select('*')
@@ -62,7 +65,8 @@ module.exports = {
     },
 
     async updateAvailability(request, response) {
-
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
         const { id } = request.body;
         try {
             let { available } = await connection('products')
@@ -82,22 +86,4 @@ module.exports = {
 
     },
 
-    async delete(request, response) {
-        const { id } = request.params;
-        const id_user = request.headers.authorization;
-        try {
-            const adm = await connection('users')
-                .select('admin')
-                .where('id', id_user)
-                .first();
-            if (!adm) {
-                return response.status(401).json({ error: 'Operation not permitted' });
-            }
-
-            await connection('products').where('id', id).delete();
-            return response.status(201).send();
-        } catch (err) {
-            response.status(422).send();
-        }
-    }
 };

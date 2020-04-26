@@ -39,7 +39,7 @@ export default function Register() {
                     history.push('/');
                 }
                 else if (response.data.status === 'fail') {
-                    setErrorText(response.data.error);
+                    setErrorText(response.data.error); 
                 }
             } catch (e) {
                 console.log(e);

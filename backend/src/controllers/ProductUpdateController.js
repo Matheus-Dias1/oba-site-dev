@@ -2,7 +2,8 @@ const connection = require('../database/connection');
 
 module.exports = {
     async update(request, response) {
-
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
         function string_to_slug(str) {
             str = str.replace(/^\s+|\s+$/g, '');
             str = str.toLowerCase();

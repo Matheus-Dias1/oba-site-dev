@@ -29,7 +29,7 @@ module.exports = {
                     };
                     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'365d'})
 
-                    return response.json({accessToken:accessToken});
+                    return response.json({name: user.name, accessToken:accessToken, admin:user.admin});
                 } else {
                     return response.status(400).json({
                         error: 'password is incorrect'

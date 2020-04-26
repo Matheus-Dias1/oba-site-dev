@@ -2,8 +2,13 @@ const connection = require('../database/connection');
 
 module.exports = {
     async create(request, response) {
-        const { id_product, amount, unit, observation } = request.body;
-        const id_user = request.headers.authorization;
+        const {
+            id_product,
+            amount,
+            unit,
+            observation
+        } = request.body;
+        const id_user = request.data.id;
 
         try {
             await connection('shopping_carts').insert({
@@ -31,8 +36,16 @@ module.exports = {
     },
 
     async index(request, response) {
-        const id_user = request.headers.authorization;
+        const id_user = request.data.id;
         try {
+            const [count] = await connection({
+                sc: 'shopping_carts',
+                p: 'products'
+            })
+            .where('sc.id_user', id_user)
+            .whereRaw('sc.id_product = p.id')
+            .count();
+
             const shopping_carts = await connection({
                 sc: 'shopping_carts',
                 p: 'products'
@@ -43,18 +56,21 @@ module.exports = {
                 unit: 'sc.unit',
                 amount: 'sc.amount',
                 observation: 'sc.observation'
-            }).where('sc.id_user', id_user)
+            })
+                .where('sc.id_user', id_user)
                 .whereRaw('sc.id_product = p.id')
+                .limit(5)
+                .offset((page - 1) * 5)
 
-
+            response.header('X-Total-Count', count['count(*)']);
             return response.json(shopping_carts);
         } catch (err) {
             return response.status(422).send();
         }
     },
-
-    async delete(request, response) {
-        const id_user = request.headers.authorization;
+    
+    async delete(request, response) { 
+        const id_user = request.data.id;
         try {
             await connection('shopping_carts')
                 .where('id_user', id_user)

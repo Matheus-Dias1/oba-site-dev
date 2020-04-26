@@ -32,6 +32,8 @@ module.exports = {
         }
     },
     async create(request, response) {
+        const admin = request.data.admin;
+        if (admin!==1) return response.status(401).send();
         const {
             date,
             afternoon_deliveries,

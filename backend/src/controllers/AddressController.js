@@ -14,7 +14,7 @@ module.exports = {
         } = request.body;
 
 
-        const id_user = request.headers.authorization;
+        const id_user = request.data.id;
         try {
             await connection('addresses').insert({
                 zip_code,
@@ -36,6 +36,9 @@ module.exports = {
     },
 
     async index(request, response) {
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
+
         const [count] = await connection('addresses').count();
 
         const { page = 1 } = request.query;
@@ -55,26 +58,4 @@ module.exports = {
 
     },
 
-    async delete(request, response) {
-        const { id } = request.params;
-        const id_user = request.headers.authorization;
-
-        try {
-            const address = await connection('addresses')
-                .select('*')
-                .where('id', id)
-                .first();
-
-            if (address.id_user != id_user) {
-                return response.status(401).json({ error: 'Operation not permitted' });
-            }
-
-            await connection('addresses').where('id', id).delete();
-
-            return response.status(201).send();
-        } catch (err) {
-            response.status(422).send();
-        }
-
-    },
 };

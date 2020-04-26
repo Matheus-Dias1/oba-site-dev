@@ -17,41 +17,37 @@ const AuthTokenController = require('./controllers/AuthTokenController');
 
 const routes = express.Router();
 
-routes.get('/users', UserController.index);
+routes.get('/users', AuthTokenController.authenticateToken, UserController.index);
 routes.post('/users', UserController.create);
 
 routes.get('/addresses', AuthTokenController.authenticateToken, AddressController.index);
-routes.post('/addresses', AddressController.create);
-routes.delete('/addresses/:id', AddressController.delete);
+routes.post('/addresses', AuthTokenController.authenticateToken, AddressController.create);
 
-routes.get('/products', ProductController.index);
-routes.post('/products', multer(multerConfig).single('file'), ProductController.create);
-routes.delete('/products/:id', ProductController.delete);
-routes.put('/products', ProductController.updateAvailability);
+routes.get('/products', AuthTokenController.authenticateToken, ProductController.index);
+routes.post('/products', [AuthTokenController.authenticateToken,multer(multerConfig).single('file')], ProductController.create);
+routes.put('/products', AuthTokenController.authenticateToken, ProductController.updateAvailability);
 
-routes.get('/products/details/:id', ProductUpdateController.getData);
-routes.put('/products/edit/:id', ProductUpdateController.update);
+routes.get('/products/details/:id', AuthTokenController.authenticateToken, ProductUpdateController.getData);
+routes.put('/products/edit/:id', AuthTokenController.authenticateToken, ProductUpdateController.update);
 
-routes.get('/purchases', PurchaseController.index);
-routes.post('/purchases', PurchaseController.create);
-routes.put('/purchases/delivery', PurchaseController.updateDelivery);
+routes.get('/purchases', AuthTokenController.authenticateToken, PurchaseController.index);
+routes.post('/purchases', AuthTokenController.authenticateToken, PurchaseController.create);
+routes.put('/purchases/delivery', AuthTokenController.authenticateToken, PurchaseController.updateDelivery);
 
-routes.get('/shopping_carts', ShoppingCartController.index);
-routes.post('/shopping_carts', ShoppingCartController.create);
-routes.delete('/shopping_carts', ShoppingCartController.delete);
+routes.post('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.create);
+routes.delete('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.delete);
 
 
-routes.get('/profile/addresses', ProfileController.indexAddresses);
-routes.get('/profile/purchases', ProfileController.indexPurchases);
-routes.get('/profile/shopping_cart', ProfileController.indexShoppingCarts);
-routes.get('/profile/products', ProfileController.indexProducts);
+routes.get('/profile/addresses', AuthTokenController.authenticateToken, ProfileController.indexAddresses);
+routes.get('/profile/purchases', AuthTokenController.authenticateToken, ProfileController.indexPurchases);
+routes.get('/profile/products', AuthTokenController.authenticateToken, ProfileController.indexProducts);
 
-routes.get('/productsPurchases/:idP', ProductPurchaseController.index);
+routes.get('/productsPurchases/:idP', AuthTokenController.authenticateToken, ProductPurchaseController.index);
 
 routes.post('/session', SessionController.create);
 
-routes.get('/schedule', ScheduleController.index);
-routes.post('/schedule', ScheduleController.create);
+routes.get('/schedule', AuthTokenController.authenticateToken, ScheduleController.index);
+routes.post('/schedule', AuthTokenController.authenticateToken, ScheduleController.create);
 
 routes.get('/image/:file(*)', (req, res) => {
     try {

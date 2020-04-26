@@ -137,6 +137,7 @@ export default function Products() {
                     <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/' + product.measurement_unit + ': '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</Text>
                     {product.unit_value !== null && <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/UN: '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.unit_price)}</Text>}
                   </View>
+                  
 
                   <Image
                     style={styles.productImage}

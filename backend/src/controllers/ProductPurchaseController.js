@@ -2,7 +2,8 @@ const connection = require('../database/connection');
 
 module.exports = {
     async index(request, response) {
-
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
         const { idP } = request.params;
         if (idP !== '-1') {
             try {
