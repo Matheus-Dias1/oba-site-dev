@@ -139,7 +139,6 @@ export default function Products() {
                   </View>
 
                   <Image
-                    onLoadStart={() => console.log('começou')}
                     style={styles.productImage}
                     source={{
                       uri: imageUrl + product.picture_path
