@@ -24,18 +24,22 @@ export default function NewClientInformation() {
 
 
     useEffect(() => {
-        api.get('schedule', {
-            headers: {
-                authorization: 'Bearer ' + accessToken
-            }
-        }).then(response => {
-            setDateTime(response.data);
-        }).catch(err => {
-            if (err.response.status === 401 || err.response.status === 403) {
-                alert('Você não tem permissão para acessar essa página');
-                history.push('/');
-            }  else throw err;
-        });
+        try {
+            api.get('schedule', {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).then(response => {
+                setDateTime(response.data);
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            });
+        } catch (err) {
+            alert('Erro ao recuperar horários de entrega');
+        }
 
     }, [accessToken, history]);
 

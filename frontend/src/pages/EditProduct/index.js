@@ -25,42 +25,46 @@ export default function EditProduct() {
 
 
     useEffect(() => {
-        api.get('products/details/' + window.location.pathname.split("/").pop(), {
-            headers: {
-                authorization: 'Bearer ' + accessToken
-            }
-        }).then(response => {
-            const {
-                id,
-                description,
-                measurement_unit,
-                price,
-                product_name,
-                unit_price,
-                category,
-            } = response.data;
+        try {
+            api.get('products/details/' + window.location.pathname.split("/").pop(), {
+                headers: {
+                    authorization: 'Bearer ' + accessToken
+                }
+            }).then(response => {
+                const {
+                    id,
+                    description,
+                    measurement_unit,
+                    price,
+                    product_name,
+                    unit_price,
+                    category,
+                } = response.data;
 
-            setCategory(category);
-            setId(id);
-            setName(product_name);
-            setDescription(description);
-            setPrice(price
-                .toString()
-                .replace('.', ',')
-            );
-            setMeasurement_unit(measurement_unit);
-            setUnit_price(unit_price
-                .toString()
-                .replace('.', ',')
-            );
+                setCategory(category);
+                setId(id);
+                setName(product_name);
+                setDescription(description);
+                setPrice(price
+                    .toString()
+                    .replace('.', ',')
+                );
+                setMeasurement_unit(measurement_unit);
+                setUnit_price(unit_price
+                    .toString()
+                    .replace('.', ',')
+                );
 
-        }).catch(err => {
-            if (err.response.status === 401 || err.response.status === 403) {
-                alert('Você não tem permissão para acessar essa página');
-                history.push('/');
-            } else throw err;
-        })
-    }, [accessToken,history]);
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            })
+        }catch(err){
+            alert('Erro ao recuperar as informações do produto.');
+        }
+    }, [accessToken, history]);
 
     function formatCategory(ctgry) {
         return ctgry;

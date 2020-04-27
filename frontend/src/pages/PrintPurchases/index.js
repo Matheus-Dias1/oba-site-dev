@@ -20,20 +20,24 @@ export default function PrintPurchases() {
 
 
     useEffect(() => {
-        api.get('productsPurchases/-1', {
-            headers: {
-                authorization: 'Bearer ' + accessToken,
-            }
-        }).then(response => {
-            setPurchases(response.data);
-            window.print();
-            history.push('/panel/purchases');
-        }).catch(err => {
-            if (err.response.status === 401 || err.response.status === 403) {
-                alert('Você não tem permissão para acessar essa página');
-                history.push('/');
-            } else throw err;
-        })
+        try {
+            api.get('productsPurchases/-1', {
+                headers: {
+                    authorization: 'Bearer ' + accessToken,
+                }
+            }).then(response => {
+                setPurchases(response.data);
+                window.print();
+                history.push('/panel/purchases');
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            })
+        } catch (err) {
+            alert('Erro ao recuperar pedidos');
+        }
     }, [history, accessToken]);
 
 

@@ -31,68 +31,71 @@ export default function ViewPurchase() {
     const [idP, setId] = useState('');
 
     useEffect(() => {
+        try {
+            api.get(`productsPurchases/${window.location.pathname.split("/").pop()}`, {
+                headers: {
+                    authorization: 'Bearer ' + accessToken,
+                }
+            }).then(response => {
+                const {
+                    items,
+                    data,
+                } = response.data;
 
-        api.get(`productsPurchases/${window.location.pathname.split("/").pop()}`, {
-            headers: {
-                authorization: 'Bearer ' + accessToken,
-            }
-        }).then(response => {
-            const {
-                items,
-                data,
-            } = response.data;
 
+                const {
+                    id,
+                    client,
+                    street,
+                    number,
+                    complement,
+                    neighborhood,
+                    delivery_date,
+                    delivery_period,
+                    client_phone,
+                    value,
+                    payment_method,
+                    change,
+                    observation
+                } = data;
 
-            const {
-                id,
-                client,
-                street,
-                number,
-                complement,
-                neighborhood,
-                delivery_date,
-                delivery_period,
-                client_phone,
-                value,
-                payment_method,
-                change,
-                observation
-            } = data;
+                try {
+                    const obsData = JSON.parse(observation);
+                    setClient(obsData.client);
+                    setStreet(obsData.street);
+                    setNumber(obsData.number);
+                    setComplement(obsData.complement);
+                    setNeighborhood(obsData.neighborhood);
+                    setClient_phone(obsData.phone);
+                    setObservation(obsData.observation);
+                } catch (err) {
+                    setClient(client);
+                    setStreet(street);
+                    setNumber(number);
+                    setComplement(complement);
+                    setNeighborhood(neighborhood);
+                    setClient_phone(client_phone);
+                    setObservation(observation);
+                }
+                setPayment_method(payment_method);
+                setItems(items);
+                var fId = String(id) + "", needed = 5 - fId.length;
+                if (needed > 0) fId = (Math.pow(10, needed) + "").slice(1) + fId;
+                setId(fId);
+                setValue(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value));
+                setChange(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(change));
 
-            try {
-                const obsData = JSON.parse(observation);
-                setClient(obsData.client);
-                setStreet(obsData.street);
-                setNumber(obsData.number);
-                setComplement(obsData.complement);
-                setNeighborhood(obsData.neighborhood);
-                setClient_phone(obsData.phone);
-                setObservation(obsData.observation);
-            } catch (err) {
-                setClient(client);
-                setStreet(street);
-                setNumber(number);
-                setComplement(complement);
-                setNeighborhood(neighborhood);
-                setClient_phone(client_phone);
-                setObservation(observation);
-            }
-            setPayment_method(payment_method);
-            setItems(items);
-            var fId = String(id) + "", needed = 5 - fId.length;
-            if (needed > 0) fId = (Math.pow(10, needed) + "").slice(1) + fId;
-            setId(fId);
-            setValue(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value));
-            setChange(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(change));
+                setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + (delivery_period === 'morning' ? ' - Manhã' : ' - Tarde'));
 
-            setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + (delivery_period === 'morning' ? ' - Manhã' : ' - Tarde'));
-
-        }).catch(err => {
-            if (err.response.status === 401 || err.response.status === 403) {
-                alert('Você não tem permissão para acessar essa página');
-                history.push('/');
-            } else throw err;
-        })
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    alert('Você não tem permissão para acessar essa página');
+                    history.push('/');
+                } else throw err;
+            });
+        } catch (err) {
+            alert('Erro ao recuperar dados do pedido');
+        }
     }, [history, accessToken]);
 
 
