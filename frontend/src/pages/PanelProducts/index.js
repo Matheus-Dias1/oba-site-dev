@@ -69,7 +69,7 @@ export default function PanelProducts() {
         try {
             await api.put('products', data, {
                 headers: {
-                    authorization: accessToken
+                    authorization: 'Bearer ' + accessToken
                 }
             }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
@@ -96,7 +96,7 @@ export default function PanelProducts() {
 
     return (
         <div className="menu-container">
-            <Menu isOpen={true}>
+            <Menu isOpen={false}>
                 <h1 className="menu-text">OBA Hortifruti</h1>
 
                 <Link className='menu-link' to="/panel" ><FaHome size={16} color="FFFFFF" />Início</Link>

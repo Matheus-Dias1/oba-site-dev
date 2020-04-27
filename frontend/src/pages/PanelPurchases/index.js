@@ -10,6 +10,7 @@ import '../../global.css';
 
 
 export default function PanelPurchases() {
+   
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken === null) {
@@ -167,6 +168,8 @@ export default function PanelPurchases() {
                             }
 
                             function dateFormater(date) {
+                                console.log(purchase.delivery_date)
+                                console.log(new Date(purchase.delivery_date));
                                 return Intl.DateTimeFormat('pt-BR').format(new Date(purchase.delivery_date));
                             }
 

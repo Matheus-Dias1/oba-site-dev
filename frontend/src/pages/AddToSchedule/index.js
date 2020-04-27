@@ -30,7 +30,7 @@ export default function AddToSchedule() {
         }
 
         const data = {
-            "date": list[2] + '-' + list[1] + '-' + list[0],
+            "date": list[2] + '-' + list[1] + '-' + list[0] + 'T03:00:00Z',
             "morning_deliveries": parseInt(morning_deliveries),
             "afternoon_deliveries": parseInt(afternoon_deliveries),
         };
@@ -39,12 +39,12 @@ export default function AddToSchedule() {
                 headers: {
                     authorization: 'Bearer ' + accessToken
                 }
-            }.catch(err => {
+            }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
                     alert('Você não tem permissão para acessar essa página');
                     history.push('/');
                 } else throw err;
-            }));
+            });
             setMorning_deliveries('');
             setAfternoon_deliveries('');
             setDate('');

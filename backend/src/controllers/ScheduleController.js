@@ -6,8 +6,8 @@ module.exports = {
         try {
             const dates = await connection('schedule')
                 .select('*')
-                .whereRaw("morning_deliveries > 0 or afternoon_deliveries > 0");
-
+                .whereRaw("morning_deliveries > 0 or afternoon_deliveries > 0")
+                .orderByRaw('date(date) asc')
             var res = [];
             for (i in dates) {
                 if (Date.parse(dates[i].date) >= new Date().setHours(0, 0, 0, 0)) {
