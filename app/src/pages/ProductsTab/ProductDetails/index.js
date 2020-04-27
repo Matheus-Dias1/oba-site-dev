@@ -36,7 +36,7 @@ export default function Products() {
     }
     else {
       setAmount([amount[0] + val, amount[1]])
-      setPrice([(amount[0]+val)*value[0], price[1]]);
+      setPrice([(amount[0] + val) * value[0], price[1]]);
     }
 
   }
@@ -83,17 +83,17 @@ export default function Products() {
               {['UN', 'BDJ', 'BD', 'CX'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
                 <View style={styles.intValueCounterContainer}>
                   {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
-                    <Ionicons name={'ios-remove'} size={35} color={'#049434'} />
+                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
                   </TouchableOpacity>}
                   {amount[0] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
-                    <Ionicons name={'ios-remove'} size={35} color={'gray'} />
+                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
                   </TouchableOpacity>}
                   <Text style={styles.intValueCounterContainerText}>{amount[0]}</Text>
                   <TouchableOpacity onPress={() => updateIntValue(0, 1)} activeOpacity={0.5}>
-                    <Ionicons name={'ios-add'} size={35} color={'#049434'} />
+                    <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
                   </TouchableOpacity>
                 </View>
-                <Text>UN</Text>
+                <Text>{product.measurement_unit}</Text>
                 <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
               </View>}
               {product.unit_price !== null && <View
@@ -108,14 +108,14 @@ export default function Products() {
               {product.unit_price !== null && <View style={styles.measurementUnit}>
                 <View style={styles.intValueCounterContainer}>
                   {amount[1] > 0 && <TouchableOpacity onPress={() => updateIntValue(1, -1)} activeOpacity={0.5}>
-                    <Ionicons name={'ios-remove'} size={35} color={'#049434'} />
+                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
                   </TouchableOpacity>}
                   {amount[1] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
-                    <Ionicons name={'ios-remove'} size={35} color={'gray'} />
+                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
                   </TouchableOpacity>}
                   <Text style={styles.intValueCounterContainerText}>{amount[1]}</Text>
                   <TouchableOpacity onPress={() => updateIntValue(1, 1)} activeOpacity={0.5}>
-                    <Ionicons name={'ios-add'} size={35} color={'#049434'} />
+                    <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
                   </TouchableOpacity>
                 </View>
                 <Text>UN</Text>
@@ -135,15 +135,15 @@ export default function Products() {
               />
             </View>
 
+            <TouchableWithoutFeedback onPress={() => addToCart()}>
+              <View style={styles.addToCartButton}>
+                <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
 
-          </View>
         </KeyboardAwareScrollView>
-        <TouchableWithoutFeedback onPress={() => addToCart()}>
-          <View style={styles.addToCartButton}>
-            <Ionicons name={'ios-cart'} size={35} color={'white'} />
-            <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
-          </View>
-        </TouchableWithoutFeedback>
+
       </View>
     </TouchableWithoutFeedback>
   );

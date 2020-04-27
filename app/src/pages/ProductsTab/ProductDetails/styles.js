@@ -69,14 +69,19 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     addToCartButton:{
+        width: 325,
         height: 60,
         flexDirection: "row",
         justifyContent: "space-around",
         backgroundColor: '#049434',
         alignItems: "center",
+        borderRadius: 8,
+        marginTop: 15,
+        marginBottom: 20,
     },
     addToCartText:{
         color: 'white',
+        fontSize: 18,
         fontWeight: 'bold'
     },
 });

@@ -12,6 +12,9 @@ import ProductDetails from './pages/ProductsTab/ProductDetails';
 import FinalizePurchase from './pages/ProductsTab/FinalizePurchase';
 import Purchases from './pages/Purchases';
 import Profile from './pages/Profile/Profile';
+import EditInfo from './pages/Profile/EditInfo';
+import Help from './pages/Profile/Help';
+import Addresses from './pages/Profile/Addresses';
 import Login from './pages/Login/Login'
 import Register from './pages/Login/Register'
 import ForgotPassword from './pages/Login/ForgotPassword'
@@ -50,6 +53,56 @@ function ProductsTab() {
         component={FinalizePurchase}
         options={{
           title: "",
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+            borderEndWidth: 0
+          },
+        }}
+      />
+
+    </Stack.Navigator>
+  );
+}
+
+function ProfileTab() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name="EditInfo"
+        component={EditInfo}
+        options={{
+          title: "Editar Perfil",
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Help"
+        component={Help}
+        options={{
+          title: "Ajuda",
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+            borderEndWidth: 0
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Addresses"
+        component={Addresses}
+        options={{
+          title: "Endereços",
           headerTintColor: 'black',
           headerStyle: {
             backgroundColor: '#f2f2f2',
@@ -125,22 +178,18 @@ export default function Routes() {
             'password': data.password
           })
           AsyncStorage.setItem('accessToken', res.data.accessToken)
+          AsyncStorage.setItem('name', res.data.name);
           dispatch({ type: 'SIGN_IN', token: res.data.accessToken });
         } catch (err) {
           if (err.response.status === 400)
             Alert.alert(err.response.data.error)
           else
-            Alert.alert('Falha no login','Erro ao fazer login, tente novamente mais tarde.');
+            Alert.alert('Falha no login', 'Erro ao fazer login, tente novamente mais tarde.');
         }
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      signOut: async () => {
+        AsyncStorage.clear();
+        dispatch({ type: 'SIGN_OUT' });
       },
     }),
     []
@@ -203,7 +252,7 @@ export default function Routes() {
             >
               <Tab.Screen name="Produtos" component={ProductsTab} />
               <Tab.Screen name="Pedidos" component={Purchases} />
-              <Tab.Screen name="Perfil" component={Profile} />
+              <Tab.Screen name="Perfil" component={ProfileTab} />
             </Tab.Navigator>
           )}
       </NavigationContainer>

@@ -16,7 +16,6 @@ import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import api from './../../../services/api'
-import logo from '../../../assets/logo_green_nobg.png'
 
 import styles from './styles';
 export default function Products() {

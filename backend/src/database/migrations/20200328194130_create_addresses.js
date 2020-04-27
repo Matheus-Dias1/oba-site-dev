@@ -11,6 +11,9 @@ exports.up = function (knex) {
     table.string('street').notNullable();
     table.string('number').notNullable();
     table.string('complement');
+    table.boolean('visible')
+      .notNullable()
+      .defaultTo(true);
 
     table.foreign('id_user').references('users.id');
 
