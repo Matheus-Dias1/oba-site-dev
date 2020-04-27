@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ScrollView,
+  AsyncStorage
 
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -24,12 +25,25 @@ export default function Products() {
   const [cartAccessible, setCartAccessible] = useState(true);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [products, setProducts] = useState([]);
-  const imageUrl = 'http://192.168.1.33:3333/image/'
+  const imageUrl = 'http://192.168.1.8:3333/image/'
 
 
   async function loadProducts() {
-    const response = await api.get('/profile/products');
-    setProducts(response.data);
+    try {
+      const response = await api.get('/profile/products', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          alert('Você não tem permissão para acessar essa página');
+        } else throw err;
+      });
+      setProducts(response.data);
+    } catch (err) {
+      alert('Erro ao recuperar produtos')
+    }
+
   }
 
   useEffect(() => {
@@ -137,7 +151,7 @@ export default function Products() {
                     <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/' + product.measurement_unit + ': '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</Text>
                     {product.unit_value !== null && <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/UN: '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.unit_price)}</Text>}
                   </View>
-                  
+
 
                   <Image
                     style={styles.productImage}

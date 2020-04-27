@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import AuthContext from '../../../authcontext';
 
+export default function Products() {
+  const { signOut } = React.useContext(AuthContext);
 
-export default function Products(){
-    return(
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  return (
+    <TouchableWithoutFeedback onPress={signOut}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Profile!</Text>
       </View>
-  
-    );
+    </TouchableWithoutFeedback>
+
+  );
 }

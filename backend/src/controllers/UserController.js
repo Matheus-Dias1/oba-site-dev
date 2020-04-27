@@ -5,14 +5,11 @@ module.exports = {
     async create(request, response) {
         try {
             const { name, email, password, phone } = request.body;
-            const table_size = await connection('users').count('id');
-            id = (table_size[0]['count(`id`)'] + 1).toString();
 
             const salt = await bcrypt.genSalt(10);
             const hash = await bcrypt.hash(password, salt);
 
             await connection('users').insert({
-                id,
                 name,
                 email,
                 password: hash,
@@ -22,6 +19,7 @@ module.exports = {
                 status: "success",
             });
         } catch (e) {
+            console.log(e);
             if (e.errno === 19) {
                 return response.json({
                     status: "fail",

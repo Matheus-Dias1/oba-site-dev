@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Alert } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
 import AuthContext from './authcontext';
+import api from './services/api';
 
 import Products from './pages/ProductsTab/Products';
 import ProductDetails from './pages/ProductsTab/ProductDetails';
@@ -100,7 +101,7 @@ export default function Routes() {
       let userToken;
 
       try {
-        userToken = await AsyncStorage.getItem('userID');
+        userToken = await AsyncStorage.getItem('accessToken');
       } catch (e) {
         // Restoring token failed
       }
@@ -118,12 +119,19 @@ export default function Routes() {
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        try {
+          const res = await api.post('session', {
+            'email': data.email,
+            'password': data.password
+          })
+          AsyncStorage.setItem('accessToken', res.data.accessToken)
+          dispatch({ type: 'SIGN_IN', token: res.data.accessToken });
+        } catch (err) {
+          if (err.response.status === 400)
+            Alert.alert(err.response.data.error)
+          else
+            Alert.alert('Falha no login','Erro ao fazer login, tente novamente mais tarde.');
+        }
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async data => {

@@ -24,7 +24,7 @@ routes.get('/addresses', AuthTokenController.authenticateToken, AddressControlle
 routes.post('/addresses', AuthTokenController.authenticateToken, AddressController.create);
 
 routes.get('/products', AuthTokenController.authenticateToken, ProductController.index);
-routes.post('/products', [AuthTokenController.authenticateToken,multer(multerConfig).single('file')], ProductController.create);
+routes.post('/products', [AuthTokenController.authenticateToken, multer(multerConfig).single('file')], ProductController.create);
 routes.put('/products', AuthTokenController.authenticateToken, ProductController.updateAvailability);
 
 routes.get('/products/details/:id', AuthTokenController.authenticateToken, ProductUpdateController.getData);
@@ -52,9 +52,11 @@ routes.post('/schedule', AuthTokenController.authenticateToken, ScheduleControll
 routes.get('/image/:file(*)', (req, res) => {
     try {
         let file = req.params.file;
-        let fileLocation = __dirname + '/assets/' + file;
-        res.sendFile(`${fileLocation}`)
-    } catch(err){
+        if (file !== 'undefined') {
+            let fileLocation = __dirname + '/assets/' + file;
+            res.sendFile(`${fileLocation}`)
+        }
+    } catch (err) {
         res.status(422).send();
     }
 })

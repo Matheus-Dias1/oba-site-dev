@@ -42,7 +42,6 @@ export default function Register() {
                     setErrorText(response.data.error); 
                 }
             } catch (e) {
-                console.log(e);
                 setErrorText('Erro no cadastro, confira seus dados!');
             }
 

@@ -15,13 +15,12 @@ module.exports = {
 
             if (!user) {
                 return response.status(400).json({
-                    error: 'E-mail não cadastrado.'
+                    error: 'E-mail não cadastrado'
                 });
             }
 
             bcrypt.compare(password, user.password, function (err, doesMatch) {
                 if (doesMatch) {
-
                     data = {
                         name: user.name,
                         id: user.id,
@@ -32,7 +31,7 @@ module.exports = {
                     return response.json({name: user.name, accessToken:accessToken, admin:user.admin});
                 } else {
                     return response.status(400).json({
-                        error: 'password is incorrect'
+                        error: 'Senha incorreta'
                     });
                 }
             });

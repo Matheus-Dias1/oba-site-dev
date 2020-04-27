@@ -6,13 +6,17 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
-} from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import logo from '../../../assets/logo_green_nobg.png'
+  Alert,
 
+} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native';
+import logo from '../../../assets/logo_green_nobg.png';
+import api from '../../../services/api';
 
 import styles from './styles';
 export default function Products() {
+  const navigator = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -27,17 +31,36 @@ export default function Products() {
     } if (!email.includes('.') || !email.includes('@')) {
       setErrorText('Digite um e-mail válido');
       return;
-    } if (phone.length < 8){
+    } if (phone.length < 8) {
       setErrorText('Digite um número de telefone válido');
       return;
-    } if (password.length <= 4){
+    } if (password.length <= 4) {
       setErrorText('A senha informada é muito curta');
       return;
-    } if (password !== cPassword){
+    } if (password !== cPassword) {
       setErrorText('As senhas informadas são diferentes');
       return;
     }
     setErrorText('');
+    const data = {
+      name,
+      email,
+      password,
+      phone,
+    };
+    try{
+      const res = await api.post('users', data);
+      if (res.data.status === 'success') { 
+        Alert.alert("Usuário cadastrado com sucesso.");
+        navigator.goBack();
+    }
+    else if (res.data.status === 'fail') {
+        setErrorText(res.data.error); 
+    }
+    }catch(err){
+      Alert.alert('Erro ao realizar cadastro, tente novamente mais tarde');
+    }
+    
   }
 
 
@@ -107,8 +130,6 @@ export default function Products() {
                 <Text style={styles.buttonText}>Cadastrar</Text>
               </View>
             </TouchableWithoutFeedback>
-
-
 
 
 
