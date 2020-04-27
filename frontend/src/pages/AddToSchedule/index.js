@@ -30,7 +30,7 @@ export default function AddToSchedule() {
         }
 
         const data = {
-            "date": list[2] + '-' + list[1] + '-' + list[0] + 'T03:00:00Z',
+            "date": list[2] + '-' + list[1] + '-' + list[0] + 'T04:00:00Z',
             "morning_deliveries": parseInt(morning_deliveries),
             "afternoon_deliveries": parseInt(afternoon_deliveries),
         };
