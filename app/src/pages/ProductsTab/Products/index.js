@@ -24,7 +24,7 @@ export default function Products() {
   const [cartAccessible, setCartAccessible] = useState(true);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [products, setProducts] = useState([]);
-  const imageUrl = 'http://192.168.1.8:3333/image/'
+  const imageUrl = 'http://192.168.1.33:3333/image/'
 
 
   async function loadProducts() {
@@ -100,7 +100,7 @@ export default function Products() {
                     <Text style={styles.cartListingObservation}>Observação: Não se se muito muito muito muito muito muito muito muito muito muitomuito Maduros</Text>
                     <Text style={styles.cartListingValue}>R$ 2,00</Text>
                   </View>
-                  <Ionicons name={'ios-trash'} style={styles.cartListingDeleteIcon} size={30} color={'#737380'} />
+                  <Ionicons name={'md-trash'} style={styles.cartListingDeleteIcon} size={30} color={'#737380'} />
                 </View>
                 <View style={styles.cartListingSeparator} />
 

@@ -15,10 +15,10 @@ import Profile from './pages/Profile/Profile';
 import EditInfo from './pages/Profile/EditInfo';
 import Help from './pages/Profile/Help';
 import Addresses from './pages/Profile/Addresses';
+import AddAddress from './pages/Profile/AddAddress';
 import Login from './pages/Login/Login'
 import Register from './pages/Login/Register'
 import ForgotPassword from './pages/Login/ForgotPassword'
-import { set } from 'react-native-reanimated';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -72,7 +72,8 @@ function ProfileTab() {
         name="Profile"
         component={Profile}
         options={{
-          headerShown: false
+          headerShown: false,
+          title: "Perfil"
         }}
       />
       <Stack.Screen
@@ -103,6 +104,18 @@ function ProfileTab() {
         component={Addresses}
         options={{
           title: "Endereços",
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+            borderEndWidth: 0
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddAddress"
+        component={AddAddress}
+        options={{
+          title: "Adicionar Endereço",
           headerTintColor: 'black',
           headerStyle: {
             backgroundColor: '#f2f2f2',

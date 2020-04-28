@@ -29,7 +29,7 @@ module.exports = {
             });
             return response.status(201).send();
         } catch (err) {
-            
+            console.log(err);
             response.status(422).send();
         }
 

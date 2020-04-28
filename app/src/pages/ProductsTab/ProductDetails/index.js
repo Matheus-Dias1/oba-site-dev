@@ -18,7 +18,7 @@ export default function Products() {
   const [value, setValue] = useState([0, 0]);
   const [observation, setObservation] = useState('');
   const navigation = useNavigation();
-  const imageUrl = 'http://192.168.1.8:3333/image/'
+  const imageUrl = 'http://192.168.1.33:3333/image/'
 
   useEffect(() => {
     setProduct(route.params.product);
