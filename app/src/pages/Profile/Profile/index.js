@@ -13,7 +13,7 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function Products() {
+export default function Profile() {
   const { signOut } = React.useContext(AuthContext);
   const [name, setName] = useState('Usuário');
   const navigation = useNavigation();

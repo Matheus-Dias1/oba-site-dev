@@ -23,14 +23,22 @@ export default StyleSheet.create({
         marginBottom: 10
     },
     inputContainer: {
-        backgroundColor: 'white',
-        borderRadius: 8,
         height: 45,
         width: 260,
         marginHorizontal: 0,
         marginTop: 10,
-        borderWidth: 1,
-        borderColor: 'lightgray'
+        borderBottomWidth: 1,
+        borderColor: 'lightgray',
+        justifyContent:'flex-end'
+    },
+    foucousedInputContainer: {
+        height: 45,
+        width: 260,
+        marginHorizontal: 0,
+        marginTop: 10,
+        borderBottomWidth: 2,
+        borderColor: '#049434',
+        justifyContent:'flex-end'
     },
     registerButton: {
         backgroundColor: '#049434',
@@ -51,8 +59,8 @@ export default StyleSheet.create({
         fontWeight: '500'
     },
     textInput: {
-        marginHorizontal: 15,
-        marginVertical: 12,
+        marginHorizontal: 2,
+        marginVertical: 2,
         fontSize: 18
     },
     errorTextContainer:{

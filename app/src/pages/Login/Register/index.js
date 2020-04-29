@@ -15,14 +15,14 @@ import logo from '../../../assets/logo_green_nobg.png';
 import api from '../../../services/api';
 
 import styles from './styles';
-export default function Products() {
+export default function Register() {
   const navigator = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [cPassword, setCPassword] = useState('');
   const [errorText, setErrorText] = useState('');
+  const [selectedInput, setSelectedInput] = useState(-1);
 
   async function handleRegistration() {
     if (name === '') {
@@ -37,30 +37,27 @@ export default function Products() {
     } if (password.length <= 4) {
       setErrorText('A senha informada é muito curta');
       return;
-    } if (password !== cPassword) {
-      setErrorText('As senhas informadas são diferentes');
-      return;
     }
     setErrorText('');
     const data = {
-      name,
-      email,
+      name: name.replace(/^\s+|\s+$/g, ''),
+      email: email.replace(/^\s+|\s+$/g, ''),
       password,
       phone,
     };
-    try{
+    try {
       const res = await api.post('users', data);
-      if (res.data.status === 'success') { 
+      if (res.data.status === 'success') {
         Alert.alert("Usuário cadastrado com sucesso.");
         navigator.goBack();
-    }
-    else if (res.data.status === 'fail') {
-        setErrorText(res.data.error); 
-    }
-    }catch(err){
+      }
+      else if (res.data.status === 'fail') {
+        setErrorText(res.data.error);
+      }
+    } catch (err) {
       Alert.alert('Erro ao realizar cadastro, tente novamente mais tarde');
     }
-    
+
   }
 
 
@@ -81,50 +78,59 @@ export default function Products() {
                 <Text style={styles.errorText}>{errorText}</Text>
               </View>
             }
-            <View style={styles.inputContainer}>
+            <View style={selectedInput === 0 ? styles.foucousedInputContainer : styles.inputContainer}>
               <TextInput
                 style={styles.textInput}
                 value={name}
                 placeholder={'Nome'}
                 onChange={(e) => setName(e.nativeEvent.text)}
+                onFocus={() => setSelectedInput(0)}
+                onBlur={() => setSelectedInput(-1)}
+                clearButtonMode="while-editing"
+                enablesReturnKeyAutomatically={true}
               />
             </View>
-            <View style={styles.inputContainer}>
+            <View style={selectedInput === 1 ? styles.foucousedInputContainer : styles.inputContainer}>
               <TextInput
                 keyboardType='email-address'
                 style={styles.textInput}
                 value={email}
                 placeholder='E-mail'
+                onFocus={() => setSelectedInput(1)}
+                onBlur={() => setSelectedInput(-1)}
                 onChange={(e) => setEmail(e.nativeEvent.text)}
+                enablesReturnKeyAutomatically={true}
+                clearButtonMode="while-editing"
               />
             </View>
-            <View style={styles.inputContainer}>
+            <View style={selectedInput === 2 ? styles.foucousedInputContainer : styles.inputContainer}>
               <TextInput
                 style={styles.textInput}
                 keyboardType='phone-pad'
                 value={phone}
                 placeholder='Telefone'
                 onChange={(e) => setPhone(e.nativeEvent.text)}
+                onFocus={() => setSelectedInput(2)}
+                enablesReturnKeyAutomatically={true}
+                onBlur={() => setSelectedInput(-1)}
+                clearButtonMode="while-editing"
               />
             </View>
-            <View style={styles.inputContainer}>
+
+            <View style={selectedInput === 3 ? styles.foucousedInputContainer : styles.inputContainer}>
               <TextInput
                 style={styles.textInput}
                 value={password}
                 secureTextEntry={true}
                 placeholder='Senha'
                 onChange={(e) => setPassword(e.nativeEvent.text)}
+                enablesReturnKeyAutomatically={true}
+                textContentType="password"
+                onFocus={() => setSelectedInput(3)}
+                onBlur={() => setSelectedInput(-1)}
               />
             </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.textInput}
-                value={cPassword}
-                secureTextEntry={true}
-                placeholder='Confirme sua senha'
-                onChange={(e) => setCPassword(e.nativeEvent.text)}
-              />
-            </View>
+
             <TouchableWithoutFeedback onPress={() => handleRegistration()}>
               <View style={styles.registerButton}>
                 <Text style={styles.buttonText}>Cadastrar</Text>

@@ -15,6 +15,7 @@ import {
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons'
+import env from '../../../variables';
 import api from './../../../services/api'
 
 import styles from './styles';
@@ -24,7 +25,7 @@ export default function Products() {
   const [cartAccessible, setCartAccessible] = useState(true);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [products, setProducts] = useState([]);
-  const imageUrl = 'http://192.168.1.33:3333/image/'
+  const imageUrl = env.OBA_API_URL + 'image/'
 
 
   async function loadProducts() {

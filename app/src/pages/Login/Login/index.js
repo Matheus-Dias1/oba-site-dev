@@ -16,14 +16,13 @@ import { TextInput } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons/'
 import logo from '../../../assets/logo_green_nobg.png'
 
-export default function Products() {
+export default function Login() {
   const { signIn } = React.useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigator = useNavigation();
 
   function navigateForgotPassword() {
-
     navigator.navigate('ForgotPassword');
   }
 

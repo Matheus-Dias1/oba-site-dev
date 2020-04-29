@@ -3,6 +3,8 @@ import { View, Text, Image, StatusBar, TouchableOpacity, TextInput, TouchableWit
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native';
+import env from '../../../variables';
+
 
 
 //<FontAwesome5 name={iconName} size={size} color={color} light />
@@ -10,7 +12,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import styles from './styles';
 
-export default function Products() {
+export default function ProductDetails() {
   const route = useRoute();
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState([0, 0]);
@@ -18,7 +20,7 @@ export default function Products() {
   const [value, setValue] = useState([0, 0]);
   const [observation, setObservation] = useState('');
   const navigation = useNavigation();
-  const imageUrl = 'http://192.168.1.33:3333/image/'
+  const imageUrl =  env.OBA_API_URL + 'image/'
 
   useEffect(() => {
     setProduct(route.params.product);

@@ -25,7 +25,10 @@ const Stack = createStackNavigator();
 
 function ProductsTab() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      headerBackTitle: 'Voltar',
+    }}>
       <Stack.Screen
         name="Products"
         component={Products}
@@ -67,7 +70,11 @@ function ProductsTab() {
 
 function ProfileTab() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      headerBackTitleVisible: false,
+    }}
+    >
       <Stack.Screen
         name="Profile"
         component={Profile}
@@ -115,12 +122,7 @@ function ProfileTab() {
         name="AddAddress"
         component={AddAddress}
         options={{
-          title: "Adicionar Endereço",
-          headerTintColor: 'black',
-          headerStyle: {
-            backgroundColor: '#f2f2f2',
-            borderEndWidth: 0
-          },
+          headerShown: false,
         }}
       />
 
@@ -187,7 +189,7 @@ export default function Routes() {
       signIn: async data => {
         try {
           const res = await api.post('session', {
-            'email': data.email,
+            'email': data.email.replace(/^\s+|\s+$/g, ''),
             'password': data.password
           })
           AsyncStorage.setItem('accessToken', res.data.accessToken)

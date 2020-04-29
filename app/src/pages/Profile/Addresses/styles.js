@@ -23,8 +23,19 @@ export default StyleSheet.create({
         marginTop: 10,
         marginHorizontal: 15,
         borderRadius: 8,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: '#f2f2f2',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    selectedAddressContainer:{
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginHorizontal: 15,
+        borderRadius: 8,
+        borderWidth: 2,
+        borderColor: '#049434',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'

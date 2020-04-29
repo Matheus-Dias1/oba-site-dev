@@ -14,14 +14,28 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Addresses() {
   const [addresses, setAdresses] = useState([]);
+  const [selectedAddress, setSelectedAdresses] = useState(-1);
   const navigation = useNavigation();
+
+  try {
+    AsyncStorage.getItem('selectedAddress').then(res => {
+      if (res !== null) setSelectedAdresses(res);
+    })
+  } catch (err) {
+    
+  }
 
   function navigateToAddAddress() {
     navigation.navigate('Perfil', {
-      screen: 'AddAddress'
+      screen: 'AddAddress',
     })
   }
 
+  async function selectAddress(address){
+    await AsyncStorage.setItem('selectedAddress', String(address));
+    setSelectedAdresses(address);
+    
+  }
 
   useEffect(() => {
     try {
@@ -32,7 +46,6 @@ export default function Addresses() {
             authorization: 'Bearer ' + token
           }
         }).then(res => {
-          console.log(res.data);
           setAdresses(res.data);
         })
       });
@@ -55,15 +68,17 @@ export default function Addresses() {
         keyExtractor={address => String(address.id)}
         data={addresses}
         renderItem={({ item: address }) => (
-          <View style={styles.addressContainer}>
-            <View style={styles.content}>
-              <Text style={styles.streetText}>{address.street + ', ' + address.number}</Text>
-              <Text style={styles.neighborhoodText}>{address.neighborhood}</Text>
-              <Text style={styles.cityText}>{address.city + '/' + address.state}</Text>
-            </View>
-            <Ionicons name={'md-trash'} style={styles.addressDeleteIcon} size={30} color={'#737380'} />
+          <TouchableWithoutFeedback onPress={()=> selectAddress(addresses.indexOf(address))}>
+            <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddressContainer : styles.addressContainer}>
+              <View style={styles.content}>
+                <Text style={styles.streetText}>{address.street + ', ' + address.number}</Text>
+                <Text style={styles.neighborhoodText}>{address.neighborhood}</Text>
+                <Text style={styles.cityText}>{address.city + '/' + address.state}</Text>
+              </View>
+              <Ionicons name={'md-trash'} style={styles.addressDeleteIcon} size={30} color={'#737380'} />
 
-          </View>
+            </View>
+          </TouchableWithoutFeedback>
         )}
       />
     </View>

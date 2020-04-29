@@ -14,6 +14,9 @@ exports.up = function (knex) {
     table.boolean('visible')
       .notNullable()
       .defaultTo(true);
+    table.string('lat').notNullable();
+    table.string('long').notNullable();
+
 
     table.foreign('id_user').references('users.id');
 
