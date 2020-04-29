@@ -15,6 +15,7 @@ import Profile from './pages/Profile/Profile';
 import EditInfo from './pages/Profile/EditInfo';
 import Help from './pages/Profile/Help';
 import Addresses from './pages/Profile/Addresses';
+import GetLocationFromMap from './pages/Profile/GetLocationFromMap';
 import AddAddress from './pages/Profile/AddAddress';
 import Login from './pages/Login/Login'
 import Register from './pages/Login/Register'
@@ -26,9 +27,9 @@ const Stack = createStackNavigator();
 function ProductsTab() {
   return (
     <Stack.Navigator
-    screenOptions={{
-      headerBackTitle: 'Voltar',
-    }}>
+      screenOptions={{
+        headerBackTitle: 'Voltar',
+      }}>
       <Stack.Screen
         name="Products"
         component={Products}
@@ -71,9 +72,9 @@ function ProductsTab() {
 function ProfileTab() {
   return (
     <Stack.Navigator
-    screenOptions={{
-      headerBackTitleVisible: false,
-    }}
+      screenOptions={{
+        headerBackTitleVisible: false,
+      }}
     >
       <Stack.Screen
         name="Profile"
@@ -118,6 +119,14 @@ function ProfileTab() {
           },
         }}
       />
+      <Stack.Screen
+        name="GetLocationFromMap"
+        component={GetLocationFromMap}
+        options={{
+          headerShown: false,
+        }}
+      />
+
       <Stack.Screen
         name="AddAddress"
         component={AddAddress}

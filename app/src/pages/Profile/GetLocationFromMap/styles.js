@@ -11,11 +11,6 @@ export default StyleSheet.create({
         top: '90%',
         alignItems: 'center',
     },
-    container:{
-        flexDirection: 'row',
-        flex: 1,
-        justifyContent: 'center'
-    },
     button:{
         width: 200,
         height:50,

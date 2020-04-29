@@ -2,23 +2,23 @@ import { StyleSheet } from 'react-native';
 
 
 export default StyleSheet.create({
-    container:{
-        flex:1
+    container: {
+        flex: 1
     },
-    addAddressContainer:{
+    addAddressContainer: {
         backgroundColor: '#049434',
         flexDirection: "row",
         alignItems: "center",
         justifyContent: 'center',
     },
-    addAddressText:{
-        fontSize: 18,
-        fontWeight: '600',
+    addAddressText: {
+        fontSize: 16,
+        fontWeight: '500',
         color: 'white',
         marginLeft: 17,
-        marginVertical: 25, 
+        marginVertical: 17,
     },
-    addressContainer:{
+    addressContainer: {
         backgroundColor: 'white',
         marginTop: 10,
         marginHorizontal: 15,
@@ -29,7 +29,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    selectedAddressContainer:{
+    selectedAddressContainer: {
         backgroundColor: 'white',
         marginTop: 10,
         marginHorizontal: 15,
@@ -40,29 +40,30 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    content:{
+    content: {
         marginHorizontal: 15,
         marginVertical: 10,
     },
-    streetText:{
+    streetText: {
         fontSize: 17,
         fontWeight: '600',
     },
-    neighborhoodText:{
+    neighborhoodText: {
         marginTop: 14,
         fontSize: 15,
         fontWeight: '300',
         color: '#737380'
     },
-    cityText:{
+    cityText: {
         marginTop: 3,
         fontSize: 13,
         fontWeight: '800',
         color: '#737380'
 
     },
-    addressDeleteIcon:{
+    addressDeleteIcon: {
         marginRight: 15
     },
+
 
 });

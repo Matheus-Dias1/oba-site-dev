@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 20027,
+  "packagerPid": 18359,
   "expoServerNgrokUrl": "https://fw-ctb.repta.app.exp.direct",
   "packagerNgrokUrl": "https://packager.fw-ctb.repta.app.exp.direct",
-  "ngrokPid": 20054,
+  "ngrokPid": 18386,
   "webpackServerPort": null
 }

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import {Ionicons, MaterialIcons} from '@expo/vector-icons/';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Addresses() {
@@ -22,7 +22,7 @@ export default function Addresses() {
       if (res !== null) setSelectedAdresses(res);
     })
   } catch (err) {
-    
+
   }
 
   function navigateToAddAddress() {
@@ -31,10 +31,16 @@ export default function Addresses() {
     })
   }
 
-  async function selectAddress(address){
+  function navigateToGetLocationFromMap() {
+    navigation.navigate('Perfil', {
+      screen: 'GetLocationFromMap',
+    })
+  }
+
+  async function selectAddress(address) {
     await AsyncStorage.setItem('selectedAddress', String(address));
     setSelectedAdresses(address);
-    
+
   }
 
   useEffect(() => {
@@ -56,19 +62,30 @@ export default function Addresses() {
   }, [])
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => navigateToAddAddress()}>
-        <View style={styles.addAddressContainer}>
-          <Ionicons name={'ios-add'} size={35} color={'white'} />
-          <Text style={styles.addAddressText}>Adicionar endereço</Text>
-        </View>
-      </TouchableWithoutFeedback>
+
+      <View style={{justifyContent: 'space-between'}}>
+        <TouchableWithoutFeedback onPress={() => navigateToGetLocationFromMap()}>
+          <View style={styles.addAddressContainer}>
+            <MaterialIcons name={'my-location'} size={20} color={'white'} />
+            <Text style={styles.addAddressText}>Utilizar minha localização</Text>
+          </View>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => navigateToAddAddress()}>
+          <View style={[styles.addAddressContainer, {borderTopWidth: 1, borderTopColor: 'white'}]}>
+            <Ionicons name={'ios-add'} size={35} color={'white'} />
+            <Text style={styles.addAddressText}>Adicionar endereço manualmente</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+
       <FlatList
         style={styles.addressesList}
         showsVerticalScrollIndicator={false}
         keyExtractor={address => String(address.id)}
         data={addresses}
         renderItem={({ item: address }) => (
-          <TouchableWithoutFeedback onPress={()=> selectAddress(addresses.indexOf(address))}>
+          <TouchableWithoutFeedback onPress={() => selectAddress(addresses.indexOf(address))}>
             <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddressContainer : styles.addressContainer}>
               <View style={styles.content}>
                 <Text style={styles.streetText}>{address.street + ', ' + address.number}</Text>
