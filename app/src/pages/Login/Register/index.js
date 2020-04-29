@@ -13,6 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useNavigation } from '@react-navigation/native';
 import logo from '../../../assets/logo_green_nobg.png';
 import api from '../../../services/api';
+import { TextInputMask } from 'react-native-masked-text'
 
 import styles from './styles';
 export default function Register() {
@@ -104,18 +105,23 @@ export default function Register() {
               />
             </View>
             <View style={selectedInput === 2 ? styles.foucousedInputContainer : styles.inputContainer}>
-              <TextInput
+              <TextInputMask
                 style={styles.textInput}
-                keyboardType='phone-pad'
-                value={phone}
-                placeholder='Telefone'
-                onChange={(e) => setPhone(e.nativeEvent.text)}
+                type={'cel-phone'}
+                placeholder="Telefone"
                 onFocus={() => setSelectedInput(2)}
-                enablesReturnKeyAutomatically={true}
                 onBlur={() => setSelectedInput(-1)}
-                clearButtonMode="while-editing"
+                options={{
+                  maskType: 'BRL',
+                  withDDD: true,
+                  dddMask: '(99) '
+                }}
+                value={phone}
+                onChangeText={e => setPhone(e)}
               />
             </View>
+
+
 
             <View style={selectedInput === 3 ? styles.foucousedInputContainer : styles.inputContainer}>
               <TextInput
