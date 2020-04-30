@@ -51,7 +51,7 @@ routes.get('/schedule', AuthTokenController.authenticateToken, ScheduleControlle
 routes.post('/schedule', AuthTokenController.authenticateToken, ScheduleController.create);
 
 routes.get('/geocoding', AuthTokenController.authenticateToken, GeocodeAPI.getAddress);
-//routes.get('/geocoding/reverse', AuthTokenController.authenticateToken, GeocodeAPI.getCoordinates);
+routes.get('/geocoding/reverse', AuthTokenController.authenticateToken, GeocodeAPI.getCoordinates);
 
 
 routes.get('/image/:file(*)', (req, res) => {

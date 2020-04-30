@@ -8,8 +8,11 @@ module.exports = {
         const token = authHeader && authHeader.split(' ')[1];
         if (token === null) return res.status(401).send();
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,(err, data)=>{
-            if (err) {console.log(err);return res.status(403).send();}
+            if (err) {
+                return res.status(403).send();
+            }
             req.data = data;
+            
             next()
         })
     }

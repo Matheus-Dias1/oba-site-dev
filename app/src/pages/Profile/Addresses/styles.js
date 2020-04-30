@@ -45,16 +45,19 @@ export default StyleSheet.create({
         marginVertical: 10,
     },
     streetText: {
+        textTransform: 'capitalize',
         fontSize: 17,
         fontWeight: '600',
     },
     neighborhoodText: {
+        textTransform: 'capitalize',
         marginTop: 14,
         fontSize: 15,
         fontWeight: '300',
         color: '#737380'
     },
     cityText: {
+        textTransform: 'capitalize',
         marginTop: 3,
         fontSize: 13,
         fontWeight: '800',
@@ -64,6 +67,9 @@ export default StyleSheet.create({
     addressDeleteIcon: {
         marginRight: 15
     },
+    stateText:{
+        textTransform: 'uppercase',
+    }
 
 
 });

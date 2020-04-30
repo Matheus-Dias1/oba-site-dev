@@ -109,13 +109,14 @@ module.exports = {
         return res.json(data);
     },
     async getCoordinates(req, res) {
+        console.log('oioi')
         const {
             state,
             city,
             neighborhood,
             street,
             number,
-        } = req.body;
+        } = req.query;
 
         const geocode = axios.create({
             baseURL: 'https://maps.googleapis.com/maps/api/geocode/'

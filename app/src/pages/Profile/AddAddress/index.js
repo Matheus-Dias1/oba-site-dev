@@ -11,17 +11,15 @@ import AuthContext from '../../../authcontext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation, useRoute, StackActions, } from '@react-navigation/native';
 import api from '../../../services/api';
-import { TextInputMask } from 'react-native-masked-text'
 
 import styles from './styles';
 import { Alert } from 'react-native';
-import Axios from 'axios';
 export default function AddAddress() {
 
     const { signOut } = React.useContext(AuthContext);
     const navigator = useNavigation();
     const route = useRoute();
-    var popHowMany = 2;
+    const [popHowMany, setPopHowMany] = useState(2);
     const [country, setCountry] = useState('Brasil');
     const [state, setState] = useState('MG');
     const [city, setCity] = useState('Uberlândia');
@@ -33,95 +31,114 @@ export default function AddAddress() {
     const [geocoded, setGeocoded] = useState({});
 
     async function handleAddAddress() {
+        console.log(popHowMany)
         if (!['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, ''))) {
             Alert.alert('Ainda não atendemos sua região', 'Por enquanto atendemos a cidade de Uberlândia');
             return;
         }
         if (!(street && number && neighborhood && city && state && country)) {
             Alert.alert('Preencha todos os campos obrigatórios')
+            return;
         }
         if (popHowMany === 3) {
             const data = {
-                country: geocoded.result.country.long_name.toLowerCase() === country.toLowerCase() ? geocoded.result.country.long_name : country,
-                state: geocoded.result.state.short_name.toLowerCase() === state.toLowerCase() ? geocoded.result.state.short_name : state,
-                city: geocoded.result.city.long_name.toLowerCase() === city.toLowerCase() ? geocoded.result.city.long_name : city,
-                neighborhood: geocoded.result.neighborhood.long_name.toLowerCase() === neighborhood.toLowerCase() ? geocoded.result.neighborhood.short_name : neighborhood,
-                street: geocoded.result.street.long_name.toLowerCase() === street.toLowerCase() ? geocoded.result.street.short_name : street,
-                number: number,
-                complement: complement,
+                country: geocoded.result.country.long_name.toLowerCase() === country.toLowerCase() ? geocoded.result.country.long_name : country.replace(/^\s+|\s+$/g, ''),
+                state: geocoded.result.state.short_name.toLowerCase() === state.toLowerCase() ? geocoded.result.state.short_name : state.replace(/^\s+|\s+$/g, ''),
+                city: geocoded.result.city.long_name.toLowerCase() === city.toLowerCase() ? geocoded.result.city.long_name : city.replace(/^\s+|\s+$/g, ''),
+                neighborhood: geocoded.result.neighborhood.long_name.toLowerCase() === neighborhood.toLowerCase() ? geocoded.result.neighborhood.short_name : neighborhood.replace(/^\s+|\s+$/g, ''),
+                street: geocoded.result.street.long_name.toLowerCase() === street.toLowerCase() ? geocoded.result.street.short_name : street.replace(/^\s+|\s+$/g, ''),
+                number: number.replace(/^\s+|\s+$/g, ''),
+                complement: complement.replace(/^\s+|\s+$/g, ''),
                 lat: geocoded.result.geometry.lat,
                 lng: geocoded.result.geometry.lng,
             }
-
             try {
-                // api call
-                navigator.dispatch(StackActions.pop(popHowMany));
+                await api.post('addresses', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
+                    }
+                })
+                console.log(popHowMany)
+                return navigator.dispatch(StackActions.pop(popHowMany));
             } catch (err) {
                 Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
+                return;
             }
         } else if (popHowMany === 2) {
+            var data = {
+                state,
+                city,
+                neighborhood,
+                street,
+                number,
+            }
             try {
-                const res = await api.get('/geocoding', {
+                const res = await api.get('geocoding/reverse/', {
                     headers: {
-                        authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+                        'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                     },
-                    params: {
-                        coords: coords
+                    params:{
+                        state,
+                        city,
+                        neighborhood,
+                        street,
+                        number,
                     }
                 }).catch(err => {
                     if (err.response.status === 401 || err.response.status === 403) {
                         Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-                        signOut();
+                        return signOut();
                     } else throw err;
                 });
                 if (res.data.status !== 'OK')
                     throw new Error('NO_RESULTS');
-                const data = {
-                    country,
-                    state,
-                    city,
-                    neighborhood,
-                    street,
-                    number,
-                    complement,
+                data = {
+                    country: country.replace(/^\s+|\s+$/g, ''),
+                    state: state.replace(/^\s+|\s+$/g, ''),
+                    city: city.replace(/^\s+|\s+$/g, ''),
+                    neighborhood: neighborhood.replace(/^\s+|\s+$/g, ''),
+                    street: street.replace(/^\s+|\s+$/g, ''),
+                    number: number.replace(/^\s+|\s+$/g, ''),
+                    complement: complement.replace(/^\s+|\s+$/g, ''),
                     lat: res.data.result.geometry.lat,
                     lng: res.data.result.geometry.lng,
                 }
             } catch (err) {
-                const data = {
-                    country,
-                    state,
-                    city,
-                    neighborhood,
-                    street,
-                    number,
-                    complement,
+                data = {
+                    country: country.replace(/^\s+|\s+$/g, ''),
+                    state: state.replace(/^\s+|\s+$/g, ''),
+                    city: city.replace(/^\s+|\s+$/g, ''),
+                    neighborhood: neighborhood.replace(/^\s+|\s+$/g, ''),
+                    street: street.replace(/^\s+|\s+$/g, ''),
+                    number: number.replace(/^\s+|\s+$/g, ''),
+                    complement: complement.replace(/^\s+|\s+$/g, ''),
                     lat: '-18.931880',
                     lng: '-48.264173',
                 }
             } finally {
                 try {
-                    // api call
+                    await api.post('addresses', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
+                        }
+                    })
+                    console.log(popHowMany);
+                    return navigator.dispatch(StackActions.pop(popHowMany))
                 } catch (err) {
                     Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
+                    return;
                 }
             }
-
-
-
-
-            // try {
-            //     // api call
-            //     navigator.dispatch(StackActions.pop(popHowMany));
-            // } catch (err) {
-            //     Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
-            // }
         }
     }
 
     async function getAddress(coords) {
+        setPopHowMany(3);
+
         try {
-            const res = await api.get('/geocoding', {
+            const res = await api.get('geocoding', {
                 headers: {
                     authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
                 },
@@ -131,7 +148,7 @@ export default function AddAddress() {
             }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
                     Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-                    signOut();
+                    console.log('149') //signOut();
                 } else throw err;
             });
             if (res.data.status !== 'OK')
@@ -154,7 +171,6 @@ export default function AddAddress() {
                 latitude: route.params.params.latitude,
                 longitude: route.params.params.longitude
             }
-            popHowMany = 3;
             getAddress(coords);
 
         } catch (err) {
