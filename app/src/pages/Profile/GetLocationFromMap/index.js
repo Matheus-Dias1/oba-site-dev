@@ -14,7 +14,7 @@ import { TextInputMask } from 'react-native-masked-text'
 import styles from './styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 export default function AddAddress() {
-
+  const navigation = useNavigation();
   const [initialLocation, setInitialLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -22,9 +22,6 @@ export default function AddAddress() {
 
 
   var coordinates;
-
-  const screenWidth = Math.round(Dimensions.get('window').width);
-  const screenHeight = Math.round(Dimensions.get('window').height);
 
 
   async function getLocalization() {
@@ -43,6 +40,17 @@ export default function AddAddress() {
 
   function handleMapMovement(e) {
     coordinates = [e.latitude, e.longitude];
+  }
+
+  function navigateToAddAddress() {
+    if (coordinates == null)
+      coordinates = [initialLocation.latitude, initialLocation.longitude];
+    navigation.navigate('AddAddress', {
+      params: {
+        latitude: coordinates[0],
+        longitude: coordinates[1]
+      }
+    });
   }
 
   function displayDeliveryFee() {
@@ -113,7 +121,7 @@ export default function AddAddress() {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableWithoutFeedback onPress={() => displayDeliveryFee(coordinates)}>
+        <TouchableWithoutFeedback onPress={navigateToAddAddress}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>Confirmar</Text>
           </View>

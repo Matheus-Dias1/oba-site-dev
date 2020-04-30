@@ -12,6 +12,7 @@ const ProfileController = require('./controllers/ProfileController');
 const SessionController = require('./controllers/SessionController');
 const ScheduleController = require('./controllers/ScheduleController');
 const AuthTokenController = require('./controllers/AuthTokenController');
+const GeocodeAPI = require('./controllers/GeocodeAPI');
 
 
 
@@ -48,6 +49,10 @@ routes.post('/session', SessionController.create);
 
 routes.get('/schedule', AuthTokenController.authenticateToken, ScheduleController.index);
 routes.post('/schedule', AuthTokenController.authenticateToken, ScheduleController.create);
+
+routes.get('/geocoding', AuthTokenController.authenticateToken, GeocodeAPI.getAddress);
+//routes.get('/geocoding/reverse', AuthTokenController.authenticateToken, GeocodeAPI.getCoordinates);
+
 
 routes.get('/image/:file(*)', (req, res) => {
     try {

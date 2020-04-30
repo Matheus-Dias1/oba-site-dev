@@ -63,8 +63,7 @@ export default function Register() {
 
 
   return (
-
-    <KeyboardAwareScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
         <View style={styles.container}>
@@ -79,7 +78,7 @@ export default function Register() {
                 <Text style={styles.errorText}>{errorText}</Text>
               </View>
             }
-            <View style={selectedInput === 0 ? styles.foucousedInputContainer : styles.inputContainer}>
+            <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
               <TextInput
                 style={styles.textInput}
                 value={name}
@@ -91,7 +90,7 @@ export default function Register() {
                 enablesReturnKeyAutomatically={true}
               />
             </View>
-            <View style={selectedInput === 1 ? styles.foucousedInputContainer : styles.inputContainer}>
+            <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
               <TextInput
                 keyboardType='email-address'
                 style={styles.textInput}
@@ -104,7 +103,7 @@ export default function Register() {
                 clearButtonMode="while-editing"
               />
             </View>
-            <View style={selectedInput === 2 ? styles.foucousedInputContainer : styles.inputContainer}>
+            <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
               <TextInputMask
                 style={styles.textInput}
                 type={'cel-phone'}
@@ -123,7 +122,7 @@ export default function Register() {
 
 
 
-            <View style={selectedInput === 3 ? styles.foucousedInputContainer : styles.inputContainer}>
+            <View style={selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer}>
               <TextInput
                 style={styles.textInput}
                 value={password}

@@ -3,10 +3,9 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container: {
-        marginTop: 100,
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1,
+        flex: 0.9,
     },
     logo: {
         width: 200,
@@ -31,7 +30,7 @@ export default StyleSheet.create({
         borderColor: 'lightgray',
         justifyContent:'flex-end'
     },
-    foucousedInputContainer: {
+    focusedInputContainer: {
         height: 45,
         width: 260,
         marginHorizontal: 0,

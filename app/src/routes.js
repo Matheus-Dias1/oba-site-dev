@@ -131,7 +131,12 @@ function ProfileTab() {
         name="AddAddress"
         component={AddAddress}
         options={{
-          headerShown: false,
+          title: "Adicionar Endereço",
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+            borderEndWidth: 0
+          },
         }}
       />
 

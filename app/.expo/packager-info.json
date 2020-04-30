@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 26296,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPid": 9210,
+  "expoServerNgrokUrl": "https://vg-qca.repta.app.exp.direct",
+  "packagerNgrokUrl": "https://packager.vg-qca.repta.app.exp.direct",
+  "ngrokPid": 9347,
   "webpackServerPort": null
 }

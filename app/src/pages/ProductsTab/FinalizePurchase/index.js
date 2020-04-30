@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from 'react-native-modal';
+import { TextInputMask } from 'react-native-masked-text'
 import * as MailComposer from 'expo-mail-composer';
 
 import {
@@ -13,6 +14,7 @@ import {
   TextInput,
   Linking,
   ScrollView,
+  Keyboard,
 } from 'react-native';
 
 
@@ -59,6 +61,7 @@ export default function FinalizePurchase() {
     } else {
       setChangeFor('R$ ');
     }
+    Keyboard.dismiss();
     setShowChangeModal(false);
   }
 
@@ -97,14 +100,20 @@ export default function FinalizePurchase() {
             <Text style={styles.modalPrice}>Total: R$ 60,00</Text>
             <View style={{ alignItems: 'center' }}>
               <Text style={styles.modalTitle}>Troco para</Text>
-              <TextInput
-                autoFocus={true}
-                caretHidden={true}
-                autoCompleteType="off"
+              <TextInputMask
+                type={'money'}
+                keyboardType={'number-pad'}
+                options={{
+                  precision: 2,
+                  separator: ',',
+                  delimiter: '.',
+                  unit: 'R$ ',
+                  suffixUnit: ''
+                }}
                 style={styles.changeForInput}
-                keyboardType={'numeric'}
+                autoFocus={true}
                 value={changeFor}
-                onChange={e => { if (e.nativeEvent.text === 'R$' || e.nativeEvent.text === '' || e.nativeEvent.text === 'R') { setChangeFor('R$ ') } else { setChangeFor(e.nativeEvent.text) } }}
+                onChangeText={text => setChangeFor(text)}
               />
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -226,17 +235,7 @@ export default function FinalizePurchase() {
             )}
           />
 
-          <Text style={styles.subtitle}>Observação sobre entrega</Text>
-          <View style={styles.obsContainer}>
-            <TextInput
-              placeholder="Ex: Interfone não funciona, casa em reforma, casa sem número"
-              style={styles.textArea}
-              multiline={true}
-              numberOfLines={4}
-              onChangeText={(text) => setObservation(text)}
-              value={observation}
-            />
-          </View>
+
 
           <Text style={styles.subtitle}>Pagamento</Text>
           <View style={styles.paymentContainer}>
@@ -277,7 +276,17 @@ export default function FinalizePurchase() {
               )}
             />
           </View>
-
+          <Text style={styles.subtitle}>Observação sobre entrega</Text>
+          <View style={styles.obsContainer}>
+            <TextInput
+              placeholder="Ex: Interfone não funciona, casa em reforma, casa sem número"
+              style={styles.textArea}
+              multiline={true}
+              numberOfLines={4}
+              onChangeText={(text) => setObservation(text)}
+              value={observation}
+            />
+          </View>
         </View>
         <TouchableWithoutFeedback>
           <View style={styles.finalizePurchaseButton}>

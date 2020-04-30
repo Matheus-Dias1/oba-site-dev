@@ -55,8 +55,8 @@ export default function ProductDetails() {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={{ flex: 1 }}>
-        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1}} showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <StatusBar barStyle="dark-content" />
             <View style={styles.imageContainer}>
@@ -146,7 +146,7 @@ export default function ProductDetails() {
 
         </KeyboardAwareScrollView>
 
-      </View>
+      
     </TouchableWithoutFeedback>
   );
 }
