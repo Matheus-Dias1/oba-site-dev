@@ -7,8 +7,9 @@ import {
     Keyboard,
     AsyncStorage
 } from 'react-native';
+import AuthContext from '../../../authcontext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, StackActions, } from '@react-navigation/native';
 import api from '../../../services/api';
 import { TextInputMask } from 'react-native-masked-text'
 
@@ -16,11 +17,11 @@ import styles from './styles';
 import { Alert } from 'react-native';
 import Axios from 'axios';
 export default function AddAddress() {
-    
 
+    const { signOut } = React.useContext(AuthContext);
     const navigator = useNavigation();
     const route = useRoute();
-    var popHowMany = 1;
+    var popHowMany = 2;
     const [country, setCountry] = useState('Brasil');
     const [state, setState] = useState('MG');
     const [city, setCity] = useState('Uberlândia');
@@ -29,28 +30,122 @@ export default function AddAddress() {
     const [number, setNumber] = useState('');
     const [complement, setComplement] = useState('');
     const [selectedInput, setSelectedInput] = useState(-1);
-    const [coords, setCoords] = useState([]);
+    const [geocoded, setGeocoded] = useState({});
 
     async function handleAddAddress() {
+        if (!['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, ''))) {
+            Alert.alert('Ainda não atendemos sua região', 'Por enquanto atendemos a cidade de Uberlândia');
+            return;
+        }
+        if (!(street && number && neighborhood && city && state && country)) {
+            Alert.alert('Preencha todos os campos obrigatórios')
+        }
+        if (popHowMany === 3) {
+            const data = {
+                country: geocoded.result.country.long_name.toLowerCase() === country.toLowerCase() ? geocoded.result.country.long_name : country,
+                state: geocoded.result.state.short_name.toLowerCase() === state.toLowerCase() ? geocoded.result.state.short_name : state,
+                city: geocoded.result.city.long_name.toLowerCase() === city.toLowerCase() ? geocoded.result.city.long_name : city,
+                neighborhood: geocoded.result.neighborhood.long_name.toLowerCase() === neighborhood.toLowerCase() ? geocoded.result.neighborhood.short_name : neighborhood,
+                street: geocoded.result.street.long_name.toLowerCase() === street.toLowerCase() ? geocoded.result.street.short_name : street,
+                number: number,
+                complement: complement,
+                lat: geocoded.result.geometry.lat,
+                lng: geocoded.result.geometry.lng,
+            }
 
+            try {
+                // api call
+                navigator.dispatch(StackActions.pop(popHowMany));
+            } catch (err) {
+                Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
+            }
+        } else if (popHowMany === 2) {
+            try {
+                const res = await api.get('/geocoding', {
+                    headers: {
+                        authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+                    },
+                    params: {
+                        coords: coords
+                    }
+                }).catch(err => {
+                    if (err.response.status === 401 || err.response.status === 403) {
+                        Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+                        signOut();
+                    } else throw err;
+                });
+                if (res.data.status !== 'OK')
+                    throw new Error('NO_RESULTS');
+                const data = {
+                    country,
+                    state,
+                    city,
+                    neighborhood,
+                    street,
+                    number,
+                    complement,
+                    lat: res.data.result.geometry.lat,
+                    lng: res.data.result.geometry.lng,
+                }
+            } catch (err) {
+                const data = {
+                    country,
+                    state,
+                    city,
+                    neighborhood,
+                    street,
+                    number,
+                    complement,
+                    lat: '-18.931880',
+                    lng: '-48.264173',
+                }
+            } finally {
+                try {
+                    // api call
+                } catch (err) {
+                    Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
+                }
+            }
+
+
+
+
+            // try {
+            //     // api call
+            //     navigator.dispatch(StackActions.pop(popHowMany));
+            // } catch (err) {
+            //     Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
+            // }
+        }
     }
 
-    async function getAddress(coords){
-        
-        const res = await api.get('/geocoding', {
-            headers: {
-              authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
-            },
-            params: {
-                coords: coords
-            }
-          });
-        setCountry(res.data.result.country.long_name);
-        setCity(res.data.result.city.long_name);
-        setNeighborhood(res.data.result.neighborhood.long_name);
-        setState(res.data.result.state.short_name);
-        setNumber(res.data.result.number.long_name);
-        setStreet(res.data.result.street.short_name);
+    async function getAddress(coords) {
+        try {
+            const res = await api.get('/geocoding', {
+                headers: {
+                    authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+                },
+                params: {
+                    coords: coords
+                }
+            }).catch(err => {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+                    signOut();
+                } else throw err;
+            });
+            if (res.data.status !== 'OK')
+                throw new Error('NO_RESULTS');
+            setGeocoded(res.data);
+            setCountry(res.data.result.country.long_name);
+            setCity(res.data.result.city.long_name);
+            setNeighborhood(res.data.result.neighborhood.long_name);
+            setState(res.data.result.state.short_name);
+            setNumber(res.data.result.number.long_name);
+            setStreet(res.data.result.street.short_name);
+        } catch (err) {
+            Alert.alert('Erro ao recuperar endereço', 'Preencha seus dados manualmente.')
+        }
     }
 
     useEffect(() => {
@@ -59,7 +154,7 @@ export default function AddAddress() {
                 latitude: route.params.params.latitude,
                 longitude: route.params.params.longitude
             }
-            popHowMany = 2;
+            popHowMany = 3;
             getAddress(coords);
 
         } catch (err) {
@@ -103,7 +198,7 @@ export default function AddAddress() {
                             <TextInput
                                 style={styles.textInput}
                                 value={complement}
-                                placeholder='Complemento'
+                                placeholder='Complemento (opicional)'
                                 onFocus={() => setSelectedInput(2)}
                                 onBlur={() => setSelectedInput(-1)}
                                 onChange={(e) => setComplement(e.nativeEvent.text)}
@@ -163,9 +258,12 @@ export default function AddAddress() {
                     </View>
                 </TouchableWithoutFeedback>
             </KeyboardAwareScrollView>
-            <View style={styles.addAddressButton}>
-                <Text style={styles.buttonText}>Adicionar</Text>
-            </View>
+            <TouchableWithoutFeedback onPress={handleAddAddress}>
+                <View style={styles.addAddressButton}>
+                    <Text style={styles.buttonText}>Adicionar</Text>
+                </View>
+            </TouchableWithoutFeedback>
+
         </View>
     );
 }

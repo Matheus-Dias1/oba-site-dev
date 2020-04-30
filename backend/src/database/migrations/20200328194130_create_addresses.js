@@ -15,6 +15,7 @@ exports.up = function (knex) {
       .defaultTo(true);
     table.string('lat').notNullable();
     table.string('long').notNullable();
+    table.float('delivery_fee');notNullable();
 
 
     table.foreign('id_user').references('users.id');
