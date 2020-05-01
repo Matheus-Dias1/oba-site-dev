@@ -12,7 +12,6 @@ module.exports = {
                 return res.status(403).send();
             }
             req.data = data;
-            
             next()
         })
     }

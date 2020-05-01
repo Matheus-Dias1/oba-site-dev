@@ -109,7 +109,6 @@ module.exports = {
         return res.json(data);
     },
     async getCoordinates(req, res) {
-        console.log('oioi')
         const {
             state,
             city,

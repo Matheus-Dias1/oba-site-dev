@@ -10,10 +10,26 @@ module.exports = {
                 .limit(5)
                 .offset((page - 1) * 5)
                 .select('*')
-                .where('id_user', id_user);
+                .where({
+                    id_user: id_user,
+                    visible: 1
+                });
 
             response.header('X-Total-Count', count['count(*)']);
             return response.json(addresses);
+        } catch (err) {
+            return response.status(422).send();
+        }
+
+    },
+    async hideAddress(request, response) {
+        const { id } = request.params;
+        try {
+            const addresses = await connection('addresses')
+                .update('visible', 0)
+                .where('id', parseInt(id));
+
+            return response.sendStatus(200);
         } catch (err) {
             return response.status(422).send();
         }

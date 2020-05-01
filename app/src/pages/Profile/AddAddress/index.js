@@ -31,7 +31,6 @@ export default function AddAddress() {
     const [geocoded, setGeocoded] = useState({});
 
     async function handleAddAddress() {
-        console.log(popHowMany)
         if (!['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, ''))) {
             Alert.alert('Ainda não atendemos sua região', 'Por enquanto atendemos a cidade de Uberlândia');
             return;
@@ -59,7 +58,6 @@ export default function AddAddress() {
                         'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                     }
                 })
-                console.log(popHowMany)
                 return navigator.dispatch(StackActions.pop(popHowMany));
             } catch (err) {
                 Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
@@ -74,9 +72,17 @@ export default function AddAddress() {
                 number,
             }
             try {
-                const res = await api.get('geocoding/reverse/', {
+                console.log('oi')
+                const res = await api.get('geocoding/reverse/',{
                     headers: {
-                        'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
+                        authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken'),
+                    },
+                    body:{
+                        state,
+                        city,
+                        neighborhood,
+                        street,
+                        number,
                     },
                     params:{
                         state,
@@ -148,7 +154,7 @@ export default function AddAddress() {
             }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
                     Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-                    console.log('149') //signOut();
+                    signOut();
                 } else throw err;
             });
             if (res.data.status !== 'OK')
@@ -174,7 +180,7 @@ export default function AddAddress() {
             getAddress(coords);
 
         } catch (err) {
-            //console.log(err);
+            
         }
     }, [])
 

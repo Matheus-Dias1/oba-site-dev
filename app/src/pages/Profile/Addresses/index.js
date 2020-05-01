@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
-import {Ionicons, MaterialIcons} from '@expo/vector-icons/';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons/';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Addresses() {
@@ -43,6 +43,40 @@ export default function Addresses() {
 
   }
 
+  function confirmAlert(id) {
+    let confirm;
+    Alert.alert(
+      'Deseja mesmo remover o endereço?',
+      '',
+      [
+        { text: 'Não', onPress: () => { } },
+        {
+          text: 'Sim',
+          onPress: () => handleHideAddress(id),
+          style: 'destructive',
+        },
+      ],
+      { cancelable: false },
+    );
+
+  }
+
+
+  async function handleHideAddress(id) {
+    try {
+      await api.put('profile/addresses/hide/' + id, {}, {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      });
+      setAdresses(addresses.filter(function (add) { return add.id !== id }))
+      await AsyncStorage.removeItem('selectedAddress');
+    } catch (err) {
+      console.log(err)
+      Alert.alert('Erro ao deletar endereço!');
+    }
+  }
+
   useEffect(() => {
     try {
       AsyncStorage.getItem('accessToken').then(token => {
@@ -63,7 +97,7 @@ export default function Addresses() {
   return (
     <View style={styles.container}>
 
-      <View style={{justifyContent: 'space-between'}}>
+      <View style={{ justifyContent: 'space-between' }}>
         <TouchableWithoutFeedback onPress={() => navigateToGetLocationFromMap()}>
           <View style={styles.addAddressContainer}>
             <MaterialIcons name={'my-location'} size={20} color={'white'} />
@@ -72,7 +106,7 @@ export default function Addresses() {
         </TouchableWithoutFeedback>
 
         <TouchableWithoutFeedback onPress={() => navigateToAddAddress()}>
-          <View style={[styles.addAddressContainer, {borderTopWidth: 1, borderTopColor: 'white'}]}>
+          <View style={[styles.addAddressContainer, { borderTopWidth: 1, borderTopColor: 'white' }]}>
             <Ionicons name={'ios-add'} size={35} color={'white'} />
             <Text style={styles.addAddressText}>Adicionar endereço manualmente</Text>
           </View>
@@ -92,8 +126,11 @@ export default function Addresses() {
                 <Text style={styles.neighborhoodText}>{address.neighborhood}</Text>
                 <Text style={styles.cityText}>{address.city + '/'}<Text style={styles.stateText}>{address.state}</Text></Text>
               </View>
-              <Ionicons name={'md-trash'} style={styles.addressDeleteIcon} size={30} color={'#737380'} />
-
+              <TouchableWithoutFeedback onPress={() => confirmAlert(address.id)}>
+                <View style={styles.removeAddressContainer}>
+                  <Ionicons name={'md-trash'} style={styles.addressDeleteIcon} size={25} color={'lightgray'} />
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </TouchableWithoutFeedback>
         )}

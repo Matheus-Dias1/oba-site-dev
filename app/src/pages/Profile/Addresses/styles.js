@@ -43,25 +43,29 @@ export default StyleSheet.create({
     content: {
         marginHorizontal: 15,
         marginVertical: 10,
+        maxWidth: '75%'
     },
     streetText: {
         textTransform: 'capitalize',
         fontSize: 17,
         fontWeight: '600',
+        flexWrap: 'wrap'
     },
     neighborhoodText: {
         textTransform: 'capitalize',
         marginTop: 14,
         fontSize: 15,
         fontWeight: '300',
-        color: '#737380'
+        color: '#737380',
+        flexWrap: 'wrap'
     },
     cityText: {
         textTransform: 'capitalize',
         marginTop: 3,
         fontSize: 13,
         fontWeight: '800',
-        color: '#737380'
+        color: '#737380',
+        flexWrap: 'wrap'
 
     },
     addressDeleteIcon: {
@@ -69,6 +73,13 @@ export default StyleSheet.create({
     },
     stateText:{
         textTransform: 'uppercase',
+        flexWrap: 'wrap',
+    },
+    removeAddressContainer:{
+        width: '15%',
+        height: 45,
+        alignItems: 'flex-end',
+        justifyContent:'center' 
     }
 
 

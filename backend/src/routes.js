@@ -47,6 +47,9 @@ routes.get('/productsPurchases/:idP', AuthTokenController.authenticateToken, Pro
 
 routes.post('/session', SessionController.create);
 
+
+routes.put('/profile/addresses/hide/:id', AuthTokenController.authenticateToken, ProfileController.hideAddress);
+
 routes.get('/schedule', AuthTokenController.authenticateToken, ScheduleController.index);
 routes.post('/schedule', AuthTokenController.authenticateToken, ScheduleController.create);
 
