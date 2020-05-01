@@ -72,7 +72,6 @@ export default function AddAddress() {
                 number,
             }
             try {
-                console.log('oi')
                 const res = await api.get('geocoding/reverse/',{
                     headers: {
                         authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken'),
@@ -130,7 +129,6 @@ export default function AddAddress() {
                             'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                         }
                     })
-                    console.log(popHowMany);
                     return navigator.dispatch(StackActions.pop(popHowMany))
                 } catch (err) {
                     Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
