@@ -55,15 +55,21 @@ export default StyleSheet.create({
         borderRadius: 3,
     },
     showCartButton: {
-        height: 60,
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
+        height: 70,
+        width: 70,
+        borderRadius: 35,
         flexDirection: "row",
         justifyContent: "space-around",
         backgroundColor: '#049434',
         alignItems: "center",
+
     },
-    showCartText: {
-        color: 'white',
-        fontWeight: 'bold'
+    buttonContainer:{
+        
+        alignItems: 'center',
     },
     modalContainer: {
         flex: 0.93,
@@ -93,19 +99,20 @@ export default StyleSheet.create({
         fontWeight: '600',
         fontSize: 16
     },
+    cartListingValue:{
+        marginTop: 8,
+    },
     cartListingNameAndAmout: {
         flexDirection: 'row',
     },
     cartContainer: {
-        marginHorizontal: 20,
+        marginHorizontal: 10,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: 'center',
 
     },
-    cartListingDeleteIcon: {
-        marginRight: 15,
-    },
+
     cartListingObservation: {
         fontWeight: '200'
     },
@@ -113,7 +120,7 @@ export default StyleSheet.create({
         fontWeight: '600'
     },
     cartListing: {
-        maxWidth: 280,
+        maxWidth: '80%',
     },
     cartListingSeparator: {
         marginVertical: 10,
@@ -142,5 +149,11 @@ export default StyleSheet.create({
         fontWeight: '600',
         marginBottom: 30,
     },
+    removeFromCartIcon:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '13%',
+        height: 30
+    }
 
 });

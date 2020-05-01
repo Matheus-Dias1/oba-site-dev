@@ -22,6 +22,52 @@ module.exports = {
         }
 
     },
+    async indexShoppingCart(request, response) {
+        const id_user = request.data.id;
+        try {
+            const shopping_carts = await connection({
+                sc: 'shopping_carts',
+                p: 'products'
+            }).select({
+                id: 'p.id',
+                price: 'p.price',
+                name: 'p.product_name',
+                unit_price: 'p.unit_price',
+                unit: 'sc.unit',
+                amount: 'sc.amount',
+                observation: 'sc.observation'
+            })
+                .where('sc.id_user', id_user)
+                .whereRaw('sc.id_product = p.id')
+
+            return response.json(shopping_carts);
+        } catch (err) {
+            return response.status(422).send();
+        }
+    },
+    async deleteItemFromCart(request, response) {
+        const id_user = request.data.id;
+        const {
+            id,
+            amount,
+            observation,
+            unit,
+        } = request.query;
+        try {
+            await connection('shopping_carts')
+                .where({
+                    id_user: id_user,
+                    id_product: id,
+                    amount,
+                    observation,
+                    unit,
+                })
+                .delete()
+            return response.sendStatus(200);
+        } catch (err) {
+            return response.status(422).send();
+        }
+    },
     async hideAddress(request, response) {
         const { id } = request.params;
         try {

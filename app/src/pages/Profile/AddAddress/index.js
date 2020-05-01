@@ -76,13 +76,6 @@ export default function AddAddress() {
                     headers: {
                         authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                     },
-                    body:{
-                        state,
-                        city,
-                        neighborhood,
-                        street,
-                        number,
-                    },
                     params:{
                         state,
                         city,

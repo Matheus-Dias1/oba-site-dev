@@ -9,24 +9,28 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import env from '../../../variables';
 import api from './../../../services/api'
+import AuthContext from '../../../authcontext';
 
 import styles from './styles';
 export default function Products() {
-
+  const { signOut } = React.useContext(AuthContext);
   const navigation = useNavigation();
-  const [cartAccessible, setCartAccessible] = useState(true);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [products, setProducts] = useState([]);
+  const [shoppingCart, setShoppingCart] = useState([]);
+  const [subtotalValue, setSubtotalValue] = useState(0);
   const imageUrl = env.OBA_API_URL + 'image/'
 
+  navigation.isFocused()
 
   async function loadProducts() {
     try {
@@ -36,12 +40,12 @@ export default function Products() {
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
-          alert('Você não tem permissão para acessar essa página');
+          alert('Faça login novamente para continuar');
         } else throw err;
       });
       setProducts(response.data);
     } catch (err) {
-      alert('Erro ao recuperar produtos')
+      alert('Erro ao abrir o carrinho, tende novamente.')
     }
 
   }
@@ -53,13 +57,35 @@ export default function Products() {
   function navigateToDetails(product) {
     navigation.navigate('Produtos', {
       screen: 'ProductDetails',
-      params: { product: product }
+      params: { product: product },
     });
   }
 
-  function openCart() {
-    setIsCartVisible(true);
+  async function openCart() {
+    try {
+      const response = await api.get('profile/shopping_cart', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
+        } else throw err;
+      });
+      setShoppingCart(response.data);
+      const st = await AsyncStorage.getItem('cartValue')
+      if (st === null)
+        setSubtotalValue(0)
+      else
+        setSubtotalValue(parseFloat(st))
+      setIsCartVisible(true);
+
+    } catch (err) {
+      Alert.alert('Erro ao carregar o carrinho, tente novamente.');
+    }
   }
+
   function closeCart() {
     setIsCartVisible(false);
   }
@@ -67,6 +93,32 @@ export default function Products() {
   function finalizePurchase() {
     setIsCartVisible(false);
     navigation.navigate('Produtos', { screen: 'FinalizePurchase' });
+  }
+  async function removeFromCart(item) {
+    try {
+      await api.delete('profile/shopping_cart', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params: {
+          id: item.id,
+          amount: item.amount,
+          observation: item.observation,
+          unit: item.unit,
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          Alert.alert('oi');//return signOut();
+        } else throw err;
+      })
+      setShoppingCart(shoppingCart.filter(Item => {
+        return JSON.stringify(item) !== JSON.stringify(Item)
+      }))
+    } catch (err) {
+      console.log(err)
+      Alert.alert('Erro ao excluir item do carrinho.')
+    }
   }
 
 
@@ -90,41 +142,60 @@ export default function Products() {
               <Text style={styles.cartHeaderText}>Carrinho de Compras</Text>
             </View>
           </TouchableWithoutFeedback>
-          <ScrollView>
-            <TouchableWithoutFeedback>
-              <View style={{ marginTop: 10 }}>
-                <View style={styles.cartContainer}>
-                  <View style={styles.cartListing}>
-                    <View style={styles.cartListingNameAndAmout}>
-                      <Text style={styles.cartListingAmount}>5 <Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>Maçã</Text> (KG)</Text>
-                    </View>
-                    <Text style={styles.cartListingObservation}>Observação: Não se se muito muito muito muito muito muito muito muito muito muitomuito Maduros</Text>
-                    <Text style={styles.cartListingValue}>R$ 2,00</Text>
-                  </View>
-                  <Ionicons name={'md-trash'} style={styles.cartListingDeleteIcon} size={30} color={'#737380'} />
+
+          <FlatList
+            style={styles.productsList}
+            ListFooterComponent={(
+              <TouchableWithoutFeedback onPress={() => closeCart()}>
+                <View style={styles.addMoreItensContainer}>
+                  <Text>Adicionar mais itens</Text>
+                  <Ionicons name={'ios-add'} style={{ marginLeft: 20, marginTop: 3 }} size={30} color={'#049434'} />
                 </View>
-                <View style={styles.cartListingSeparator} />
+              </TouchableWithoutFeedback>
+            )}
+            showsVerticalScrollIndicator={false}
+            data={shoppingCart}
+            keyExtractor={item => String(shoppingCart.indexOf(item))}
+            renderItem={({ item }) => {
 
+              function formatPrice(item) {
+                var price;
+                if (item.unit === 'UN' && item.unit_price !== null)
+                  price = item.unit_price * item.amount
+                else
+                  price = item.price * item.amount
+                return Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price)
+              }
 
-
-
-                <TouchableWithoutFeedback onPress={() => closeCart()}>
-                  <View style={styles.addMoreItensContainer}>
-                    <Text>Adicionar mais itens</Text>
-                    <Ionicons name={'ios-add'} style={{ marginLeft: 20, marginTop: 3 }} size={30} color={'#049434'} />
+              return (
+                <TouchableWithoutFeedback>
+                  <View>
+                    <View style={styles.cartContainer}>
+                      <View style={styles.cartListing}>
+                        <View style={styles.cartListingNameAndAmout}>
+                          <Text style={styles.cartListingAmount}>{`${String(item.amount).replace('.', '*').replace(',', '.').replace('*', ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
+                        </View>
+                        {!!item.observation && <Text style={styles.cartListingObservation}>Observação: {item.observation}</Text>}
+                        <Text style={styles.cartListingValue}>{formatPrice(item)}</Text>
+                      </View>
+                      <TouchableWithoutFeedback onPress={() => removeFromCart(item)}>
+                        <View style={styles.removeFromCartIcon}>
+                          <Ionicons name={'md-trash'} size={25} color={'#737380'} />
+                        </View>
+                      </TouchableWithoutFeedback>
+                    </View>
+                    <View style={styles.cartListingSeparator} />
                   </View>
                 </TouchableWithoutFeedback>
 
+              )
+            }}
+          />
 
-
-              </View>
-
-            </TouchableWithoutFeedback>
-          </ScrollView>
           <TouchableWithoutFeedback onPress={() => finalizePurchase()}>
             <View style={styles.finalizePurchase}>
               <Text style={styles.buyButton}>Concluir compra</Text>
-              <Text style={styles.buyButton}>R$ 52,00</Text>
+              <Text style={styles.buyButton}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(subtotalValue)}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -165,17 +236,15 @@ export default function Products() {
               </TouchableOpacity>
             )}
           />
+          <TouchableWithoutFeedback onPress={() => openCart()}>
+            <View style={styles.showCartButton}>
+              <Ionicons name={'ios-cart'} size={35} color={'white'} />
+            </View>
+          </TouchableWithoutFeedback>
 
         </View>
 
       </SafeAreaView>
-
-      {cartAccessible && <TouchableWithoutFeedback onPress={() => openCart()}>
-        <View style={styles.showCartButton}>
-          <Ionicons name={'ios-cart'} size={35} color={'white'} />
-          <Text style={styles.showCartText}>Abrir Carrinho</Text>
-        </View>
-      </TouchableWithoutFeedback>}
 
     </View>
   );

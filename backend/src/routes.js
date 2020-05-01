@@ -37,11 +37,14 @@ routes.put('/purchases/delivery', AuthTokenController.authenticateToken, Purchas
 
 routes.post('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.create);
 routes.delete('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.delete);
+routes.get('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.index);
 
 
 routes.get('/profile/addresses', AuthTokenController.authenticateToken, ProfileController.indexAddresses);
 routes.get('/profile/purchases', AuthTokenController.authenticateToken, ProfileController.indexPurchases);
 routes.get('/profile/products', AuthTokenController.authenticateToken, ProfileController.indexProducts);
+routes.get('/profile/shopping_cart', AuthTokenController.authenticateToken, ProfileController.indexShoppingCart);
+routes.delete('/profile/shopping_cart', AuthTokenController.authenticateToken, ProfileController.deleteItemFromCart);
 
 routes.get('/productsPurchases/:idP', AuthTokenController.authenticateToken, ProductPurchaseController.index);
 

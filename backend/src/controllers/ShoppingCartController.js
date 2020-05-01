@@ -36,20 +36,15 @@ module.exports = {
     },
 
     async index(request, response) {
-        const id_user = request.data.id;
+        const admin = request.data.admin;
+        if (!admin)
+            return response.sendStatus(403);
         try {
-            const [count] = await connection({
-                sc: 'shopping_carts',
-                p: 'products'
-            })
-            .where('sc.id_user', id_user)
-            .whereRaw('sc.id_product = p.id')
-            .count();
-
             const shopping_carts = await connection({
                 sc: 'shopping_carts',
                 p: 'products'
             }).select({
+                id: 'p.id',
                 price: 'p.price',
                 name: 'p.product_name',
                 unit_price: 'p.unit_price',
@@ -57,19 +52,16 @@ module.exports = {
                 amount: 'sc.amount',
                 observation: 'sc.observation'
             })
-                .where('sc.id_user', id_user)
                 .whereRaw('sc.id_product = p.id')
-                .limit(5)
-                .offset((page - 1) * 5)
 
-            response.header('X-Total-Count', count['count(*)']);
             return response.json(shopping_carts);
         } catch (err) {
+            console.log(err)
             return response.status(422).send();
         }
     },
-    
-    async delete(request, response) { 
+
+    async delete(request, response) {
         const id_user = request.data.id;
         try {
             await connection('shopping_carts')
@@ -82,7 +74,4 @@ module.exports = {
         }
     },
 
-    async update(request, response) {
-
-    }
 };

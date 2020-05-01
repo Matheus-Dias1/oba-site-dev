@@ -26,9 +26,17 @@ module.exports = {
                         id: user.id,
                         admin: user.admin,
                     };
-                    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'365d'})
-
-                    return response.json({name: user.name, accessToken:accessToken, admin:user.admin});
+                    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '365d' })
+                    try {
+                        connection('shopping_carts')
+                            .where('id_user', user.id)
+                            .delete().then(() => {
+                                return response.json({ name: user.name, accessToken: accessToken, admin: user.admin });
+                            });
+                    } catch (err) {
+                        throw err;
+                    }
+                    
                 } else {
                     return response.status(400).json({
                         error: 'Senha incorreta'

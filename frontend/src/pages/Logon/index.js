@@ -26,7 +26,6 @@ export default function Logon() {
             }
             
         } catch (err) {
-            console.log(err)
             alert('Houve um erro no login! Confira seus dados e tente novamente.');
         }
     }
