@@ -19,7 +19,7 @@ module.exports = {
             min_value,
         } = request.body;
         const exp = validUntil(expiration);
-        const code = crypto.randomBytes(4).toString('HEX').toUpperCase();
+        const code = crypto.randomBytes(3).toString('HEX').toUpperCase();
         try {
             await connection('cupons')
                 .insert({
@@ -64,8 +64,10 @@ module.exports = {
                     console.log(err);
                 }
 
-
-            return response.json(res);
+            return response.json({
+                status: 'OK',
+                result: res
+            });
 
         } catch (err) {
             console.log(err)

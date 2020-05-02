@@ -27,6 +27,7 @@ import styles from './styles';
 
 
 export default function FinalizePurchase() {
+  const route = useRoute();
   const [selectedAddress, setSelectedAddress] = useState(0);
   const [addresses, setAddresses] = useState([]);
   const [changeFor, setChangeFor] = useState('R$ ');
@@ -37,12 +38,12 @@ export default function FinalizePurchase() {
   const [showChangeModal, setShowChangeModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
+  const [total, setTotal] = useState(route.params.subtotal);
   const [cupon, setCupon] = useState('');
-  const [cuponContainerStyle, setCuponContainerStyle] = useState(0);
-
+  const [cuponValidated, setCuponValidated] = useState(false);
+  const [cuponDiscount, setCuponDiscount] = useState(0);
 
   const navigation = useNavigation();
-  const route = useRoute();
 
   useEffect(() => {
     getAddresses();
@@ -51,21 +52,11 @@ export default function FinalizePurchase() {
   }, [])
 
 
-
-
-  async function getSelectedAddress() {
-    setSelectedAddress(await AsyncStorage.getItem('selectedAddress'))
-  }
-
-  async function selectAddress(address) {
-    await AsyncStorage.setItem('selectedAddress', String(address));
-    setSelectedAddress(address);
-    setDeliveryFee(addresses[parseInt(address)].delivery_fee)
-  }
-
-  async function getAddresses() {
+  async function validateCupon() {
+    if (cuponValidated)
+      return Alert.alert('Você não pode utilizar mais de um cupom na mesma compra')
     try {
-      const res = await api.get('profile/addresses', {
+      const res = await api.get(`cupons/${cupon}`, {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
@@ -75,311 +66,376 @@ export default function FinalizePurchase() {
           return signOut();
         } else throw err;
       });
-      setAddresses(res.data);
-      if (await AsyncStorage.getItem('selectedAddress') === null)
-        setDeliveryFee(0)
-      else
-        setDeliveryFee(res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
+
+      if (res.data.status === 'FAIL')
+        return Alert.alert(res.data.message);
+      if (res.data.result.min_value > route.params.subtotal)
+        return Alert.alert('Valor mínimo do cupom não atingido',`Esse cupom tem um valor mínimo de ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(res.data.result.min_value))} em produtos.`)
+       
+      setCuponValidated(true);
+      if (res.data.result.discount_type === '-'){
+        setCuponDiscount(res.data.result.discount)
+        setTotal(total - res.data.result.discount)
+      } else if(res.data.result.discount_type === '%'){
+        setCuponDiscount(res.data.result.discount/100*route.params.subtotal)
+        setTotal(total - (res.data.result.discount/100*route.params.subtotal))
+      }
 
     } catch (err) {
-      Alert.alert('Erro ao carregar os endereços cadastrados', 'Tente novamente mais tarde')
-    }
+    console.log(err)
+    Alert.alert('Erro ao validar cupom', 'Tente novamente mais tarde')
   }
+}
 
-  async function getDates() {
 
-  }
+async function getSelectedAddress() {
+  setSelectedAddress(await AsyncStorage.getItem('selectedAddress'))
+}
 
-  function navigateToNewAddress() {
+async function selectAddress(address) {
+  await AsyncStorage.setItem('selectedAddress', String(address));
+  setSelectedAddress(address);
+  setTotal(total + addresses[parseInt(address)].delivery_fee - deliveryFee)
+  setDeliveryFee(addresses[parseInt(address)].delivery_fee)
+}
 
-    
-    navigation.navigate('Perfil', {
-      screen: 'Profile'
+async function getAddresses() {
+  try {
+    const res = await api.get('profile/addresses', {
+      headers: {
+        authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+      }
+    }).catch(err => {
+      if (err.response.status === 401 || err.response.status === 403) {
+        Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+        return signOut();
+      } else throw err;
     });
-
-    navigation.goBack();
-  }
-
-  function handlePaymentMethod(method) {
-    if (method === 'Dinheiro')
-      setShowChangeModal(true);
-    else if (method === 'Transferência Bancaria')
-      setShowTransferModal(true);
-  }
-
-
-
-  function paymentMethodGetIcon(str) {
-    if (str === 'Dinheiro')
-      return 'md-cash'
-    else if (str === 'Cartão de Crédito' || str === 'Cartão de Débito')
-      return 'md-card'
-    else if (str === 'Transferência Bancaria')
-      return 'md-swap'
-  }
-
-
-  function verifyChange(needsChange) {
-    if (needsChange) {
-
-    } else {
-      setChangeFor('R$ ');
+    setAddresses(res.data);
+    if (await AsyncStorage.getItem('selectedAddress') === null)
+      setDeliveryFee(0)
+    else {
+      setDeliveryFee(res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
+      setTotal(total + res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
     }
-    Keyboard.dismiss();
-    setShowChangeModal(false);
+  } catch (err) {
+    Alert.alert('Erro ao carregar os endereços cadastrados', 'Tente novamente mais tarde')
   }
+}
 
-  function sendEmail() {
-    MailComposer.composeAsync({
-      subject: 'Envio de Comprovante',
-      recipients: ['obahortifruti20@gmail.com']
-    })
+async function getDates() {
+  try {
+    const res = await api.get('schedule', {
+      headers: {
+        authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+      }
+    }).catch(err => {
+      if (err.response.status === 401 || err.response.status === 403) {
+        Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+        return signOut();
+      } else throw err;
+    });
+    setDates(res.data)
+
+  } catch (err) {
+    Alert.alert('Erro ao carregar os endereços cadastrados', 'Tente novamente mais tarde')
   }
+}
 
-  function sendWhatsAppMessage() {
-    Linking.openURL('whatsapp://send?phone=553497762094')
+function navigateToNewAddress() {
+
+
+  navigation.navigate('Perfil', {
+    screen: 'Profile'
+  });
+
+  navigation.goBack();
+}
+
+function handlePaymentMethod(method) {
+  if (method === 'Dinheiro')
+    setShowChangeModal(true);
+  else if (method === 'Transferência Bancaria')
+    setShowTransferModal(true);
+}
+
+
+
+function paymentMethodGetIcon(str) {
+  if (str === 'Dinheiro')
+    return 'md-cash'
+  else if (str === 'Cartão de Crédito' || str === 'Cartão de Débito')
+    return 'md-card'
+  else if (str === 'Transferência Bancaria')
+    return 'md-swap'
+}
+
+
+function verifyChange(needsChange) {
+  if (needsChange) {
+
+  } else {
+    setChangeFor('R$ ');
   }
+  Keyboard.dismiss();
+  setShowChangeModal(false);
+}
 
-  const listFooter = () => (
-    <TouchableWithoutFeedback onPress={() => navigateToNewAddress()}>
-      <View style={styles.addAddressButtonContainer}>
-        <Ionicons style={styles.addAddressButton} name={'ios-add'} size={55} color={'#049434'} />
-      </View>
-    </TouchableWithoutFeedback>
-  );
+function sendEmail() {
+  MailComposer.composeAsync({
+    subject: 'Envio de Comprovante',
+    recipients: ['obahortifruti20@gmail.com']
+  })
+}
 
-  async function a() {
-    await AsyncStorage.removeItem('selectedAddress');
-  }
+function sendWhatsAppMessage() {
+  Linking.openURL('whatsapp://send?phone=553497762094')
+}
 
-  return (
-    <View style={styles.container}>
+const listFooter = () => (
+  <TouchableWithoutFeedback onPress={() => navigateToNewAddress()}>
+    <View style={styles.addAddressButtonContainer}>
+      <Ionicons style={styles.addAddressButton} name={'ios-add'} size={55} color={'#049434'} />
+    </View>
+  </TouchableWithoutFeedback>
+);
 
-      <Modal
-        isVisible={showChangeModal}
-        avoidKeyboard={true}
 
-        style={styles.modal}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalPrice}>Total: R$ 60,00</Text>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.modalTitle}>Troco para</Text>
-              <TextInputMask
-                type={'money'}
-                keyboardType={'number-pad'}
-                options={{
-                  precision: 2,
-                  separator: ',',
-                  delimiter: '.',
-                  unit: 'R$ ',
-                  suffixUnit: ''
-                }}
-                style={styles.changeForInput}
-                autoFocus={true}
-                value={changeFor}
-                onChangeText={text => setChangeFor(text)}
-              />
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableWithoutFeedback onPress={() => verifyChange(true)}>
-                <View style={styles.modalButton}>
-                  <Text style={styles.modalButtonText}>Continuar</Text>
-                </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => verifyChange(false)}>
-                <View style={[styles.modalButton]}>
-                  <Text style={styles.modalButtonText}>Não preciso de troco</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
+return (
+  <View style={styles.container}>
+
+    <Modal
+      isVisible={showChangeModal}
+      avoidKeyboard={true}
+
+      style={styles.modal}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalPrice}>Total: {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(total))}</Text>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={styles.modalTitle}>Troco para</Text>
+            <TextInputMask
+              type={'money'}
+              keyboardType={'number-pad'}
+              options={{
+                precision: 2,
+                separator: ',',
+                delimiter: '.',
+                unit: 'R$ ',
+                suffixUnit: ''
+              }}
+              style={styles.changeForInput}
+              autoFocus={true}
+              value={changeFor}
+              onChangeText={text => setChangeFor(text)}
+            />
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableWithoutFeedback onPress={() => verifyChange(true)}>
+              <View style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Continuar</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => verifyChange(false)}>
+              <View style={[styles.modalButton]}>
+                <Text style={styles.modalButtonText}>Não preciso de troco</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
         </View>
-      </Modal>
+      </View>
+    </Modal>
 
-      <Modal
-        isVisible={showTransferModal}
-        avoidKeyboard={true}
-        propagateSwipe={true}
-        onBackdropPress={() => setShowTransferModal(false)}
-        onSwipeComplete={() => setShowTransferModal(false)}
-        swipeDirection={"down"}
-        style={styles.modal}
-      >
-        <View style={styles.modalContainer}>
-          <ScrollView>
-            <TouchableWithoutFeedback>
-              <View style={styles.modalContent}>
-                <View>
-                  <Text style={styles.transferModalTitle}>Transferência Bancaria{'\n'}</Text>
-                  <Text style={styles.transferModalBody}>Transfira a quantia ({'R$ 60,00'}) para uma das contas abaixo. Envie o comprovante da transferência para nosso WhatsApp ou para nosso e-mail.</Text>
-                  <View style={styles.transferModalInfoContainer}>
-                    <View style={styles.transferModalInfoContent}>
-                      <Text selectable={true}>
-                        {"Banco: Sicoob\nConta Corrente: 16015-6\nAgência: 3224\nUberlândia - MG\nCNPJ: 35.810.505/0001-04\nBeneficiário: Oba Hortifruti e Comercio Ltda"}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.transferModalInfoContainer}>
-                    <View style={styles.transferModalInfoContent}>
-                      <Text selectable={true}>
-                        {"Banco: Caixa Econômica Federal\nConta Corrente: 107518-1\nAgência: 0161\nUberlândia - MG\nCPF: 010.325.706-36\nBeneficiário: Andrea Carrijo Dias Gama"}
-                      </Text>
-                    </View>
-
-                  </View>
-                  <View style={styles.transferModalTwoButtonContainer}>
-                    <TouchableWithoutFeedback onPress={() => sendWhatsAppMessage()}>
-                      <View style={styles.transferModalTwoButton}>
-                        <Ionicons name={'logo-whatsapp'} size={30} color={'#049434'} />
-                      </View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => sendEmail()}>
-                      <View style={styles.transferModalTwoButton}>
-                        <Ionicons name={'ios-mail'} size={30} color={'#049434'} />
-                      </View>
-                    </TouchableWithoutFeedback>
+    <Modal
+      isVisible={showTransferModal}
+      avoidKeyboard={true}
+      propagateSwipe={true}
+      onBackdropPress={() => setShowTransferModal(false)}
+      onSwipeComplete={() => setShowTransferModal(false)}
+      swipeDirection={"down"}
+      style={styles.modal}
+    >
+      <View style={styles.modalContainer}>
+        <ScrollView>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContent}>
+              <View>
+                <Text style={styles.transferModalTitle}>Transferência Bancaria{'\n'}</Text>
+                <Text style={styles.transferModalBody}>Transfira a quantia (<Text style={{ fontWeight: '700' }}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(total))}</Text>) para uma das contas abaixo. Envie o comprovante da transferência para nosso WhatsApp ou para nosso e-mail.</Text>
+                <View style={styles.transferModalInfoContainer}>
+                  <View style={styles.transferModalInfoContent}>
+                    <Text selectable={true}>
+                      {"Banco: Sicoob\nConta Corrente: 16015-6\nAgência: 3224\nUberlândia - MG\nCNPJ: 35.810.505/0001-04\nBeneficiário: Oba Hortifruti e Comercio Ltda"}
+                    </Text>
                   </View>
                 </View>
-                <View style={{ alignSelf: 'stretch' }}>
+                <View style={styles.transferModalInfoContainer}>
+                  <View style={styles.transferModalInfoContent}>
+                    <Text selectable={true}>
+                      {"Banco: Caixa Econômica Federal\nConta Corrente: 107518-1\nAgência: 0161\nUberlândia - MG\nCPF: 010.325.706-36\nBeneficiário: Andrea Carrijo Dias Gama"}
+                    </Text>
+                  </View>
+
+                </View>
+                <View style={styles.transferModalTwoButtonContainer}>
+                  <TouchableWithoutFeedback onPress={() => sendWhatsAppMessage()}>
+                    <View style={styles.transferModalTwoButton}>
+                      <Ionicons name={'logo-whatsapp'} size={30} color={'#049434'} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback onPress={() => sendEmail()}>
+                    <View style={styles.transferModalTwoButton}>
+                      <Ionicons name={'ios-mail'} size={30} color={'#049434'} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+              </View>
+              <View style={{ alignSelf: 'stretch' }}>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </ScrollView>
+        <TouchableWithoutFeedback onPress={() => setShowTransferModal(false)}>
+          <View style={styles.transferModalButton}>
+            <Text style={styles.transferModalButtonText}>Continuar</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    </Modal>
+    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      <StatusBar barStyle="dark-content" />
+      <Text style={styles.subtitle}>Endereço de entrega</Text>
+      <View style={styles.addressContainer}>
+        <FlatList
+          ListFooterComponent={listFooter}
+          contentContainerStyle={styles.addressesList}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={address => String(addresses.indexOf(address))}
+          data={addresses}
+          renderItem={({ item: address }) => (
+
+            <TouchableWithoutFeedback onPress={() => selectAddress(addresses.indexOf(address))} activeOpacity={0.8}>
+              <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddress : styles.address}>
+                <View style={styles.addressInfo}>
+                  <Text style={styles.addressInfoStreet}>{`${address.street}, ${address.number}`}</Text>
+                  <Text style={styles.addressInfoNeighborhood}>{address.neighborhood}</Text>
                 </View>
               </View>
             </TouchableWithoutFeedback>
-          </ScrollView>
-          <TouchableWithoutFeedback onPress={() => setShowTransferModal(false)}>
-            <View style={styles.transferModalButton}>
-              <Text style={styles.transferModalButtonText}>Continuar</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-      </Modal>
-      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar barStyle="dark-content" />
-        <Text style={styles.subtitle}>Endereço de entrega</Text>
-        <View style={styles.addressContainer}>
-          <FlatList
-            ListFooterComponent={listFooter}
-            contentContainerStyle={styles.addressesList}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={address => String(addresses.indexOf(address))}
-            data={addresses}
-            renderItem={({ item: address }) => (
+          )}
+        />
+      </View>
+      <Text style={styles.subtitle}>Data e período de entrega</Text>
+      <View style={styles.dateContainer}>
+        <FlatList
+          ListFooterComponent={<View style={{ marginRight: 10 }} />}
+          contentContainerStyle={styles.datesList}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={date => String(dates.indexOf(date))}
+          data={dates}
+          renderItem={({ item: date }) => (
 
-              <TouchableWithoutFeedback onPress={() => selectAddress(addresses.indexOf(address))} activeOpacity={0.8}>
-                <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddress : styles.address}>
-                  <View style={styles.addressInfo}>
-                    <Text style={styles.addressInfoStreet}>{`${address.street}, ${address.number}`}</Text>
-                    <Text style={styles.addressInfoNeighborhood}>{address.neighborhood}</Text>
-                  </View>
+            <TouchableWithoutFeedback onPress={() => { setSelectedDate(dates.indexOf(date)) }} activeOpacity={0.8}>
+              <View style={dates.indexOf(date) === selectedDate ? styles.selectedDate : styles.date}>
+                <View style={styles.dateInfoContainer}>
+                  <Text style={styles.dateInfo}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</Text>
+                  <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
+                  <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h00 - 12h30' : '14h00 - 18h30'}</Text>
+
                 </View>
-              </TouchableWithoutFeedback>
-            )}
-          />
-        </View>
-        <Text style={styles.subtitle}>Data e período de entrega</Text>
-        <View style={styles.dateContainer}>
-          <FlatList
-            ListFooterComponent={<View style={{ marginRight: 10 }} />}
-            contentContainerStyle={styles.datesList}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={date => date}
-            data={['20/04/2020', '21/04/2020', '22/04/2020', '23/04/2020', '24/04/2020',]}
-            renderItem={(date) => (
+              </View>
+            </TouchableWithoutFeedback>
+          )}
+        />
 
-              <TouchableWithoutFeedback onPress={() => { a(); setSelectedDate(date.item) }} activeOpacity={0.8}>
-                <View style={date.item === selectedDate ? styles.selectedDate : styles.date}>
-                  <View style={styles.dateInfoContainer}>
-                    <Text style={styles.dateInfo}>{date.item}</Text>
-                    <Text style={styles.periodInfo}>Manhã</Text>
-                    <Text style={styles.periodTimeSpan}>09h00 - 12h30</Text>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            )}
-          />
-
-          <Text style={styles.subtitle}>Cupom</Text>
-          <View style={styles.cuponContainer}>
-            <View style={styles.cuponInputContainer}>
-              <TextInput
-                style={styles.cuponTextInput}
-                placeholder="Ex: 9E435BC4"
-                autoCorrect={false}
-                maxLength={8}
-                value={cupon}
-                onChange={e => setCupon(e.nativeEvent.text)}
-              />
-            </View>
+        <Text style={styles.subtitle}>Cupom</Text>
+        <View style={styles.cuponContainer}>
+          <View style={styles.cuponInputContainer}>
+            <TextInput
+              style={styles.cuponTextInput}
+              placeholder="Ex: 9E435BC4"
+              autoCorrect={false}
+              maxLength={8}
+              value={cupon}
+              onChange={e => setCupon(e.nativeEvent.text)}
+            />
+          </View>
+          <TouchableWithoutFeedback onPress={() => validateCupon()}>
             <View style={styles.cuponButtonContainer}>
               <Text style={styles.cuponButtonText}>Validar</Text>
             </View>
-          </View>
-
-
-
-          <Text style={styles.subtitle}>Pagamento</Text>
-          <View style={styles.paymentContainer}>
-            <View style={styles.paymentContent}>
-              <View style={styles.paymentPropertyValue} >
-                <Text style={styles.paymentTextSubtotal}>Subtotal</Text>
-                <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(route.params.subtotal))}</Text>
-              </View>
-              <View style={styles.paymentPropertyValue} >
-                <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
-                <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>
-              </View>
-              <View style={styles.paymentPropertyValue} >
-                <Text style={styles.paymentTextTotal}>Total</Text>
-                <Text style={styles.paymentTextTotal}>R$ 60,00</Text>
-              </View>
-            </View>
-            <View style={styles.paymentInfoSeparator} />
-            <Text style={styles.paymentMethodText}>Método de pagamento</Text>
-            <FlatList
-              ListFooterComponent={<View style={{ marginRight: 10 }} />}
-              contentContainerStyle={styles.paymentMethodList}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={method => method}
-              data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito',]}
-              renderItem={(method) => (
-
-                <TouchableWithoutFeedback onPress={() => { setPaymentMethod(method.item), handlePaymentMethod(method.item) }} activeOpacity={0.8}>
-                  <View style={method.item === paymentMethod ? styles.selectedPaymentMethod : styles.paymentMethod}>
-                    <View style={styles.PaymentMethodContainer}>
-                      <Ionicons name={paymentMethodGetIcon(method.item)} size={30} color={'green'} />
-                      <Text style={styles.listPaymentMethodText}>{method.item}</Text>
-
-                    </View>
-                  </View>
-                </TouchableWithoutFeedback>
-              )}
-            />
-          </View>
-          <Text style={styles.subtitle}>Observação sobre entrega</Text>
-          <View style={styles.obsContainer}>
-            <TextInput
-              placeholder="Ex: Interfone não funciona, casa em reforma, casa sem número"
-              style={styles.textArea}
-              multiline={true}
-              numberOfLines={4}
-              onChangeText={(text) => setObservation(text)}
-              value={observation}
-            />
-          </View>
+          </TouchableWithoutFeedback>
         </View>
-        <TouchableWithoutFeedback>
-          <View style={styles.finalizePurchaseButton}>
-            <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
+
+
+
+        <Text style={styles.subtitle}>Pagamento</Text>
+        <View style={styles.paymentContainer}>
+          <View style={styles.paymentContent}>
+            <View style={styles.paymentPropertyValue} >
+              <Text style={styles.paymentTextSubtotal}>Subtotal</Text>
+              <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(route.params.subtotal))}</Text>
+            </View>
+            <View style={styles.paymentPropertyValue} >
+              <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
+              <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>
+            </View>
+            {!!cuponDiscount && <View style={styles.paymentPropertyValue}>
+              <Text style={styles.paymentTextSubtotal}>Cupom de desconto</Text>
+              <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(-cuponDiscount)}</Text>
+            </View>}
+            <View style={styles.paymentPropertyValue} >
+              <Text style={styles.paymentTextTotal}>Total</Text>
+              <Text style={styles.paymentTextTotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(total))}</Text>
+            </View>
           </View>
-        </TouchableWithoutFeedback>
+          <View style={styles.paymentInfoSeparator} />
+          <Text style={styles.paymentMethodText}>Método de pagamento</Text>
+          <FlatList
+            ListFooterComponent={<View style={{ marginRight: 10 }} />}
+            contentContainerStyle={styles.paymentMethodList}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={method => method}
+            data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito',]}
+            renderItem={(method) => (
 
-      </KeyboardAwareScrollView>
+              <TouchableWithoutFeedback onPress={() => { setPaymentMethod(method.item), handlePaymentMethod(method.item) }} activeOpacity={0.8}>
+                <View style={method.item === paymentMethod ? styles.selectedPaymentMethod : styles.paymentMethod}>
+                  <View style={styles.PaymentMethodContainer}>
+                    <Ionicons name={paymentMethodGetIcon(method.item)} size={30} color={'green'} />
+                    <Text style={styles.listPaymentMethodText}>{method.item}</Text>
 
-    </View >
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            )}
+          />
+        </View>
+        <Text style={styles.subtitle}>Observação sobre entrega</Text>
+        <View style={styles.obsContainer}>
+          <TextInput
+            placeholder="Ex: Interfone não funciona, casa em reforma, casa sem número"
+            style={styles.textArea}
+            multiline={true}
+            numberOfLines={4}
+            onChangeText={(text) => setObservation(text)}
+            value={observation}
+          />
+        </View>
+      </View>
+      <TouchableWithoutFeedback>
+        <View style={styles.finalizePurchaseButton}>
+          <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
+        </View>
+      </TouchableWithoutFeedback>
 
-  );
+    </KeyboardAwareScrollView>
+
+  </View >
+
+);
 }
