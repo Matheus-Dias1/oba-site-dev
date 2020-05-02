@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text'
 import * as MailComposer from 'expo-mail-composer';
+import { useNavigation, StackActions, useRoute } from '@react-navigation/native';
+import api from '../../../services/api'
 
 import {
   View,
@@ -15,6 +17,8 @@ import {
   Linking,
   ScrollView,
   Keyboard,
+  Alert,
+  AsyncStorage,
 } from 'react-native';
 
 
@@ -24,16 +28,67 @@ import styles from './styles';
 
 export default function FinalizePurchase() {
   const [selectedAddress, setSelectedAddress] = useState(0);
+  const [addresses, setAddresses] = useState([]);
   const [changeFor, setChangeFor] = useState('R$ ');
   const [selectedDate, setSelectedDate] = useState('');
+  const [dates, setDates] = useState([]);
   const [observation, setObservation] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [showChangeModal, setShowChangeModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const navigation = useNavigation();
+  const route = useRoute();
 
+  useEffect(() => {
+    getAddresses();
+    getSelectedAddress();
+    getDates();
+  }, [])
+
+
+
+
+  async function getSelectedAddress() {
+    setSelectedAddress(await AsyncStorage.getItem('selectedAddress'))
+  }
+
+  async function selectAddress(address) {
+    await AsyncStorage.setItem('selectedAddress', String(address));
+    setSelectedAddress(address);
+    setDeliveryFee(addresses[parseInt(address)].delivery_fee)
+  }
+
+  async function getAddresses() {
+    try {
+      const res = await api.get('profile/addresses', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
+        } else throw err;
+      });
+      setAddresses(res.data);
+      if (await AsyncStorage.getItem('selectedAddress') === null)
+        setDeliveryFee(0)
+      else
+        setDeliveryFee(res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
+      
+    } catch (err) {
+      Alert.alert('Erro ao carregar os endereços cadastrados', 'Tente novamente mais tarde')
+    }
+  }
+
+  async function getDates() {
+
+  }
 
   function navigateToNewAddress() {
-    alert('new address');
+    navigation.navigate('Addresses');
+    navigation.dispatch(StackActions.popToTop());
   }
 
   function handlePaymentMethod(method) {
@@ -84,7 +139,9 @@ export default function FinalizePurchase() {
     </TouchableWithoutFeedback>
   );
 
-
+  async function a() {
+    await AsyncStorage.removeItem('selectedAddress');
+  }
 
   return (
     <View style={styles.container}>
@@ -197,15 +254,15 @@ export default function FinalizePurchase() {
             contentContainerStyle={styles.addressesList}
             horizontal
             showsHorizontalScrollIndicator={false}
-            keyExtractor={address => String(address)}
-            data={[0, 1]}
-            renderItem={(address) => (
+            keyExtractor={address => String(addresses.indexOf(address))}
+            data={addresses}
+            renderItem={({ item: address }) => (
 
-              <TouchableWithoutFeedback onPress={() => setSelectedAddress(address.item)} activeOpacity={0.8}>
-                <View style={address.item === selectedAddress ? styles.selectedAddress : styles.address}>
+              <TouchableWithoutFeedback onPress={() => selectAddress(addresses.indexOf(address))} activeOpacity={0.8}>
+                <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddress : styles.address}>
                   <View style={styles.addressInfo}>
-                    <Text style={styles.addressInfoStreet}>Av Morum Bernardino, 250</Text>
-                    <Text style={styles.addressInfoNeighborhood}>Presidente Roosevelt</Text>
+                    <Text style={styles.addressInfoStreet}>{`${address.street}, ${address.number}`}</Text>
+                    <Text style={styles.addressInfoNeighborhood}>{address.neighborhood}</Text>
                   </View>
                 </View>
               </TouchableWithoutFeedback>
@@ -223,7 +280,7 @@ export default function FinalizePurchase() {
             data={['20/04/2020', '21/04/2020', '22/04/2020', '23/04/2020', '24/04/2020',]}
             renderItem={(date) => (
 
-              <TouchableWithoutFeedback onPress={() => setSelectedDate(date.item)} activeOpacity={0.8}>
+              <TouchableWithoutFeedback onPress={() => { a(); setSelectedDate(date.item) }} activeOpacity={0.8}>
                 <View style={date.item === selectedDate ? styles.selectedDate : styles.date}>
                   <View style={styles.dateInfoContainer}>
                     <Text style={styles.dateInfo}>{date.item}</Text>
@@ -242,11 +299,11 @@ export default function FinalizePurchase() {
             <View style={styles.paymentContent}>
               <View style={styles.paymentPropertyValue} >
                 <Text style={styles.paymentTextSubtotal}>Subtotal</Text>
-                <Text style={styles.paymentTextSubtotal}>R$ 52,00</Text>
+                <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(route.params.subtotal))}</Text>
               </View>
               <View style={styles.paymentPropertyValue} >
                 <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
-                <Text style={styles.paymentTextSubtotal}>R$ 8,00</Text>
+                <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>
               </View>
               <View style={styles.paymentPropertyValue} >
                 <Text style={styles.paymentTextTotal}>Total</Text>

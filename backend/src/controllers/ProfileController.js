@@ -81,6 +81,37 @@ module.exports = {
         }
 
     },
+    async getCartTotal(request, response) {
+        const id_user = request.data.id;
+        try {
+            const cartItems = await connection({
+                sc: 'shopping_carts',
+                p: 'products'
+            }).select({
+                price: 'p.price',
+                unit_price: 'p.unit_price',
+                unit: 'sc.unit',
+                amount: 'sc.amount',
+            })
+                .where('sc.id_user', id_user)
+                .whereRaw('sc.id_product = p.id')
+
+            var sum = 0;
+
+            for (i in cartItems){
+
+                if (cartItems[i].unit === 'UN' && cartItems[i].unit_price !== null)
+                    sum = sum + cartItems[i].unit_price * cartItems[i].amount;
+                else
+                    sum = sum + cartItems[i].price * cartItems[i].amount;
+            }
+            return response.json({cartValue: sum});
+        } catch (err) {
+            console.log(err)
+            return response.status(422).send();
+        }
+
+    },
 
     async indexProducts(request, response) {
         const { page = 1 } = request.query;

@@ -111,15 +111,6 @@ export default function ProductDetails() {
       } catch (err) {
         Alert.alert('Erro ao adicionar ao carrinho', 'Tente novamente mais tarde')
       }
-
-
-
-    }
-    const currPrice = await AsyncStorage.getItem('cartValue')
-    if (currPrice === null) {
-      AsyncStorage.setItem('cartValue', String(price[0] + price[1]))
-    } else {
-      AsyncStorage.setItem('cartValue', String(parseFloat(currPrice) + price[0] + price[1]))
     }
     return navigation.goBack();
   }

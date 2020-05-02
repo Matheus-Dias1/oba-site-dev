@@ -13,13 +13,13 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons/';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Addresses() {
-  const [addresses, setAdresses] = useState([]);
-  const [selectedAddress, setSelectedAdresses] = useState(-1);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddresses] = useState(-1);
   const navigation = useNavigation();
 
   try {
     AsyncStorage.getItem('selectedAddress').then(res => {
-      if (res !== null) setSelectedAdresses(res);
+      if (res !== null) setSelectedAddresses(res);
     })
   } catch (err) {
 
@@ -39,8 +39,7 @@ export default function Addresses() {
 
   async function selectAddress(address) {
     await AsyncStorage.setItem('selectedAddress', String(address));
-    setSelectedAdresses(address);
-
+    setSelectedAddresses(address);
   }
 
   function confirmAlert(id) {
@@ -69,7 +68,7 @@ export default function Addresses() {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
       });
-      setAdresses(addresses.filter(function (add) { return add.id !== id }))
+      setAddresses(addresses.filter(function (add) { return add.id !== id }))
       await AsyncStorage.removeItem('selectedAddress');
     } catch (err) {
       console.log(err)
@@ -86,8 +85,13 @@ export default function Addresses() {
             authorization: 'Bearer ' + token
           }
         }).then(res => {
-          setAdresses(res.data);
-        })
+          setAddresses(res.data);
+        }).catch(err => {
+          if (err.response.status === 401 || err.response.status === 403) {
+            Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+            return signOut();
+          } else throw err;
+        });
       });
 
     } catch (err) {

@@ -14,7 +14,7 @@ import {
 
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import env from '../../../variables';
 import api from './../../../services/api'
@@ -74,11 +74,19 @@ export default function Products() {
         } else throw err;
       });
       setShoppingCart(response.data);
-      const st = await AsyncStorage.getItem('cartValue')
-      if (st === null)
-        setSubtotalValue(0)
-      else
-        setSubtotalValue(parseFloat(st))
+
+      const cartValue = await api.get('/profile/shopping_cart/value',{
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
+        } else throw err;
+      });
+
+      setSubtotalValue(cartValue.data.cartValue);
       setIsCartVisible(true);
 
     } catch (err) {
@@ -92,7 +100,12 @@ export default function Products() {
 
   function finalizePurchase() {
     setIsCartVisible(false);
-    navigation.navigate('Produtos', { screen: 'FinalizePurchase' });
+    navigation.navigate('Produtos', {
+      screen: 'FinalizePurchase',
+      params: {
+        subtotal: subtotalValue
+      }
+    });
   }
   async function removeFromCart(item) {
     try {
@@ -109,9 +122,9 @@ export default function Products() {
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
           Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-          Alert.alert('oi');//return signOut();
+          return signOut();
         } else throw err;
-      })
+      });
       setShoppingCart(shoppingCart.filter(Item => {
         return JSON.stringify(item) !== JSON.stringify(Item)
       }))

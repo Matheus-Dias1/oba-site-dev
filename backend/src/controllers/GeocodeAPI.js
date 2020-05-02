@@ -15,9 +15,6 @@ module.exports = {
             //console.log(err)
         }
 
-
-
-
         var componets_list = [];
         var data = {
             "status": 'OK',
@@ -53,23 +50,30 @@ module.exports = {
                 }
             }
         }
-        if (addressInfo.data.status !== 'OK') {
-            if (addressInfo.data.status === 'ZERO_RESULTS') {
-                //console.log('zero_results')
-                return res.json({
-                    "status": 'ZERO_RESULTS',
-                    "result": {}
-                });
-            } else {
-                //console.log('error')
+        try {
+            if (addressInfo.data.status !== 'OK') {
+                if (addressInfo.data.status === 'ZERO_RESULTS') {
+                    //console.log('zero_results')
+                    return res.json({
+                        "status": 'ZERO_RESULTS',
+                        "result": {}
+                    });
+                } else {
+                    //console.log('error')
 
-                return res.json({
-                    "status": 'ERROR',
-                    "result": {}
-                });
+                    return res.json({
+                        "status": 'ERROR',
+                        "result": {}
+                    });
+                }
+
+
             }
-
-
+        } catch (err) {
+            return res.json({
+                "status": 'ERROR',
+                "result": {}
+            });
         }
         for (i in addressInfo.data.results[0].address_components)
             componets_list.push(addressInfo.data.results[0].address_components[i])

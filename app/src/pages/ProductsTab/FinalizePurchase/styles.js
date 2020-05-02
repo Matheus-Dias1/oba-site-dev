@@ -30,10 +30,12 @@ export default StyleSheet.create({
 
     },
     addressInfoStreet: {
+        textTransform: 'capitalize',
         fontSize: 15,
         fontWeight: '600'
     },
     addressInfoNeighborhood: {
+        textTransform: 'capitalize',
         fontSize: 12,
         fontWeight: '400'
     },
