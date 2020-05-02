@@ -37,6 +37,10 @@ export default function FinalizePurchase() {
   const [showChangeModal, setShowChangeModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
+  const [cupon, setCupon] = useState('');
+  const [cuponContainerStyle, setCuponContainerStyle] = useState(0);
+
+
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -76,7 +80,7 @@ export default function FinalizePurchase() {
         setDeliveryFee(0)
       else
         setDeliveryFee(res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
-      
+
     } catch (err) {
       Alert.alert('Erro ao carregar os endereços cadastrados', 'Tente novamente mais tarde')
     }
@@ -87,8 +91,13 @@ export default function FinalizePurchase() {
   }
 
   function navigateToNewAddress() {
-    navigation.navigate('Addresses');
-    navigation.dispatch(StackActions.popToTop());
+
+    
+    navigation.navigate('Perfil', {
+      screen: 'Profile'
+    });
+
+    navigation.goBack();
   }
 
   function handlePaymentMethod(method) {
@@ -291,6 +300,23 @@ export default function FinalizePurchase() {
               </TouchableWithoutFeedback>
             )}
           />
+
+          <Text style={styles.subtitle}>Cupom</Text>
+          <View style={styles.cuponContainer}>
+            <View style={styles.cuponInputContainer}>
+              <TextInput
+                style={styles.cuponTextInput}
+                placeholder="Ex: 9E435BC4"
+                autoCorrect={false}
+                maxLength={8}
+                value={cupon}
+                onChange={e => setCupon(e.nativeEvent.text)}
+              />
+            </View>
+            <View style={styles.cuponButtonContainer}>
+              <Text style={styles.cuponButtonText}>Validar</Text>
+            </View>
+          </View>
 
 
 

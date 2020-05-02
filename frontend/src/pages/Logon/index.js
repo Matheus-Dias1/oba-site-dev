@@ -9,8 +9,8 @@ import vegiesImg from '../../assets/fruits.svg';
 import logoImg from '../../assets/OBA_logo.svg'
 
 export default function Logon() {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const history = useHistory();
 
     async function handleLogin(e) {

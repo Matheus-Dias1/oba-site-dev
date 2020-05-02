@@ -13,7 +13,7 @@ const SessionController = require('./controllers/SessionController');
 const ScheduleController = require('./controllers/ScheduleController');
 const AuthTokenController = require('./controllers/AuthTokenController');
 const GeocodeAPI = require('./controllers/GeocodeAPI');
-
+const CuponController = require('./controllers/CuponController')
 
 
 const routes = express.Router();
@@ -51,6 +51,8 @@ routes.get('/productsPurchases/:idP', AuthTokenController.authenticateToken, Pro
 
 routes.post('/session', SessionController.create);
 
+routes.post('/cupons', AuthTokenController.authenticateToken, CuponController.create);
+routes.get('/cupons/:code', AuthTokenController.authenticateToken, CuponController.getCupon);
 
 routes.put('/profile/addresses/hide/:id', AuthTokenController.authenticateToken, ProfileController.hideAddress);
 

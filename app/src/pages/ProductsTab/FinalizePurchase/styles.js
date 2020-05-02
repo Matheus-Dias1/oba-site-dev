@@ -297,6 +297,36 @@ export default StyleSheet.create({
         fontSize: 20,
         fontWeight: '700'
     },
+    cuponContainer:{
+        marginVertical: 15,
+        flexDirection: 'row',
+        marginHorizontal: 15,
+        justifyContent: 'space-between',
+        backgroundColor: 'white',
+        height: 45,
+        borderRadius: 8,
+        alignItems: 'center'
+    },
+    cuponTextInput:{
+        marginLeft: 15,
+        fontSize: 15,
+        width: 150,
+        height: 35,
+    },
+    cuponButtonContainer:{
+        height: 30,
+        borderLeftColor: 'lightgray',
+        borderLeftWidth: 1,
+        justifyContent: 'center',
+        
+    },
+    cuponButtonText:{
+        fontSize: 15,
+        fontWeight: '600',
+        marginHorizontal: 15,
+        color: '#049434'
+    }
+
 
 
 });

@@ -75,7 +75,7 @@ export default function Products() {
       });
       setShoppingCart(response.data);
 
-      const cartValue = await api.get('/profile/shopping_cart/value',{
+      const cartValue = await api.get('/profile/shopping_cart/value', {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
@@ -125,6 +125,12 @@ export default function Products() {
           return signOut();
         } else throw err;
       });
+      var price;
+      if (item.unit === 'UN' && item.unit_price !== null)
+        price = item.unit_price * item.amount
+      else
+        price = item.price * item.amount
+      setSubtotalValue(subtotalValue - price)
       setShoppingCart(shoppingCart.filter(Item => {
         return JSON.stringify(item) !== JSON.stringify(Item)
       }))
