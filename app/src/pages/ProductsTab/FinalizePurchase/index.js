@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text'
 import * as MailComposer from 'expo-mail-composer';
-import { useNavigation, StackActions, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../../services/api'
 
 import {
@@ -240,7 +240,7 @@ export default function FinalizePurchase() {
   }
 
   function sendWhatsAppMessage() {
-    Linking.openURL('whatsapp://send?phone=553497762094')
+    Linking.openURL('whatsapp://send?phone=5534997762094')
   }
 
   const listFooter = () => (
