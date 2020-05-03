@@ -88,7 +88,7 @@ function ProfileTab() {
         name="EditInfo"
         component={EditInfo}
         options={{
-          title: "Editar Perfil",
+          title: "",
           headerTintColor: 'black',
           headerStyle: {
             backgroundColor: '#f2f2f2',

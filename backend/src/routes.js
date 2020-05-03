@@ -14,6 +14,7 @@ const ScheduleController = require('./controllers/ScheduleController');
 const AuthTokenController = require('./controllers/AuthTokenController');
 const GeocodeAPI = require('./controllers/GeocodeAPI');
 const CuponController = require('./controllers/CuponController')
+const ProfileUpdateController = require('./controllers/ProfileUpdateController')
 
 
 const routes = express.Router();
@@ -46,6 +47,9 @@ routes.get('/profile/products', AuthTokenController.authenticateToken, ProfileCo
 routes.get('/profile/shopping_cart', AuthTokenController.authenticateToken, ProfileController.indexShoppingCart);
 routes.delete('/profile/shopping_cart', AuthTokenController.authenticateToken, ProfileController.deleteItemFromCart);
 routes.get('/profile/shopping_cart/value', AuthTokenController.authenticateToken, ProfileController.getCartTotal);
+routes.get('/profile/edit/', AuthTokenController.authenticateToken, ProfileUpdateController.getData);
+routes.put('/profile/edit/', AuthTokenController.authenticateToken, ProfileUpdateController.update);
+routes.put('/profile/edit/password', AuthTokenController.authenticateToken, ProfileUpdateController.updatePassword);
 
 routes.get('/productsPurchases/:idP', AuthTokenController.authenticateToken, ProductPurchaseController.index);
 

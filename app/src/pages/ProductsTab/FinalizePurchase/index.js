@@ -98,14 +98,6 @@ export default function FinalizePurchase() {
     } catch (err) {
       Alert.alert('Não foi possível concluir sua compra', 'Tente novamente mais tarde')
     }
-    // console.log('\n\nid_address: ' + String(addresses[selectedAddress].id))
-    // console.log('delivery_date: ' + dates[selectedDate].date)
-    // console.log('delivery_period: ' + dates[selectedDate].period)
-    // console.log('cupon: ' + cupon)
-    // console.log('observation: ' + observation)
-    // console.log('change: ' + (parseFloat(changeFor.replace('R$ ', '').replace(',','*').replace('.',',').replace('*',',')) - total))
-    // console.log('payment_method: ', paymentMethod)
-    // console.log('value: ' + total)
   }
 
   async function validateCupon() {
