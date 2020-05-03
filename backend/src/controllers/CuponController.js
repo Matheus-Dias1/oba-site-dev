@@ -41,7 +41,7 @@ module.exports = {
         const { code } = request.params;
         try {
             const res = await connection('cupons')
-                .select('*')
+                .select('discount_type', 'discount', 'min_value')
                 .where('code', code.toUpperCase())
                 .first();
             if (res == null)

@@ -268,8 +268,6 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: 'lightgray',
-        borderWidth: 1,
     },
     transferModalButton: {
         height: 80,

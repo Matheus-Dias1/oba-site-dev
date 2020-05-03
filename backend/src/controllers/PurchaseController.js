@@ -16,8 +16,31 @@ module.exports = {
                     observation,
                     delivery_date,
                     delivery_period,
+                    cupon,
                 } = request.body;
 
+                if (cupon !== 'NO_CUPON') {
+                    const dbCupon = await connection('cupons')
+                        .select('*')
+                        .where('code', cupon)
+                        .first();
+
+                    if (dbCupon == null || dbCupon.amount === 0 || dbCupon.expiration_date < (new Date).getTime())
+                        throw new Error('InvalidCupon');
+
+                    if (dbCupon.amount > 1) {
+                        await connection('cupons')
+                            .update('amount', dbCupon.amount-1)
+                            .where('code', cupon);
+                    }
+                    else {
+                        await connection('cupons')
+                            .where('code', cupon)
+                            .delete();
+                    }
+
+
+                }
 
                 const selectedDate = await connection('schedule')
                     .select('*')
@@ -56,7 +79,8 @@ module.exports = {
                     id_address,
                     observation,
                     delivery_period,
-                    delivery_date
+                    delivery_date,
+                    cupon
                 });
 
                 const products = await connection('shopping_carts')
@@ -89,11 +113,22 @@ module.exports = {
             })
         } catch (error) {
             if (error.message === 'DateTaken')
-                return response.json({ error: 'A data selecionada não está mais disponível' })
+                return response.json({
+                    status: 'FAIL',
+                    error: 'A data selecionada não está mais disponível'
+                })
             else if (error.message === 'CartEmpty')
-                return response.json({ error: 'O carrinho está vazio' })
+                return response.json({
+                    status: 'FAIL',
+                    error: 'O carrinho está vazio'
+                })
+            else if (error.message === 'InvalidCupon')
+                return response.json({
+                    status: 'FAIL',
+                    error: 'O cupom expirou ou foi usado por outra pessoa'
+                })
             else {
-                console.log(error)
+                //console.log(error)
                 return response.status(422).send();
             }
 
@@ -105,7 +140,7 @@ module.exports = {
 
     async updateDelivery(request, response) {
         const admin = request.data.admin;
-        if (admin!==1) return response.status(401).send();
+        if (admin !== 1) return response.status(401).send();
         const { id } = request.body;
         try {
             await connection('purchases')
@@ -121,7 +156,7 @@ module.exports = {
 
     async index(request, response) {
         const admin = request.data.admin;
-        if (admin!==1) return response.status(401).send();
+        if (admin !== 1) return response.status(401).send();
         try {
             const purchases = await connection({
                 p: 'purchases',

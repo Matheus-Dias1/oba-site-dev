@@ -56,7 +56,8 @@ export default function NewPaymentInfo() {
             id_address: 0,
             observation: JSON.stringify(observation),
             delivery_date: date,
-            delivery_period: time
+            delivery_period: time,
+            cupon: 'NO_CUPON'
         };
 
 
