@@ -10,7 +10,7 @@ export default StyleSheet.create({
     },
     purchaseContainer:{
         backgroundColor: 'white',
-        marginTop: 15,
+        marginTop: 20,
         borderRadius: 8,
         backgroundColor: '#049434',
         shadowColor: '#000',

@@ -145,6 +145,8 @@ module.exports = {
                 a: 'addresses'
             })
                 .select({
+                    change: 'p.change',
+                    id: 'p.id',
                     street: 'a.street',
                     number: 'a.number',
                     neighborhood: 'a.neighborhood',
@@ -166,6 +168,32 @@ module.exports = {
 
             response.header('X-Total-Count', count['count(*)']);
             return response.json(purchases);
+        } catch (err) {
+            return response.status(422).send();
+        }
+
+    },
+
+    async indexProductsPurchase(request, response) {
+        const { id_purchase } = request.params;
+        console.log(id_purchase)
+
+        try {
+            const items = await connection({
+                p: 'products',
+                pp: 'productsPurchases'
+            })
+                .select({
+                    amount: 'pp.amount',
+                    observation: 'pp.observation',
+                    unit: 'pp.unit',
+                    name: 'p.product_name'
+                })
+                .where('pp.id_purchase', id_purchase)
+                .whereRaw('pp.id_product = p.id');
+
+
+            return response.json(items);
         } catch (err) {
             console.log(err)
             return response.status(422).send();

@@ -67,7 +67,7 @@ export default function Purchases() {
                 <View style={styles.contentContainer}>
                   <View style={styles.content}>
                     <Text style={styles.property}>
-                      Entrega para: <Text style={styles.value}>
+                      Data de entrega: <Text style={styles.value}>
                         {formatDate(purchase.delivery_date)}
                       </Text>
                     </Text>
@@ -77,8 +77,8 @@ export default function Purchases() {
                       </Text>
                     </Text>
                     <Text style={styles.property}>
-                      Entrega em: <Text style={[styles.value, { textTransform: 'capitalize' }]}>
-                        {formatDate(purchase.delivery_date)}
+                      Endereço: <Text style={[styles.value, { textTransform: 'capitalize' }]}>
+                        {`${purchase.street}, ${purchase.number}`}
                       </Text>
                     </Text>
 

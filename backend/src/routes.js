@@ -47,9 +47,14 @@ routes.get('/profile/products', AuthTokenController.authenticateToken, ProfileCo
 routes.get('/profile/shopping_cart', AuthTokenController.authenticateToken, ProfileController.indexShoppingCart);
 routes.delete('/profile/shopping_cart', AuthTokenController.authenticateToken, ProfileController.deleteItemFromCart);
 routes.get('/profile/shopping_cart/value', AuthTokenController.authenticateToken, ProfileController.getCartTotal);
+routes.get('/profile/productsPurchase/:id_purchase', AuthTokenController.authenticateToken, ProfileController.indexProductsPurchase);
+
+
 routes.get('/profile/edit/', AuthTokenController.authenticateToken, ProfileUpdateController.getData);
 routes.put('/profile/edit/', AuthTokenController.authenticateToken, ProfileUpdateController.update);
 routes.put('/profile/edit/password', AuthTokenController.authenticateToken, ProfileUpdateController.updatePassword);
+
+
 
 routes.get('/productsPurchases/:idP', AuthTokenController.authenticateToken, ProductPurchaseController.index);
 

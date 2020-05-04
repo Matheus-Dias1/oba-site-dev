@@ -1,12 +1,89 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  ScrollView
+} from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import styles from './styles';
 
 
-export default function Purchases(){
-    return(
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Purchases!</Text>
+export default function Purchases() {
+
+  const route = useRoute();
+  const [purchase, setPurchase] = useState({
+    delivery_date: '1970-01-01T04:00:00Z'
+  });
+
+  useEffect(() => {
+    setPurchase(route.params.params.purchase);
+  }, [])
+
+  function formatChangeFor(n1, n2) {
+    const a = n1 + n2;
+    return formatPrice(a)
+  }
+
+  function formatPrice(number) {
+    return Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(number)
+  }
+  function formatDate(date) {
+    return Intl.DateTimeFormat('pt-BR').format(new Date(date))
+  }
+
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionContent}>
+              <Text style={[styles.property, { marginTop: 3 }]}>{'Data de entrega: '}
+                <Text style={styles.value}>{formatDate(purchase.delivery_date)}</Text>
+              </Text>
+              <Text style={styles.property}>{'Período de entrega: '}
+                <Text style={styles.value}>{purchase.delivery_period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
+              </Text>
+              <Text style={styles.property}>{'Entregue: '}
+                <Text style={styles.value}>{purchase.delivered ? 'Sim' : 'Não'}</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionContent}>
+              <Text style={[styles.property, { marginTop: 3, }]}>{'Endereço de entrega: '}
+                <Text style={[styles.value, { textTransform: "capitalize" }]}>{purchase.street + ', ' + purchase.number}</Text>
+              </Text>
+              {!!purchase.complement && <Text style={styles.property}>{'Complemento: '}
+                <Text style={styles.value}>{purchase.complement}</Text>
+              </Text>}
+              <Text style={styles.property}>{'Bairro: '}
+                <Text style={[styles.value, { textTransform: "capitalize" }]}>{purchase.neighborhood}</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionContent}>
+              <Text style={[styles.property, { marginTop: 3 }]}>{'Valor da compra: '}
+                <Text style={styles.value}>{formatPrice(purchase.value)}</Text>
+              </Text>
+              <Text style={styles.property}>{'Método de pagamento: '}
+                <Text style={styles.value}>{purchase.payment_method}</Text>
+              </Text>
+              {purchase.payment_method === 'Dinheiro' && <Text style={styles.property}>{'Troco para: '}
+                <Text style={styles.value}>{formatChangeFor(purchase.value, purchase.change)}</Text>
+              </Text>}
+            </View>
+          </View>
+          {!!purchase.observation && <View style={styles.sectionContainer}>
+            <View style={styles.sectionContent}>
+              <Text style={[styles.property, { marginTop: 3 }]}>{'Observação: '}
+                <Text style={styles.value}>{purchase.observation}</Text>
+              </Text>
+            </View>
+          </View>}
+        </View>
       </View>
-  
-    );
+    </ScrollView>
+
+  );
 }
