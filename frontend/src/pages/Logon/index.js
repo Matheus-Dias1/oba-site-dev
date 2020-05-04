@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FaUserPlus } from 'react-icons/fa'
+import { useHistory } from 'react-router-dom';
 import './styles.css';
 import '../../global.css';
 import api from '../../services/api'
@@ -26,6 +25,9 @@ export default function Logon() {
             }
             
         } catch (err) {
+            if (err.response.status === 400)
+                alert(err.response.data.error);
+            else
             alert('Houve um erro no login! Confira seus dados e tente novamente.');
         }
     }
@@ -48,10 +50,7 @@ export default function Logon() {
                         onChange={e => setPassword(e.target.value)}
                     />
                     <button className="button" type="submit">Entrar</button>
-                    <Link className="back-link" to="/register">
-                        <FaUserPlus size={16} color="E30016" />
-                        Não tenho cadastro
-                    </Link>
+
 
                 </form>
             </section>

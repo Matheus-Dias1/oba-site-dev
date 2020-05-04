@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen,FaTags, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaTags, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
 import api from '../../services/api';
@@ -10,7 +10,7 @@ import '../../global.css';
 
 
 export default function PanelPurchases() {
-   
+
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken === null) {
@@ -107,7 +107,9 @@ export default function PanelPurchases() {
                                     <li key={purchase.id}>
                                         <div>
                                             <strong>COMPRADOR:</strong>
-                                            <p className="capitalize">{obsData.client}</p>
+                                            <div className="name">
+                                                <p>{obsData.client}</p>
+                                            </div>
                                             <strong>PAGAMENTO:</strong>
                                             <p>{purchase.payment_method}</p>
                                             <strong>VALOR:</strong>
@@ -118,7 +120,7 @@ export default function PanelPurchases() {
                                         <div>
                                             <a href={'https://www.google.com/maps/search/?api=1&query=' + obsData.street + '%20' + obsData.number + '%2C' + obsData.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">
                                                 <strong>ENDEREÇO:</strong>
-                                                <p className="capitalize">{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
+                                                <p>{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
                                             </a>
                                             <strong>ENTREGA:</strong>
                                             <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'Manhã' : 'Tarde')}</p>

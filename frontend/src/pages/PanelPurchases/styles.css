@@ -107,6 +107,7 @@
 
 .purchase-container ul li a p{
   margin-bottom: 32px;
+  text-transform: capitalize;
 }
 
 
@@ -137,5 +138,7 @@
   color: #737380;
   line-height: 21px;
   font-size: 16px;
+    
 }
+
 
