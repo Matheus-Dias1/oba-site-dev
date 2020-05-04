@@ -10,7 +10,8 @@ import api from './services/api';
 import Products from './pages/ProductsTab/Products';
 import ProductDetails from './pages/ProductsTab/ProductDetails';
 import FinalizePurchase from './pages/ProductsTab/FinalizePurchase';
-import Purchases from './pages/Purchases';
+import Purchases from './pages/Purchases/Purchases';
+import PurchaseDetails from './pages/Purchases/PurchaseDetails';
 import Profile from './pages/Profile/Profile';
 import EditInfo from './pages/Profile/EditInfo';
 import Help from './pages/Profile/Help';
@@ -136,6 +137,34 @@ function ProfileTab() {
           headerStyle: {
             backgroundColor: '#f2f2f2',
             borderEndWidth: 0
+          },
+        }}
+      />
+
+    </Stack.Navigator>
+  );
+}
+function PurchaseTab() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Purchases"
+        component={Purchases}
+        options={{
+          title: "Pedidos",
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="PurchaseDetails"
+        component={PurchaseDetails}
+        options={{
+          title: "",
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
           },
         }}
       />
@@ -274,7 +303,7 @@ export default function Routes() {
               }}
             >
               <Tab.Screen name="Produtos" component={ProductsTab} />
-              <Tab.Screen name="Pedidos" component={Purchases} />
+              <Tab.Screen name="Pedidos" component={PurchaseTab} />
               <Tab.Screen name="Perfil" component={ProfileTab} />
             </Tab.Navigator>
           )}

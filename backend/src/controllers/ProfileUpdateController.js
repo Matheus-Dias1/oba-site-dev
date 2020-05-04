@@ -44,7 +44,7 @@ module.exports = {
                     await connection('users')
                         .update('password', hash)
                         .where('id', id);
-
+                        
                     return response.json({
                         status: 'OK'
                     })
