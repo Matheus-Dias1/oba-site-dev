@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaTags, FaBoxOpen, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import api from '../../services/api';
 
 import { slide as Menu } from 'react-burger-menu';
@@ -64,6 +64,8 @@ export default function AddToSchedule() {
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
                 <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
+                <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
+          
             </Menu>
             <div className="schedule-container">
                 <div className="content">

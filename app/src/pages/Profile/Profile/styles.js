@@ -8,7 +8,8 @@ export default StyleSheet.create({
     helloContainer:{
         marginHorizontal: 20,
         marginTop: 15,
-        marginBottom: 15
+        marginBottom: 15,
+        textTransform: 'capitalize'
 
     },
     helloText:{

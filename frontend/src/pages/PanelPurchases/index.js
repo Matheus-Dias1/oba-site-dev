@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen,FaTags, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
 import api from '../../services/api';
@@ -84,6 +84,7 @@ export default function PanelPurchases() {
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
                 <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
+                <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
 
             </Menu>
             <div className="purchase-container">
@@ -106,7 +107,7 @@ export default function PanelPurchases() {
                                     <li key={purchase.id}>
                                         <div>
                                             <strong>COMPRADOR:</strong>
-                                            <p>{obsData.client}</p>
+                                            <p className="capitalize">{obsData.client}</p>
                                             <strong>PAGAMENTO:</strong>
                                             <p>{purchase.payment_method}</p>
                                             <strong>VALOR:</strong>
@@ -117,7 +118,7 @@ export default function PanelPurchases() {
                                         <div>
                                             <a href={'https://www.google.com/maps/search/?api=1&query=' + obsData.street + '%20' + obsData.number + '%2C' + obsData.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">
                                                 <strong>ENDEREÇO:</strong>
-                                                <p>{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
+                                                <p className="capitalize">{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
                                             </a>
                                             <strong>ENTREGA:</strong>
                                             <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'Manhã' : 'Tarde')}</p>
