@@ -28,6 +28,10 @@ export default StyleSheet.create({
         marginBottom: 8,
         backgroundColor: '#fff',
         justifyContent:'space-between',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
     },
     productInfo: {
         marginLeft: 15,

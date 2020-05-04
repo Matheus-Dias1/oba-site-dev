@@ -63,7 +63,7 @@ export default StyleSheet.create({
         height: 100,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
 
     },
@@ -80,7 +80,7 @@ export default StyleSheet.create({
         borderColor: '#049434',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
 
     },
@@ -94,7 +94,7 @@ export default StyleSheet.create({
         borderColor: 'white',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
     },
     dateInfoContainer: {
@@ -131,7 +131,7 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
 
     },
@@ -142,7 +142,7 @@ export default StyleSheet.create({
         borderRadius: 8,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
 
     },
@@ -327,7 +327,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
     },
     cuponTextInput:{

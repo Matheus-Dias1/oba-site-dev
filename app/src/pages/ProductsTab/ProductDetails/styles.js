@@ -12,6 +12,10 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderRadius: 8,
         width: 325,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
 
     },
     textArea:{
@@ -44,6 +48,10 @@ export default StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 8,
         width: 325,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
     },
     measurementUnit: {
         flexDirection: "row",
@@ -66,7 +74,11 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 8,
         marginTop: 15,
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
     },
     addToCartButton:{
         width: 325,

@@ -24,10 +24,14 @@ export default StyleSheet.create({
         marginHorizontal: 15,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: '#f2f2f2',
+        borderColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
     },
     selectedAddressContainer: {
         backgroundColor: 'white',
@@ -38,7 +42,11 @@ export default StyleSheet.create({
         borderColor: '#049434',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
     },
     content: {
         marginHorizontal: 15,
