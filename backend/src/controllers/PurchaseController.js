@@ -72,9 +72,9 @@ module.exports = {
                     throw new Error('CartEmpty');
 
                 await connection('purchases').insert({
-                    value,
+                    value: Math.round(value * 100) / 100,
                     payment_method,
-                    change,
+                    change: Math.round(change * 100) / 100,
                     id_user,
                     id_address,
                     observation,

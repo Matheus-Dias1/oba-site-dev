@@ -137,16 +137,37 @@ module.exports = {
         const { page = 1 } = request.query;
         const id_user = request.data.id;
         try {
-            const [count] = await connection('purchases').where('id_user', id_user).count();
-            const purchases = await connection('purchases')
+            const [count] = await connection('purchases')
+                .where('id_user', id_user)
+                .count();
+            const purchases = await connection({
+                p: 'purchases',
+                a: 'addresses'
+            })
+                .select({
+                    street: 'a.street',
+                    number: 'a.number',
+                    neighborhood: 'a.neighborhood',
+                    city: 'a.city',
+                    state: 'a.state',
+                    complemente: 'a.complement',
+                    value: 'p.value',
+                    payment_method: 'p.payment_method',
+                    observation: 'p.observation',
+                    delivered: 'p.delivered',
+                    delivery_date: 'p.delivery_date',
+                    delivery_period: 'p.delivery_period'
+                })
                 .limit(5)
                 .offset((page - 1) * 5)
-                .select('*')
-                .where('id_user', id_user);
+                .where('p.id_user', id_user)
+                .whereRaw('a.id = p.id_address')
+                .orderBy('p.id', 'desc');
 
             response.header('X-Total-Count', count['count(*)']);
             return response.json(purchases);
         } catch (err) {
+            console.log(err)
             return response.status(422).send();
         }
 
