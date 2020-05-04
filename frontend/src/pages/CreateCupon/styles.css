@@ -1,0 +1,77 @@
+.cupon-container{
+    width: 100%;
+    max-width: 1120px;
+    height: 100vh;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cupon-container .content{
+    width: 100%;
+    padding: 96px;
+    background: #f0f0f5;
+    box-shadow: 0 0 100px rgba(0,0,0,0.1);
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cupon-container .content section{
+    width: 100%;
+    max-width: 380px;
+}
+
+.cupon-container .content section h1{
+    margin: 32px 0 18px;
+    font-size: 32px;
+}
+
+.cupon-container .content section p{
+    font-size: 18px;
+    color: #737380;
+    line-height: 32px;
+}
+
+.cupon-container .content section form{
+    width: 100%;
+    max-width: 450px;
+}
+
+.cupon-container .content form input{
+    margin-top: 8px;
+}
+    
+.cupon-container .content .firstRow,
+.cupon-container .content .secondRow{
+    display: flex;
+    justify-content: space-between;
+}
+
+.cupon-container .content .firstRow input{
+    width: 49%;
+}
+
+.cupon-container .content .secondRow input,
+.cupon-container .content .secondRow select{
+    width: 32%;
+}
+
+.cupon-container .content .cuponContainer{
+    border-radius: 8px;
+    background-color: #ebe18d;
+    height: 70px;
+}
+
+.cupon-container .content .cuponContainer h1{
+    color: #c93a0e;
+    font-weight: 600;
+    font-size: 55px;
+    text-align: center;
+    align-self: center;
+    padding: 8px 0;
+}

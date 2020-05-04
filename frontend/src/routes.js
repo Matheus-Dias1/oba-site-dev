@@ -15,6 +15,7 @@ import NewAddress from './pages/NewPurchase/NewAddress';
 import NewClientInformation from './pages/NewPurchase/NewClientInformation';
 import NewPaymentInfo from './pages/NewPurchase/NewPaymentInfo';
 import AddToSchedule from './pages/AddToSchedule';
+import CreateCupon from './pages/CreateCupon';
 
 
 
@@ -38,6 +39,7 @@ export default function Routes(){
                 <Route path= '/panel/purchases/new/clientInfo' component={NewClientInformation} />
                 <Route path= '/panel/purchases/new/payment' component={NewPaymentInfo} />
                 <Route path= '/panel/schedule' component={AddToSchedule} />
+                <Route path= '/panel/cupon' component={CreateCupon} />
                 
 
             </Switch>

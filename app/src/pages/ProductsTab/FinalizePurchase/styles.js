@@ -22,7 +22,7 @@ export default StyleSheet.create({
         width: 90,
         marginHorizontal: 10,
         backgroundColor: 'white',
-        borderColor: '#f2f2f2',
+        borderColor: 'white',
         borderWidth: 2,
         borderRadius: 8,
         flexDirection: 'row',
@@ -55,13 +55,16 @@ export default StyleSheet.create({
         height: 90,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: '#f2f2f2'
+        borderColor: 'white'
 
     },
     addressContainer: {
         marginVertical: 10,
         height: 100,
-
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
 
     },
     addressesList: {
@@ -74,7 +77,12 @@ export default StyleSheet.create({
         height: 80,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: '#049434'
+        borderColor: '#049434',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+
     },
     date: {
         marginLeft: 10,
@@ -83,12 +91,17 @@ export default StyleSheet.create({
         height: 80,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: '#f2f2f2',
+        borderColor: 'white',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
     },
     dateInfoContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         height: 76,
+        
     },
     datesList: {
         marginVertical: 15,
@@ -116,6 +129,10 @@ export default StyleSheet.create({
         marginVertical: 15,
         marginHorizontal: 15,
         backgroundColor: 'white',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
 
     },
     paymentContainer: {
@@ -123,6 +140,10 @@ export default StyleSheet.create({
         marginHorizontal: 15,
         marginVertical: 15,
         borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
 
     },
     paymentContent: {
@@ -303,7 +324,11 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         height: 45,
         borderRadius: 8,
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
     },
     cuponTextInput:{
         marginLeft: 15,
