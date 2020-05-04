@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  ScrollView
+  ScrollView,
+  AsyncStorage,
+  Alert
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import api from '../../../services/api';
 import styles from './styles';
 
 
@@ -14,10 +17,30 @@ export default function Purchases() {
   const [purchase, setPurchase] = useState({
     delivery_date: '1970-01-01T04:00:00Z'
   });
+  const [productsPurchase, setProductsPurchase] = useState([]);
 
   useEffect(() => {
     setPurchase(route.params.params.purchase);
+    getProductsPurchase();
   }, [])
+
+  async function getProductsPurchase() {
+    const id = route.params.params.purchase.id;
+    try {
+      const res = await api.get(`profile/productsPurchase/${id}`, {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          alert('Faça login novamente para continuar');
+        } else throw err;
+      });
+      setProductsPurchase(res.data);
+    } catch (err) {
+      Alert.alert('Erro ao recuperar item da compra', 'Tente novamente mais tarde');
+    }
+  }
 
   function formatChangeFor(n1, n2) {
     const a = n1 + n2;
@@ -61,6 +84,13 @@ export default function Purchases() {
               </Text>
             </View>
           </View>
+          {!!purchase.observation && <View style={styles.sectionContainer}>
+            <View style={styles.sectionContent}>
+              <Text style={[styles.property, { marginTop: 3 }]}>{'Observação: '}
+                <Text style={styles.value}>{purchase.observation}</Text>
+              </Text>
+            </View>
+          </View>}
           <View style={styles.sectionContainer}>
             <View style={styles.sectionContent}>
               <Text style={[styles.property, { marginTop: 3 }]}>{'Valor da compra: '}
@@ -74,13 +104,23 @@ export default function Purchases() {
               </Text>}
             </View>
           </View>
-          {!!purchase.observation && <View style={styles.sectionContainer}>
-            <View style={styles.sectionContent}>
-              <Text style={[styles.property, { marginTop: 3 }]}>{'Observação: '}
-                <Text style={styles.value}>{purchase.observation}</Text>
-              </Text>
+          <View style={[styles.sectionContainer, {marginTop: 10}]}>
+            <View style={[styles.sectionContent,{minHeight: 200}]}>
+              <Text style={styles.itemsTitleText}>Itens</Text>
+              {
+                productsPurchase.map(item => {
+
+                  return (
+                    <View key={productsPurchase.indexOf(item)} style={{marginVertical: 5}}>
+                      <Text style={{color: '#41414b'}}>{`${String(item.amount).replace('.', '*').replace(',', '.').replace('*', ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
+                      {!!item.observation && <Text style={styles.cartListingObservation}>Observação: {item.observation}</Text>}
+                    </View>
+                  )
+                })
+              }
+
             </View>
-          </View>}
+          </View>
         </View>
       </View>
     </ScrollView>

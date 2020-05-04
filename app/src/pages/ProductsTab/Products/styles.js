@@ -6,16 +6,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
     },
-    // header: {
-    //     backgroundColor: '#049434',
-    //     paddingBottom: 28,
-    //     paddingLeft: 25
-    // },
-    // title: {
-    //     fontSize: 35,
-    //     fontWeight: 'bold',
-    //     color: 'white'
-    // },
+
     productsList: {
         paddingHorizontal: 12,
         paddingTop: 20,

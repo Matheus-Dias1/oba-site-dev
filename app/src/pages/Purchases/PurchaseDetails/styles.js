@@ -31,5 +31,17 @@ export default StyleSheet.create({
     value:{
         fontWeight: '300'
     },
+    cartListingObservation: {
+        fontWeight: '200'
+    },
+    cartListingProductName: {
+        fontWeight: '600'
+    },
+    itemsTitleText:{
+        marginBottom: 5,
+        color: '#41414b',
+        fontSize: 16,
+        fontWeight: '700'
+    }
 
 });

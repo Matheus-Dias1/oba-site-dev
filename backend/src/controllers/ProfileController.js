@@ -176,7 +176,6 @@ module.exports = {
 
     async indexProductsPurchase(request, response) {
         const { id_purchase } = request.params;
-        console.log(id_purchase)
 
         try {
             const items = await connection({

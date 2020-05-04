@@ -9,17 +9,13 @@ export default StyleSheet.create({
         marginHorizontal: 15,
     },
     purchaseContainer:{
-        backgroundColor: 'white',
         marginTop: 20,
         borderRadius: 8,
         backgroundColor: '#049434',
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
+
     },
     contentContainer:{
-        backgroundColor: 'white',
+        backgroundColor: '#f8fff5',
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
     },
@@ -27,7 +23,7 @@ export default StyleSheet.create({
         marginHorizontal: 15,
         marginBottom: 10,
         marginTop: 8,
-        backgroundColor: 'white'
+        backgroundColor: '#f8fff5'
     },
     property:{
         marginTop: 8,
