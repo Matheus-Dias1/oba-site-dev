@@ -108,7 +108,15 @@ module.exports = {
 
                 await connection('shopping_carts').where('id_user', id_user).delete();
 
-                return response.status(201).send();
+                const pid = await connection('purchases')
+                    .select('id')
+                    .orderBy('id', 'desc')
+                    .limit(1)
+                    .first()
+
+                return response.json({
+                    id: pid
+                });
 
             })
         } catch (error) {

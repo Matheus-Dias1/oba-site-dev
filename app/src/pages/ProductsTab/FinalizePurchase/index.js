@@ -85,8 +85,14 @@ export default function FinalizePurchase() {
       })
       if (res.data.status === 'FAIL')
         Alert.alert(res.data.error)
-      else
+      else {
+        await AsyncStorage.setItem('needsUpdate', 'true');
+        navigation.navigate('Pedidos', {
+          screen: 'Purchases'
+        });
         navigation.goBack();
+      }
+
       if (res.data.error === 'O cupom expirou ou foi usado por outra pessoa') {
         setCuponDiscount(0);
         setCuponValidated(false);
@@ -96,6 +102,7 @@ export default function FinalizePurchase() {
       }
 
     } catch (err) {
+      console.log(err)
       Alert.alert('Não foi possível concluir sua compra', 'Tente novamente mais tarde')
     }
   }

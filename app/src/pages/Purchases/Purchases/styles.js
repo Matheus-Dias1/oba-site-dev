@@ -5,25 +5,28 @@ export default StyleSheet.create({
     container:{
         flex: 1
     },
-    purchasesList:{
-        marginHorizontal: 15,
-    },
     purchaseContainer:{
+        marginHorizontal: 15,
+
         marginTop: 20,
         borderRadius: 8,
         backgroundColor: '#049434',
-
+        borderColor: 'lightgray',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
     },
     contentContainer:{
-        backgroundColor: '#f8fff5',
-        borderTopLeftRadius: 8,
-        borderTopRightRadius: 8,
+        backgroundColor: 'white',
+        borderTopLeftRadius: 7,
+        borderTopRightRadius: 7,
     },
     content:{
         marginHorizontal: 15,
         marginBottom: 10,
         marginTop: 8,
-        backgroundColor: '#f8fff5'
+        backgroundColor: 'white'
     },
     property:{
         marginTop: 8,

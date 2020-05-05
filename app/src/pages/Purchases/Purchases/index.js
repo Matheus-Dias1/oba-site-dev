@@ -9,20 +9,34 @@ import {
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 
-export default function Purchases() {
+export default function Purchases({ navigation }) {
   const [purchases, setPurchases] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const [teste, setTeste] = useState(0)
   const navigator = useNavigation();
 
   useEffect(() => {
     getPurchases();
+    const unsubscribe = navigation.addListener('focus', () => {
+      updateList();
+    });
+    return unsubscribe;
   }, [])
 
-  function navigateToDetails(purchase){
-    navigator.navigate('PurchaseDetails',{
-      params:{
+  async function updateList(){
+    const needsUpdate = await AsyncStorage.getItem('needsUpdate')
+    if (needsUpdate === 'true'){
+      getPurchases();
+      await AsyncStorage.removeItem('needsUpdate');
+    }
+  }
+
+  function navigateToDetails(purchase) {
+    navigator.navigate('PurchaseDetails', {
+      params: {
         purchase
       }
     })
@@ -39,7 +53,8 @@ export default function Purchases() {
           alert('Faça login novamente para continuar');
         } else throw err;
       })
-      setPurchases(res.data)
+      setPurchases(res.data);
+      setLoaded(true);
     } catch (err) {
       Alert.alert('Erro ao recuperar pedidos', 'Tente novamente mais tarde')
     }
@@ -48,9 +63,9 @@ export default function Purchases() {
   return (
     <View style={styles.container}>
       <FlatList
-        style={styles.purchasesList}
         showsVerticalScrollIndicator={false}
         data={purchases}
+        ListFooterComponent={<View style={{ height: 30 }} />}
         keyExtractor={purchase => String(purchases.indexOf(purchase))}
         renderItem={({ item: purchase }) => {
 

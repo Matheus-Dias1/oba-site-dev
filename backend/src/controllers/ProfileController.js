@@ -152,7 +152,7 @@ module.exports = {
                     neighborhood: 'a.neighborhood',
                     city: 'a.city',
                     state: 'a.state',
-                    complemente: 'a.complement',
+                    complement: 'a.complement',
                     value: 'p.value',
                     payment_method: 'p.payment_method',
                     observation: 'p.observation',
@@ -176,7 +176,6 @@ module.exports = {
 
     async indexProductsPurchase(request, response) {
         const { id_purchase } = request.params;
-
         try {
             const items = await connection({
                 p: 'products',
