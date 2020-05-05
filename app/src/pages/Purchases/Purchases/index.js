@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function Purchases({ navigation }) {
   const [purchases, setPurchases] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-  const [teste, setTeste] = useState(0)
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPurchases, setTotalPurchases] = useState(0);
   const navigator = useNavigation();
 
   useEffect(() => {
@@ -26,9 +27,9 @@ export default function Purchases({ navigation }) {
     return unsubscribe;
   }, [])
 
-  async function updateList(){
+  async function updateList() {
     const needsUpdate = await AsyncStorage.getItem('needsUpdate')
-    if (needsUpdate === 'true'){
+    if (needsUpdate === 'true') {
       getPurchases();
       await AsyncStorage.removeItem('needsUpdate');
     }
@@ -43,19 +44,44 @@ export default function Purchases({ navigation }) {
   }
 
   async function getPurchases() {
+    if (loading) {
+      return;
+    }
+    const needsUpdate = await AsyncStorage.getItem('needsUpdate');
+    if (totalPurchases > 0 && purchases.length === total && needsUpdate !== 'true') {
+      return;
+    }
+    setLoading(true);
+
     try {
       const res = await api.get('profile/purchases', {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params: {
+          page: needsUpdate === 'true' ? 1 : page
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
           alert('Faça login novamente para continuar');
         } else throw err;
       })
-      setPurchases(res.data);
-      setLoaded(true);
+
+
+      setTotalPurchases(res.headers['X-Total-Count']);
+      if (needsUpdate === 'true'){
+        setPurchases(res.data);
+        setPage(2);
+      }
+      else{
+        setPurchases([...purchases, ...res.data]);
+        setPage(page + 1);
+      }
+      
+      setLoading(false);
+
     } catch (err) {
+      console.log(err)
       Alert.alert('Erro ao recuperar pedidos', 'Tente novamente mais tarde')
     }
   }
@@ -65,6 +91,8 @@ export default function Purchases({ navigation }) {
       <FlatList
         showsVerticalScrollIndicator={false}
         data={purchases}
+        onEndReached={getPurchases}
+        onEndReachedThreshold={0.2}
         ListFooterComponent={<View style={{ height: 30 }} />}
         keyExtractor={purchase => String(purchases.indexOf(purchase))}
         renderItem={({ item: purchase }) => {

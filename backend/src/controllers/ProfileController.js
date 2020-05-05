@@ -114,7 +114,10 @@ module.exports = {
     },
 
     async indexProducts(request, response) {
-        const { page = 1 } = request.query;
+        const {
+                page = 1,
+                category = '',
+            } = request.query;
         try {
             const [count] = await connection('products')
             .where('available', true)
@@ -123,7 +126,8 @@ module.exports = {
                 .limit(5)
                 .offset((page - 1) * 5)
                 .select('*')
-                .where('available', true);
+                .where('available', true)
+                .where('category', 'like', `%${category}%`)
 
             response.header('X-Total-Count', count['count(*)']);
             return response.json(addresses);
@@ -160,8 +164,8 @@ module.exports = {
                     delivery_date: 'p.delivery_date',
                     delivery_period: 'p.delivery_period'
                 })
-                .limit(5)
-                .offset((page - 1) * 5)
+                .limit(8)
+                .offset((page - 1) * 8)
                 .where('p.id_user', id_user)
                 .whereRaw('a.id = p.id_address')
                 .orderBy('p.id', 'desc');
