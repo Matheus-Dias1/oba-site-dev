@@ -48,7 +48,7 @@ export default function Purchases({ navigation }) {
       return;
     }
     const needsUpdate = await AsyncStorage.getItem('needsUpdate');
-    if (totalPurchases > 0 && purchases.length === total && needsUpdate !== 'true') {
+    if (totalPurchases > 0 && purchases.length == totalPurchases && needsUpdate !== 'true') {
       return;
     }
     setLoading(true);
@@ -68,7 +68,7 @@ export default function Purchases({ navigation }) {
       })
 
 
-      setTotalPurchases(res.headers['X-Total-Count']);
+      setTotalPurchases(res.headers['x-total-count']);
       if (needsUpdate === 'true'){
         setPurchases(res.data);
         setPage(2);

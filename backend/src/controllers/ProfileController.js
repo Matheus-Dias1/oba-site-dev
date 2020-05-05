@@ -2,20 +2,15 @@ const connection = require('../database/connection');
 
 module.exports = {
     async indexAddresses(request, response) {
-        const { page = 1 } = request.query;
         const id_user = request.data.id;
         try {
-            const [count] = await connection('addresses').where('id_user', id_user).count();
             const addresses = await connection('addresses')
-                .limit(5)
-                .offset((page - 1) * 5)
                 .select('*')
                 .where({
                     id_user: id_user,
                     visible: 1
                 });
 
-            response.header('X-Total-Count', count['count(*)']);
             return response.json(addresses);
         } catch (err) {
             return response.status(422).send();
@@ -123,8 +118,8 @@ module.exports = {
             .where('available', true)
             .count();
             const addresses = await connection('products')
-                .limit(5)
-                .offset((page - 1) * 5)
+                .limit(10)
+                .offset((page - 1) * 10)
                 .select('*')
                 .where('available', true)
                 .where('category', 'like', `%${category}%`)

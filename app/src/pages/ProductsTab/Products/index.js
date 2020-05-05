@@ -30,20 +30,33 @@ export default function Products() {
   const [subtotalValue, setSubtotalValue] = useState(0);
   const imageUrl = env.OBA_API_URL + 'image/'
 
-  navigation.isFocused()
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
 
   async function loadProducts() {
+    if (loading) return;
+    if (totalProducts > 0 && products.length == totalProducts) return;
+    setLoading(true);
+    alert('entrei')
     try {
       const response = await api.get('/profile/products', {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params:{
+          page
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
           alert('Faça login novamente para continuar');
         } else throw err;
       });
-      setProducts(response.data);
+      setProducts([...products, ...response.data]);
+      setTotalProducts(response.headers['x-total-count']);
+      setPage(page + 1);
+      setLoading(false);
     } catch (err) {
       alert('Erro ao abrir o carrinho, tende novamente.')
     }
@@ -135,7 +148,6 @@ export default function Products() {
         return JSON.stringify(item) !== JSON.stringify(Item)
       }))
     } catch (err) {
-      console.log(err)
       Alert.alert('Erro ao excluir item do carrinho.')
     }
   }
@@ -230,7 +242,10 @@ export default function Products() {
           <FlatList
             style={styles.productsList}
             showsVerticalScrollIndicator={false}
+            ListFooterComponent={<View style={{ marginBottom: 30 }} />}
             keyExtractor={product => String(product.id)}
+            onEndReachedThreshold={0.1}
+            onEndReached={loadProducts}
             data={products}
             renderItem={({ item: product }) => (
               <TouchableOpacity onPress={() => navigateToDetails(product)} activeOpacity={0.8}>
