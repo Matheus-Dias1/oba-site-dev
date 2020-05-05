@@ -82,6 +82,12 @@ export default function Purchases() {
               <Text style={styles.property}>{'Bairro: '}
                 <Text style={[styles.value, { textTransform: "capitalize" }]}>{purchase.neighborhood}</Text>
               </Text>
+              <Text style={styles.property}>{'Cidade: '}
+                <Text style={[styles.value, { textTransform: "capitalize" }]}>{purchase.city+ '/'}
+                  <Text style={[styles.value, { textTransform: 'uppercase' }]}>{purchase.state}</Text>
+                </Text>
+              </Text>
+
             </View>
           </View>
           {!!purchase.observation && <View style={styles.sectionContainer}>
