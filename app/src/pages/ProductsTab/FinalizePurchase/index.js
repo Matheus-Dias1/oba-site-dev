@@ -401,7 +401,10 @@ export default function FinalizePurchase() {
                   <View style={styles.dateInfoContainer}>
                     <Text style={styles.dateInfo}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</Text>
                     <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
-                    <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h00 - 12h30' : '14h00 - 18h30'}</Text>
+                    
+                    {[1,4].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : '14h00 - 19h00'}</Text>}
+                    {[2,3,5].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h00 - 13h00' : '14h00 - 19h00'}</Text>}
+                    {new Date(date.date).getUTCDay() === 6 && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h30 - 13h30' : '14h00 - 19h00'}</Text>}
 
                   </View>
                 </View>

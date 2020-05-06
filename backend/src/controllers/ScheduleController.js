@@ -25,7 +25,7 @@ module.exports = {
                             }
 
                         } else if (cDate.getUTCDay() === 6) {
-                            if (now.valueOf() < cDate.setHours(10, 30, 0, 0).valueOf()){
+                            if (now.valueOf() < cDate.setHours(10, 30, 0, 0).valueOf()) {
                                 res.push({
                                     date: dates[i].date,
                                     period: 'morning'
@@ -41,8 +41,9 @@ module.exports = {
                         }
 
                     }
+                    cDate = new Date(dates[i].date);
                     if (dates[i].afternoon_deliveries > 0) {
-                        if (now > cDate.setHours(cDate.setHours(13, 0, 0, 0))) {
+                        if (now.valueOf() < cDate.setHours(13, 0, 0, 0).valueOf()) {
                             res.push({
                                 date: dates[i].date,
                                 period: 'afternoon'
