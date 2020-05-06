@@ -9,38 +9,73 @@ module.exports = {
                 .whereRaw("morning_deliveries > 0 or afternoon_deliveries > 0")
                 .orderByRaw('date(date) asc')
             var res = [];
+            var cDate;
+            const now = new Date();
+            const today = new Date().setHours(0, 0, 0, 0);
             for (i in dates) {
-                if (Date.parse(dates[i].date) >= new Date().setHours(0, 0, 0, 0)) {
+                cDate = new Date(dates[i].date);
+                if (dates[i].date >= today) {
                     if (dates[i].morning_deliveries > 0) {
-                        res.push({
-                            date: dates[i].date,
-                            period: 'morning'
-                        })
+                        if (cDate.getUTCDay() === 1) {
+                            if (now.valueOf() < cDate.setHours(-5, 0, 0, 0).valueOf()) {
+                                res.push({
+                                    date: dates[i].date,
+                                    period: 'morning'
+                                })
+                            }
+
+                        } else if (cDate.getUTCDay() === 6) {
+                            if (now.valueOf() < cDate.setHours(10, 30, 0, 0).valueOf()){
+                                res.push({
+                                    date: dates[i].date,
+                                    period: 'morning'
+                                })
+                            }
+                        } else {
+                            if (now.valueOf() < cDate.setHours(-2, 0, 0, 0).valueOf()) {
+                                res.push({
+                                    date: dates[i].date,
+                                    period: 'morning'
+                                })
+                            }
+                        }
+
                     }
                     if (dates[i].afternoon_deliveries > 0) {
-                        res.push({
-                            date: dates[i].date,
-                            period: 'afternoon'
-                        })
+                        if (now > cDate.setHours(cDate.setHours(13, 0, 0, 0))) {
+                            res.push({
+                                date: dates[i].date,
+                                period: 'afternoon'
+                            })
+                        }
                     }
                 }
             }
             return response.json(res);
         } catch (err) {
-            console.log(err)
             return response.status(422).send();
         }
     },
     async create(request, response) {
         const admin = request.data.admin;
-        if (admin!==1) return response.status(401).send();
+        if (admin !== 1) return response.status(401).send();
         const {
             date,
             afternoon_deliveries,
             morning_deliveries,
         } = request.body;
 
+        try {
+            await connection('schedule')
+                .where({
+                    morning_deliveries: 0,
+                    afternoon_deliveries: 0
+                })
+                .orWhere('date', '<', (new Date.setHours(0, 0, 0, 0)).getTime())
+                .delete();
+        } catch (err) {
 
+        }
         try {
             await connection('schedule')
                 .insert({

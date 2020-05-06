@@ -23,14 +23,21 @@ export default function AddToSchedule() {
 
     async function handleSchedule(e) {
         e.preventDefault();
-        var list = date.split('/');
-        if (list.length !== 3 || date.length !== 10) {
+        const list = date.split('/');
+        if (list.length !== 3) {
             setErrorText('A data precisa estar no formato DD/MM/AAAA');
             return;
         }
 
+        let year = list[2];
+        if (list[2].length === 2){
+            year = '20'+list[2];
+        }
+
+        const date2 = Date.UTC(parseInt(year), parseInt(list[1])-1, parseInt(list[0]), 3, 0, 0);
+        console.log(date2);
         const data = {
-            "date": list[2] + '-' + list[1] + '-' + list[0] + 'T04:00:00Z',
+            "date": date2,
             "morning_deliveries": parseInt(morning_deliveries),
             "afternoon_deliveries": parseInt(afternoon_deliveries),
         };
