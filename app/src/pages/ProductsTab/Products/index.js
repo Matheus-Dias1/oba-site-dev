@@ -59,7 +59,8 @@ export default function Products() {
       setPage(page + 1);
       setLoading(false);
     } catch (err) {
-      alert('Erro ao abrir o carrinho, tende novamente.')
+      console.log(err)
+      Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
     }
 
   }
