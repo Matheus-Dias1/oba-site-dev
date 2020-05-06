@@ -8,10 +8,10 @@ export default StyleSheet.create({
     },
 
     productsList: {
-        paddingHorizontal: 12,
-        paddingTop: 20,
+        paddingTop: 15,
     },
     product: {
+        marginHorizontal: 12,
         alignItems: "center",
         flexDirection: "row",
         padding: 5,
@@ -149,6 +149,23 @@ export default StyleSheet.create({
         alignItems: 'center',
         width: '13%',
         height: 30
+    },
+    categoryList:{
+        marginBottom: 15,
+    },
+    categoryContainer:{
+        backgroundColor: '#049434',
+        marginLeft: 10,
+        borderRadius: 20,
+        justifyContent: 'center',
+    },
+    categoryText:{
+        marginHorizontal: 20,
+        marginVertical: 10,
+        fontSize: 15,
+        fontWeight: '500',
+        color: 'white',
+        textTransform: 'capitalize'
     }
 
 });

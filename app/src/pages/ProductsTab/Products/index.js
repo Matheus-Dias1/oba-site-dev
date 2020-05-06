@@ -34,19 +34,20 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   async function loadProducts() {
     if (loading) return;
     if (totalProducts > 0 && products.length == totalProducts) return;
     setLoading(true);
-    alert('entrei')
     try {
       const response = await api.get('/profile/products', {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         },
-        params:{
-          page
+        params: {
+          page,
+          category: selectedCategory
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
@@ -63,9 +64,44 @@ export default function Products() {
 
   }
 
+
+  async function loadNewCategory(category) {
+    setLoading(true);
+    try {
+      const response = await api.get('/profile/products', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params: {
+          page: 1,
+          category: category
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          alert('Faça login novamente para continuar');
+        } else throw err;
+      });
+      setProducts(response.data);
+      setTotalProducts(response.headers['x-total-count']);
+      setPage(2);
+      setLoading(false);
+      setSelectedCategory(category);
+
+    } catch (err) {
+      alert('Erro ao abrir o carrinho, tende novamente.')
+    }
+
+  }
+
   useEffect(() => {
     loadProducts();
   }, [])
+
+  function handleCategoryClick(category) {
+    if (category === selectedCategory)
+      return;
+    loadNewCategory(category);
+  }
 
   function navigateToDetails(product) {
     navigation.navigate('Produtos', {
@@ -242,10 +278,43 @@ export default function Products() {
           <FlatList
             style={styles.productsList}
             showsVerticalScrollIndicator={false}
+            ListHeaderComponent={
+              <View style={styles.categoryList}>
+                <FlatList
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  ListFooterComponent={<View style={{ marginLeft: 15 }} />}
+                  keyExtractor={category => category}
+                  data={[
+                    '',
+                    'frutas',
+                    'verduras',
+                    'folhas',
+                    'ovos',
+                    'temperos',
+                    'queijos',
+                    'congelados',
+                    'carnes',
+                    'doces',
+                  ]}
+                  renderItem={({ item: category }) => (
+                    <TouchableOpacity onPress={() => {
+                      handleCategoryClick(category);
+                    }}
+                      activeOpacity={0.8}
+                    >
+                      <View style={styles.categoryContainer}>
+                        <Text style={styles.categoryText}>{category === '' ? 'Todos os produtos' : category}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+            }
             ListFooterComponent={<View style={{ marginBottom: 30 }} />}
             keyExtractor={product => String(product.id)}
             onEndReachedThreshold={0.1}
-            onEndReached={loadProducts}
+            onEndReached={() => loadProducts()}
             data={products}
             renderItem={({ item: product }) => (
               <TouchableOpacity onPress={() => navigateToDetails(product)} activeOpacity={0.8}>
@@ -254,7 +323,7 @@ export default function Products() {
                   <View style={styles.productInfo}>
                     <Text style={styles.productName}>{product.product_name}</Text>
                     <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/' + product.measurement_unit + ': '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</Text>
-                    {product.unit_value !== null && <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/UN: '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.unit_price)}</Text>}
+                    {product.unit_price !== null && <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/UN: '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.unit_price)}</Text>}
                   </View>
 
 

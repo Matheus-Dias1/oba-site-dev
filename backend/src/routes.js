@@ -34,7 +34,7 @@ routes.put('/products/edit/:id', AuthTokenController.authenticateToken, ProductU
 
 routes.get('/purchases', AuthTokenController.authenticateToken, PurchaseController.index);
 routes.post('/purchases', AuthTokenController.authenticateToken, PurchaseController.create);
-routes.put('/purchases/delivery', AuthTokenController.authenticateToken, PurchaseController.updateDelivery);
+routes.put('/purchases/delivery/:id', AuthTokenController.authenticateToken, PurchaseController.updateDelivery);
 
 routes.post('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.create);
 routes.delete('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.delete);

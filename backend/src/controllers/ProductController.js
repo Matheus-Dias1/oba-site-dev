@@ -2,21 +2,6 @@ const connection = require('../database/connection');
 
 module.exports = {
     async create(request, response) {
-
-        function string_to_slug(str) {
-            str = str.replace(/^\s+|\s+$/g, '');
-            str = str.toLowerCase();
-            var from = "ãàáäâèéẽëêĩìíïîõòóöôũùúüûñç·/_,:;";
-            var to = "aaaaaeeeeeiiiiiooooouuuuunc------";
-            for (var i = 0, l = from.length; i < l; i++) {
-                str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-            }
-            str = str.replace(/[^a-z0-9 -]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-');
-
-            return str;
-        }
         const admin = request.data.admin;
         if (admin !== 1) return response.status(401).send();
         const {
@@ -29,13 +14,11 @@ module.exports = {
             category,
         } = JSON.parse(request.body.data);
 
-        const slug = string_to_slug(product_name);
         const picture_path = request.file.filename;
 
         try {
             await connection('products').insert({
                 product_name,
-                slug,
                 available,
                 category,
                 description,

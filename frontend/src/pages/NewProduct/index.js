@@ -27,6 +27,8 @@ export default function NewProduct() {
         e.preventDefault();
         const dataS = new FormData();
 
+        const ctgry = formatCategory(category);
+        if (ctgry === 'FAIL') return;
         const data = JSON.stringify({
             "product_name": name,
             "description": description,
@@ -34,7 +36,7 @@ export default function NewProduct() {
             "measurement_unit": measurement_unit.toUpperCase(),
             "unit_price": parseFloat(unit_price.replace(',', '.')),
             "available": true,
-            "category": formatCategory(category),
+            "category": ctgry,
         });
 
         dataS.append('data', data);
@@ -59,8 +61,35 @@ export default function NewProduct() {
 
     }
 
+    //formatCaegory('fruTAS  ,verduras')
+
     function formatCategory(ctgry) {
-        return ctgry;
+        var i;
+        const list = ctgry.split(',').map(item => {
+            return item.replace(/^\s+|\s+$/g, '').toLowerCase()
+        });
+        for (i in list) {
+            if (![
+                'verduras',
+                'frutas',
+                'ovos',
+                'temperos',
+                'queijos',
+                'congelados',
+                'carnes',
+                'doces',
+                'folhas'
+            ].includes(list[i])) {
+                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas');
+                return 'FAIL'
+            }
+        }
+        var res = ''
+
+        for (i in list) 
+            res += list[i] + ','
+
+        return res;
     }
 
     return (

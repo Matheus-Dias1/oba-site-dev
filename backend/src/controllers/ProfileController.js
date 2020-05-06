@@ -116,6 +116,7 @@ module.exports = {
         try {
             const [count] = await connection('products')
             .where('available', true)
+            .where('category', 'like', `%${category}%`)
             .count();
             const addresses = await connection('products')
                 .limit(10)

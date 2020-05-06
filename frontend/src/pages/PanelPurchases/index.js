@@ -47,9 +47,8 @@ export default function PanelPurchases() {
 
     function handleDelivered(id) {
         if (window.confirm('Deseja marcar pedido como entregue?\nPedidos marcados como entregues não poderão ser acessados pelo painel.')) {
-            const data = { id: id };
             try {
-                api.put('purchases/delivery', data, {
+                api.put(`purchases/delivery/${id}`, {}, {
                     headers: {
                         authorization: 'Bearer ' + accessToken
                     }

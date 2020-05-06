@@ -141,7 +141,7 @@ module.exports = {
     async updateDelivery(request, response) {
         const admin = request.data.admin;
         if (admin !== 1) return response.status(401).send();
-        const { id } = request.body;
+        const { id } = request.params;
         try {
             await connection('purchases')
                 .where('id', id)

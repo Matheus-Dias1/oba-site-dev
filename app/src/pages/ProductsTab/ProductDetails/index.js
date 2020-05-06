@@ -64,7 +64,6 @@ export default function ProductDetails() {
   }
   async function addToCart() {
     var data;
-
     if (amount[0] > 0) {
       data = {
         id_product: product.id,
@@ -144,7 +143,7 @@ export default function ProductDetails() {
               <Text>{product.measurement_unit}</Text>
               <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
             </View>}
-            {['UN', 'BDJ', 'BD', 'CX'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+            {['UN', 'BDJ', 'BD', 'CX', 'DZ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
               <View style={styles.intValueCounterContainer}>
                 {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
                   <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
