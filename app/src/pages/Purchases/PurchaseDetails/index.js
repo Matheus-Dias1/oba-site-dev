@@ -35,11 +35,13 @@ export default function Purchases() {
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
+          setLoading(false);
           alert('Faça login novamente para continuar');
+          return signOut();
         } else throw err;
       });
       setProductsPurchase(res.data);
-      setLoading(false)
+      setLoading(false);
     } catch (err) {
       Alert.alert('Erro ao recuperar item da compra', 'Tente novamente mais tarde');
     }

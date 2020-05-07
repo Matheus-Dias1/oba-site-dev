@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import AuthContext from '../../../authcontext';
-import { Ionicons, SimpleLineIcons } from '@expo/vector-icons/'
+import { Ionicons } from '@expo/vector-icons/'
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 

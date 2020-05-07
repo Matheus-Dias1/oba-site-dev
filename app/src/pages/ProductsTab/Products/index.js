@@ -59,9 +59,10 @@ export default function Products() {
       setProducts([...products, ...response.data]);
       setTotalProducts(response.headers['x-total-count']);
       setPage(page + 1);
-      setLoading(false);
     } catch (err) {
       Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
+    } finally {
+      setLoading(false);
     }
 
   }
@@ -87,12 +88,13 @@ export default function Products() {
       setProducts(response.data);
       setTotalProducts(response.headers['x-total-count']);
       setPage(2);
-      setLoading(false);
-      setSwitchingCategory(false);
       setSelectedCategory(category);
 
     } catch (err) {
       alert('Erro ao abrir o carrinho, tende novamente.')
+    } finally {
+      setLoading(false);
+      setSwitchingCategory(false);
     }
 
   }
@@ -209,7 +211,7 @@ export default function Products() {
         swipeDirection={"down"}
         style={styles.modal}
       >
-        
+
         <View style={styles.modalContainer}>
           <TouchableWithoutFeedback onPress={() => closeCart()}>
             <View style={styles.cartHeader}>
@@ -266,10 +268,10 @@ export default function Products() {
               )
             }}
           />
-          {loadingCart && <View style={{marginBottom: 300}}>
+          {loadingCart && <View style={{ marginBottom: 300 }}>
             <ActivityIndicator size="large" color="#000" />
           </View>}
-          
+
           <TouchableWithoutFeedback onPress={() => finalizePurchase()}>
             <View style={styles.finalizePurchase}>
               <Text style={styles.buyButton}>Concluir compra</Text>

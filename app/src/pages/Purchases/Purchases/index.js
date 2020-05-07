@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
+import AuthContext from '../../../authcontext';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -19,6 +20,7 @@ export default function Purchases({ navigation }) {
   const [page, setPage] = useState(1);
   const [totalPurchases, setTotalPurchases] = useState(0);
   const navigator = useNavigation();
+  const { signOut } = React.useContext(AuthContext);
 
 
   useEffect(() => {
@@ -65,7 +67,9 @@ export default function Purchases({ navigation }) {
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
+          setLoading(false);
           alert('Faça login novamente para continuar');
+          return signOut();
         } else throw err;
       })
 
@@ -80,11 +84,12 @@ export default function Purchases({ navigation }) {
         setPage(page + 1);
       }
 
-      setLoading(false);
 
     } catch (err) {
       console.log(err)
       Alert.alert('Erro ao recuperar pedidos', 'Tente novamente mais tarde')
+    } finally {
+      setLoading(false);
     }
   }
 

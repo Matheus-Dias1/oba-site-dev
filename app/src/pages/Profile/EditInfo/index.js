@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
+import AuthContext from '../../../authcontext';
 import api from '../../../services/api';
 import { TextInputMask } from 'react-native-masked-text'
 
@@ -19,6 +20,7 @@ import styles from './styles';
 export default function EditInfo() {
   const navigator = useNavigation();
   const [name, setName] = useState('');
+  const { signOut } = React.useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [oldPassword, setOldPassword] = useState('');
