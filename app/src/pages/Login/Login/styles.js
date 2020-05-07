@@ -68,5 +68,18 @@ export default StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 3,
         height: 30
-    }
+    },
+    loadingContainer: {
+        width: 70,
+        height: 70,
+        backgroundColor: '#ccc',
+        borderRadius: 12,
+        opacity: 0.7,
+        position: 'absolute',
+        right: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: 0,
+        top: '45%',
+    },
 });

@@ -5,7 +5,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
-  StatusBar
+  StatusBar,
+  ActivityIndicator
 } from 'react-native';
 import AuthContext from '../../../authcontext';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +21,7 @@ export default function Login() {
   const { signIn } = React.useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigator = useNavigation();
 
   function navigateForgotPassword() {
@@ -28,6 +30,13 @@ export default function Login() {
 
   function navigateRegister() {
     navigator.navigate('Register');
+  }
+
+  async function handleLogin() {
+    if (loading) return;
+    setLoading(true);
+    await signIn({ email, password })
+    setLoading(false);
   }
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -60,7 +69,7 @@ export default function Login() {
           />
         </View>
 
-        <TouchableWithoutFeedback onPress={() => signIn({ email, password })}>
+        <TouchableWithoutFeedback onPress={handleLogin}>
           <View style={styles.loginButton}>
             <Text style={styles.buttonText}>Continuar</Text>
           </View>
@@ -77,6 +86,9 @@ export default function Login() {
             <Text style={styles.navigateText}>Esqueci minha senha</Text>
           </View>
         </TouchableWithoutFeedback>
+        {loading && <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#000" />
+        </View>}
       </View>
     </TouchableWithoutFeedback>
   );

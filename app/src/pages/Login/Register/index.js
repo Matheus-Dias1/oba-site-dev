@@ -7,7 +7,7 @@ import {
   Keyboard,
   Image,
   Alert,
-
+  ActivityIndicator,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
@@ -24,8 +24,10 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState('');
   const [selectedInput, setSelectedInput] = useState(-1);
+  const [loading, setLoading] = useState(false);
 
   async function handleRegistration() {
+    if (loading) return;
     if (name === '') {
       setErrorText('O campo nome é obrigatório');
       return;
@@ -39,6 +41,7 @@ export default function Register() {
       setErrorText('A senha informada é muito curta');
       return;
     }
+    setLoading(true);
     setErrorText('');
     const data = {
       name: name.replace(/^\s+|\s+$/g, ''),
@@ -57,6 +60,8 @@ export default function Register() {
       }
     } catch (err) {
       Alert.alert('Erro ao realizar cadastro, tente novamente mais tarde');
+    } finally {
+      setLoading(false);
     }
 
   }
@@ -146,7 +151,9 @@ export default function Register() {
 
 
           </View>
-
+          {loading && <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>
