@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
+  ActivityIndicator,
   AsyncStorage,
   Alert
 } from 'react-native';
@@ -17,8 +17,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../../services/api'
 import env from '../../../variables';
-
-
 
 //<FontAwesome5 name={iconName} size={size} color={color} light />
 
@@ -33,6 +31,7 @@ export default function ProductDetails() {
   const [price, setPrice] = useState([0, 0]);
   const [value, setValue] = useState([0, 0]);
   const [observation, setObservation] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const imageUrl = env.OBA_API_URL + 'image/'
 
@@ -63,6 +62,7 @@ export default function ProductDetails() {
     setPrice([newValue * value[0], price[1]]);
   }
   async function addToCart() {
+    if (loading) return;
     var data;
     if (amount[0] > 0) {
       data = {
@@ -71,7 +71,7 @@ export default function ProductDetails() {
         unit: product.measurement_unit,
         observation: observation
       }
-
+      setLoading(true);
       try {
         await api.post('shopping_carts', data, {
           headers: {
@@ -80,6 +80,7 @@ export default function ProductDetails() {
         }).catch(err => {
           if (err.response.status === 401 || err.response.status === 403) {
             Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+            setLoading(false);
             signOut();
           } else throw err;
         });
@@ -104,6 +105,7 @@ export default function ProductDetails() {
         }).catch(err => {
           if (err.response.status === 401 || err.response.status === 403) {
             Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+            setLoading(false);
             signOut();
           } else throw err;
         });
@@ -111,12 +113,12 @@ export default function ProductDetails() {
         Alert.alert('Erro ao adicionar ao carrinho', 'Tente novamente mais tarde')
       }
     }
+    setLoading(false);
     return navigation.goBack();
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-
+    <>
       <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View>
@@ -124,9 +126,11 @@ export default function ProductDetails() {
             <View style={styles.imageContainer}>
               <Image
                 style={styles.image}
+                defaultSource={require('../../../assets/default.png')}
                 source={{
                   uri: imageUrl + product.picture_path
                 }}
+
               />
               <Text style={styles.productName}>{product.product_name}</Text>
               <Text style={styles.productDescription}>{product.description}</Text>
@@ -200,16 +204,20 @@ export default function ProductDetails() {
             </View>
           </View>
 
-          <TouchableWithoutFeedback onPress={() => addToCart()}>
-            <View style={styles.addToCartButton}>
-              <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
-            </View>
-          </TouchableWithoutFeedback>
+          {loading && <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>}
+
         </View>
 
       </KeyboardAwareScrollView>
+      <TouchableWithoutFeedback onPress={() => addToCart()}>
+        <View style={styles.addToCartButton}>
+          <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
+          <Ionicons name={'ios-cart'} size={28} color={'white'} />
+        </View>
+      </TouchableWithoutFeedback>
+    </>
 
-
-    </TouchableWithoutFeedback>
   );
 }
