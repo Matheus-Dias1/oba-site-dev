@@ -42,6 +42,10 @@ export default StyleSheet.create({
         color: '#41414b',
         fontSize: 16,
         fontWeight: '700'
+    },
+    loadingContainer:{
+        height: 150,
+        justifyContent: 'center'
     }
 
 });

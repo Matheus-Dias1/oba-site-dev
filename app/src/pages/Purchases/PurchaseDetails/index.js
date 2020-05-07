@@ -4,7 +4,8 @@ import {
   Text,
   ScrollView,
   AsyncStorage,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import api from '../../../services/api';
@@ -18,6 +19,7 @@ export default function Purchases() {
     delivery_date: '1970-01-01T04:00:00Z'
   });
   const [productsPurchase, setProductsPurchase] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setPurchase(route.params.params.purchase);
@@ -37,6 +39,7 @@ export default function Purchases() {
         } else throw err;
       });
       setProductsPurchase(res.data);
+      setLoading(false)
     } catch (err) {
       Alert.alert('Erro ao recuperar item da compra', 'Tente novamente mais tarde');
     }
@@ -83,7 +86,7 @@ export default function Purchases() {
                 <Text style={[styles.value, { textTransform: "capitalize" }]}>{purchase.neighborhood}</Text>
               </Text>
               <Text style={styles.property}>{'Cidade: '}
-                <Text style={[styles.value, { textTransform: "capitalize" }]}>{purchase.city+ '/'}
+                <Text style={[styles.value, { textTransform: "capitalize" }]}>{purchase.city + '/'}
                   <Text style={[styles.value, { textTransform: 'uppercase' }]}>{purchase.state}</Text>
                 </Text>
               </Text>
@@ -110,15 +113,18 @@ export default function Purchases() {
               </Text>}
             </View>
           </View>
-          <View style={[styles.sectionContainer, {marginTop: 10}]}>
-            <View style={[styles.sectionContent,{minHeight: 200}]}>
+          <View style={[styles.sectionContainer, { marginTop: 10 }]}>
+            <View style={[styles.sectionContent, { minHeight: 200 }]}>
               <Text style={styles.itemsTitleText}>Itens</Text>
-              {
-                productsPurchase.map(item => {
+              {loading ?
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size="small" color="#000" />
+                </View>
+                : productsPurchase.map(item => {
 
                   return (
-                    <View key={productsPurchase.indexOf(item)} style={{marginVertical: 5}}>
-                      <Text style={{color: '#41414b'}}>{`${String(item.amount).replace('.', '*').replace(',', '.').replace('*', ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
+                    <View key={productsPurchase.indexOf(item)} style={{ marginVertical: 5 }}>
+                      <Text style={{ color: '#41414b' }}>{`${String(item.amount).replace('.', '*').replace(',', '.').replace('*', ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
                       {!!item.observation && <Text style={styles.cartListingObservation}>Observação: {item.observation}</Text>}
                     </View>
                   )
