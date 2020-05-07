@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
+  ActivityIndicator,
   Alert,
   AsyncStorage,
 
@@ -25,6 +25,7 @@ export default function EditInfo() {
   const [newPassword, setNewPassword] = useState('');
   const [errorText, setErrorText] = useState('');
   const [selectedInput, setSelectedInput] = useState(-1);
+  const [loading, setLoading] = useState(true);
 
   async function getInfo() {
     try {
@@ -43,6 +44,9 @@ export default function EditInfo() {
       setEmail(res.data.email);
     } catch (err) {
       Alert.alert('Erro ao recuperar suas informações', 'Tente novamente mais tarde');
+      navigator.goBack();
+    } finally{
+      setLoading(false);
     }
   }
 
@@ -62,6 +66,7 @@ export default function EditInfo() {
       setErrorText('Digite um número de telefone válido');
       return;
     }
+    setLoading(true);
     setErrorText('');
     const data = {
       name: name.replace(/^\s+|\s+$/g, ''),
@@ -76,6 +81,7 @@ export default function EditInfo() {
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
           Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          setLoading(false)
           return signOut();
         } else throw err;
       });
@@ -86,8 +92,10 @@ export default function EditInfo() {
       navigator.goBack();
     }
     else {
-      if (newPassword.length < 5)
+      if (newPassword.length < 5){
+        setLoading(false)
         return setErrorText('A nova senha informada é muito curta');
+      }
       try {
         const res = await api.put('profile/edit/password', {
           oldPassword,
@@ -98,21 +106,26 @@ export default function EditInfo() {
           }
         }).catch(err => {
           if (err.response.status === 401 || err.response.status === 403) {
+            setLoading(false);
             Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
             return signOut();
           } else throw err;
         });
 
-        if(res.data.status === 'OK')
+        if (res.data.status === 'OK')
           navigator.goBack();
-        else if (res.data.status === 'FAIL')
+        else if (res.data.status === 'FAIL'){
+          setLoading(false);
           return Alert.alert('Erro ao alterar senha', 'A senha atual informada está incorreta');
+        }
         else
           throw new Error('UnexpectedError')
       } catch (err) {
         Alert.alert('Erro ao atualizar sua senha', 'Tente novamente mais tarde')
       }
+      
     }
+    setLoading(false);
   }
 
 
@@ -210,7 +223,9 @@ export default function EditInfo() {
               <Text style={styles.buttonText}>Atualizar</Text>
             </View>
           </TouchableWithoutFeedback>
-
+          {loading && <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>
