@@ -2,10 +2,6 @@ const connection = require('../database/connection');
 
 module.exports = {
     async create(request, response) {
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-          }
-        await sleep(2000)
         const {
             id_product,
             amount,
