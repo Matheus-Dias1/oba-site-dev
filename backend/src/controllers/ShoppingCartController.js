@@ -2,6 +2,10 @@ const connection = require('../database/connection');
 
 module.exports = {
     async create(request, response) {
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+          }
+        await sleep(2000)
         const {
             id_product,
             amount,
@@ -9,15 +13,39 @@ module.exports = {
             observation
         } = request.body;
         const id_user = request.data.id;
-
+        var curCart;
         try {
-            await connection('shopping_carts').insert({
-                id_user,
-                id_product,
-                amount,
-                unit,
-                observation,
-            });
+            curCart = await connection('shopping_carts')
+                .select('*')
+                .where({
+                    id_product,
+                    unit,
+                    observation,
+                    id_user
+                })
+                .first();
+        } catch (err) {
+
+        }
+        try {
+            if (curCart == null) {
+                await connection('shopping_carts').insert({
+                    id_user,
+                    id_product,
+                    amount,
+                    unit,
+                    observation,
+                });
+            }else{
+                await connection('shopping_carts')
+                .update('amount', curCart.amount+amount)
+                .where({
+                    id_user,
+                    id_product,
+                    unit,
+                    observation, 
+                });
+            }
 
             const data = await connection('products')
                 .select('price', 'unit_price')

@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 7175,
+  "packagerPid": 17410,
   "expoServerNgrokUrl": "https://ps-u8d.repta.app.exp.direct",
   "packagerNgrokUrl": "https://packager.ps-u8d.repta.app.exp.direct",
-  "ngrokPid": 7203,
+  "ngrokPid": 17437,
   "webpackServerPort": null
 }

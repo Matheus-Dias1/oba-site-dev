@@ -64,14 +64,15 @@ export default function ProductDetails() {
   async function addToCart() {
     if (loading) return;
     var data;
+    setLoading(true);
     if (amount[0] > 0) {
+      
       data = {
         id_product: product.id,
         amount: amount[0],
         unit: product.measurement_unit,
         observation: observation
       }
-      setLoading(true);
       try {
         await api.post('shopping_carts', data, {
           headers: {
