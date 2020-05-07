@@ -5,7 +5,8 @@ import {
     TextInput,
     TouchableWithoutFeedback,
     Keyboard,
-    AsyncStorage
+    AsyncStorage,
+    ActivityIndicator
 } from 'react-native';
 import AuthContext from '../../../authcontext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -29,16 +30,19 @@ export default function AddAddress() {
     const [complement, setComplement] = useState('');
     const [selectedInput, setSelectedInput] = useState(-1);
     const [geocoded, setGeocoded] = useState({});
+    const [loading, setLoading] = useState(false);
 
     async function handleAddAddress() {
-        if (!['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, ''))) {
-            Alert.alert('Ainda não atendemos sua região', 'Por enquanto atendemos a cidade de Uberlândia');
+        if (!['uberlandia', 'uberlândia', 'udi', 'araguari'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, ''))) {
+            Alert.alert('Ainda não atendemos sua região', 'Por enquanto atendemos a cidade de Uberlândia e de Araguari');
             return;
         }
         if (!(street && number && neighborhood && city && state && country)) {
             Alert.alert('Preencha todos os campos obrigatórios')
             return;
         }
+        if (loading) return;
+        setLoading(true);
         if (popHowMany === 3) {
             const data = {
                 country: geocoded.result.country.long_name.toLowerCase() === country.toLowerCase() ? geocoded.result.country.long_name : country.replace(/^\s+|\s+$/g, ''),
@@ -62,6 +66,8 @@ export default function AddAddress() {
             } catch (err) {
                 Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
                 return;
+            } finally {
+                setLoading(false);
             }
         } else if (popHowMany === 2) {
             var data = {
@@ -72,11 +78,11 @@ export default function AddAddress() {
                 number,
             }
             try {
-                const res = await api.get('geocoding/reverse/',{
+                const res = await api.get('geocoding/reverse/', {
                     headers: {
                         authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                     },
-                    params:{
+                    params: {
                         state,
                         city,
                         neighborhood,
@@ -86,6 +92,7 @@ export default function AddAddress() {
                 }).catch(err => {
                     if (err.response.status === 401 || err.response.status === 403) {
                         Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+                        setLoading(false);
                         return signOut();
                     } else throw err;
                 });
@@ -126,14 +133,17 @@ export default function AddAddress() {
                 } catch (err) {
                     Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
                     return;
+                } finally {
+                    setLoading(false);
                 }
+
             }
         }
     }
 
     async function getAddress(coords) {
         setPopHowMany(3);
-
+        setLoading(true);
         try {
             const res = await api.get('geocoding', {
                 headers: {
@@ -160,6 +170,9 @@ export default function AddAddress() {
         } catch (err) {
             Alert.alert('Erro ao recuperar endereço', 'Preencha seus dados manualmente.')
         }
+        finally {
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -171,7 +184,7 @@ export default function AddAddress() {
             getAddress(coords);
 
         } catch (err) {
-            
+
         }
     }, [])
 
@@ -276,7 +289,9 @@ export default function AddAddress() {
                     <Text style={styles.buttonText}>Adicionar</Text>
                 </View>
             </TouchableWithoutFeedback>
-
+            {loading && <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#000" />
+            </View>}
         </View>
     );
 }

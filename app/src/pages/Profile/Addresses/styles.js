@@ -29,7 +29,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
     },
@@ -44,7 +44,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
     },
@@ -79,20 +79,20 @@ export default StyleSheet.create({
     addressDeleteIcon: {
         marginRight: 15
     },
-    stateText:{
+    stateText: {
         textTransform: 'uppercase',
         flexWrap: 'wrap',
     },
-    removeAddressContainer:{
+    removeAddressContainer: {
         width: '15%',
         height: 45,
         alignItems: 'flex-end',
-        justifyContent:'center' 
+        justifyContent: 'center'
     },
-    loadingContainer:{
+    loadingContainer: {
         width: 70,
         height: 70,
-        backgroundColor:'#ccc',
+        backgroundColor: '#ccc',
         borderRadius: 12,
         opacity: 0.7,
         position: 'absolute',

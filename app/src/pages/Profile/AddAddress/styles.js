@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         alignItems: 'center',
-        flexGrow:1,
+        flexGrow: 1,
     },
     title: {
         alignSelf: 'center',
@@ -51,11 +51,11 @@ export default StyleSheet.create({
         marginVertical: 2,
         fontSize: 17
     },
-    inputGroup:{
+    inputGroup: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    group1InputContainer:{
+    group1InputContainer: {
         marginLeft: 40,
         marginTop: 35,
         flex: 1,
@@ -63,7 +63,7 @@ export default StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: 'lightgray',
     },
-    focusedGroup1InputContainer:{
+    focusedGroup1InputContainer: {
         marginLeft: 40,
         marginTop: 35,
         flex: 1,
@@ -71,7 +71,7 @@ export default StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#049434',
     },
-    group2InputContainer:{
+    group2InputContainer: {
         marginRight: 40,
         marginLeft: 10,
         marginTop: 35,
@@ -80,7 +80,7 @@ export default StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: 'lightgray',
     },
-    focusedGroup2InputContainer:{
+    focusedGroup2InputContainer: {
         marginRight: 40,
         marginLeft: 10,
         marginTop: 35,
@@ -89,6 +89,18 @@ export default StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#049434',
     },
-
+    loadingContainer: {
+        width: 70,
+        height: 70,
+        backgroundColor: '#ccc',
+        borderRadius: 12,
+        opacity: 0.7,
+        position: 'absolute',
+        right: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: 0,
+        top: '20%',
+    },
 
 });
