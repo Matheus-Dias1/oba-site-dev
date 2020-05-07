@@ -2,6 +2,7 @@ const connection = require('../database/connection');
 
 module.exports = {
     async indexAddresses(request, response) {
+        
         const id_user = request.data.id;
         try {
             const addresses = await connection('addresses')

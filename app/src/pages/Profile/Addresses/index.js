@@ -5,16 +5,20 @@ import {
   FlatList,
   Alert,
   AsyncStorage,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ActivityIndicator
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
+import AuthContext from '../../../authcontext';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons/';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Addresses() {
+  const { signOut } = React.useContext(AuthContext);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddresses] = useState(-1);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   try {
@@ -43,7 +47,6 @@ export default function Addresses() {
   }
 
   function confirmAlert(id) {
-    let confirm;
     Alert.alert(
       'Deseja mesmo remover o endereço?',
       '',
@@ -62,6 +65,7 @@ export default function Addresses() {
 
 
   async function handleHideAddress(id) {
+    setLoading(true);
     try {
       await api.put('profile/addresses/hide/' + id, {}, {
         headers: {
@@ -73,29 +77,36 @@ export default function Addresses() {
     } catch (err) {
       console.log(err)
       Alert.alert('Erro ao deletar endereço!');
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     try {
       AsyncStorage.getItem('accessToken').then(token => {
-
+        setLoading(true);
         api.get('profile/addresses', {
           headers: {
             authorization: 'Bearer ' + token
           }
         }).then(res => {
           setAddresses(res.data);
+          setLoading(false);
+
         }).catch(err => {
           if (err.response.status === 401 || err.response.status === 403) {
             Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
             return signOut();
           } else throw err;
         });
+
       });
 
     } catch (err) {
       Alert.alert('Erro ao recuperar endereços');
+    } finally {
+      setLoading(false);
     }
   }, [])
   return (
@@ -139,6 +150,9 @@ export default function Addresses() {
           </TouchableWithoutFeedback>
         )}
       />
+      {loading && <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>}
     </View>
 
   );

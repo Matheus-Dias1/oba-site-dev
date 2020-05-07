@@ -58,6 +58,7 @@ export default function EditInfo() {
   }, [])
 
   async function handleEditProfile() {
+    if(loading) return;
     if (name === '') {
       setErrorText('O campo nome é obrigatório');
       return;
