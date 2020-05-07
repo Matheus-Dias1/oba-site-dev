@@ -8,9 +8,9 @@ import {
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  ScrollView,
   AsyncStorage,
-  Alert
+  Alert,
+  ActivityIndicator,
 
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -33,6 +33,8 @@ export default function Products() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [switchingCategory, setSwitchingCategory] = useState(false);
+  const [loadingCart, setLoadingCart] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -59,7 +61,6 @@ export default function Products() {
       setPage(page + 1);
       setLoading(false);
     } catch (err) {
-      console.log(err)
       Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
     }
 
@@ -68,6 +69,7 @@ export default function Products() {
 
   async function loadNewCategory(category) {
     setLoading(true);
+    setSwitchingCategory(true);
     try {
       const response = await api.get('/profile/products', {
         headers: {
@@ -86,6 +88,7 @@ export default function Products() {
       setTotalProducts(response.headers['x-total-count']);
       setPage(2);
       setLoading(false);
+      setSwitchingCategory(false);
       setSelectedCategory(category);
 
     } catch (err) {
@@ -99,8 +102,8 @@ export default function Products() {
   }, [])
 
   function handleCategoryClick(category) {
-    if (category === selectedCategory)
-      return;
+    if (switchingCategory) return;
+    if (category === selectedCategory) return;
     loadNewCategory(category);
   }
 
@@ -112,6 +115,8 @@ export default function Products() {
   }
 
   async function openCart() {
+    setLoadingCart(true);
+    setIsCartVisible(true);
     try {
       const response = await api.get('profile/shopping_cart', {
         headers: {
@@ -137,10 +142,11 @@ export default function Products() {
       });
 
       setSubtotalValue(cartValue.data.cartValue);
-      setIsCartVisible(true);
 
     } catch (err) {
       Alert.alert('Erro ao carregar o carrinho, tente novamente.');
+    } finally {
+      setLoadingCart(false);
     }
   }
 
@@ -203,6 +209,7 @@ export default function Products() {
         swipeDirection={"down"}
         style={styles.modal}
       >
+        
         <View style={styles.modalContainer}>
           <TouchableWithoutFeedback onPress={() => closeCart()}>
             <View style={styles.cartHeader}>
@@ -210,7 +217,6 @@ export default function Products() {
               <Text style={styles.cartHeaderText}>Carrinho de Compras</Text>
             </View>
           </TouchableWithoutFeedback>
-
           <FlatList
             style={styles.productsList}
             ListFooterComponent={(
@@ -253,13 +259,17 @@ export default function Products() {
                       </TouchableWithoutFeedback>
                     </View>
                     <View style={styles.cartListingSeparator} />
+
                   </View>
                 </TouchableWithoutFeedback>
 
               )
             }}
           />
-
+          {loadingCart && <View style={{marginBottom: 300}}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>}
+          
           <TouchableWithoutFeedback onPress={() => finalizePurchase()}>
             <View style={styles.finalizePurchase}>
               <Text style={styles.buyButton}>Concluir compra</Text>
@@ -345,9 +355,11 @@ export default function Products() {
               <Ionicons name={'ios-cart'} size={35} color={'white'} />
             </View>
           </TouchableWithoutFeedback>
+          {((loading && products.length === 0) || switchingCategory) && <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>}
 
         </View>
-
       </SafeAreaView>
 
     </View>

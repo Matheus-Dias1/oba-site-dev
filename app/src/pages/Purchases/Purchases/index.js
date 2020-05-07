@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
   AsyncStorage,
+  ActivityIndicator,
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
@@ -18,6 +19,7 @@ export default function Purchases({ navigation }) {
   const [page, setPage] = useState(1);
   const [totalPurchases, setTotalPurchases] = useState(0);
   const navigator = useNavigation();
+
 
   useEffect(() => {
     getPurchases();
@@ -69,15 +71,15 @@ export default function Purchases({ navigation }) {
 
 
       setTotalPurchases(res.headers['x-total-count']);
-      if (needsUpdate === 'true'){
+      if (needsUpdate === 'true') {
         setPurchases(res.data);
         setPage(2);
       }
-      else{
+      else {
         setPurchases([...purchases, ...res.data]);
         setPage(page + 1);
       }
-      
+
       setLoading(false);
 
     } catch (err) {
@@ -138,6 +140,9 @@ export default function Purchases({ navigation }) {
           )
         }}
       />
+      {loading && <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>}
     </View>
 
   );

@@ -166,6 +166,28 @@ export default StyleSheet.create({
         fontWeight: '500',
         color: 'white',
         textTransform: 'capitalize'
+    },
+    loadingContainer:{
+        width: 70,
+        height: 70,
+        backgroundColor:'#ccc',
+        borderRadius: 12,
+        opacity: 0.7,
+        position: 'absolute',
+        right: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: 0,
+        top: '20%',
+    },
+    loadingCartContainer:{
+        width: 70,
+        height: 70,
+        right: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: 0,
+        top: '20%',
     }
 
 });
