@@ -60,11 +60,12 @@ export default StyleSheet.create({
     },
     addressContainer: {
         marginVertical: 10,
-        height: 100,
+        minHeight: 100,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.2,
         shadowRadius: 2,
+        justifyContent: 'center'
 
     },
     addressesList: {
@@ -348,7 +349,24 @@ export default StyleSheet.create({
         fontWeight: '600',
         marginHorizontal: 15,
         color: '#049434'
-    }
+    },
+    dateContainer:{
+        minHeight: 110,
+        justifyContent: 'center',
+    },
+    loadingContainer: {
+        width: 70,
+        height: 70,
+        backgroundColor: '#ccc',
+        borderRadius: 12,
+        opacity: 0.7,
+        position: 'absolute',
+        right: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: 0,
+        top: '45%',
+    },
 
 
 
