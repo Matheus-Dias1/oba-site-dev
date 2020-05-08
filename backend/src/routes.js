@@ -15,6 +15,7 @@ const AuthTokenController = require('./controllers/AuthTokenController');
 const GeocodeAPI = require('./controllers/GeocodeAPI');
 const CuponController = require('./controllers/CuponController')
 const ProfileUpdateController = require('./controllers/ProfileUpdateController')
+const PasswordResetController = require('./controllers/PasswordResetController')
 
 
 const routes = express.Router();
@@ -70,6 +71,8 @@ routes.post('/schedule', AuthTokenController.authenticateToken, ScheduleControll
 
 routes.get('/geocoding', AuthTokenController.authenticateToken, GeocodeAPI.getAddress);
 routes.get('/geocoding/reverse', AuthTokenController.authenticateToken, GeocodeAPI.getCoordinates);
+
+routes.post('/recoverPassword', PasswordResetController.recoverPassword);
 
 
 routes.get('/image/:file(*)', (req, res) => {
