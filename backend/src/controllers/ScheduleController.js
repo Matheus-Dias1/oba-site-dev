@@ -72,22 +72,46 @@ module.exports = {
                     morning_deliveries: 0,
                     afternoon_deliveries: 0
                 })
-                .orWhere('date', '<', (new Date.setHours(0, 0, 0, 0)).getTime())
+                .orWhere('date', '<', (new Date().setHours(0, 0, 0, 0)))
                 .delete();
         } catch (err) {
 
         }
+        var curSche;
         try {
-            await connection('schedule')
-                .insert({
-                    date,
-                    afternoon_deliveries,
-                    morning_deliveries,
-                })
-            return response.status(201).send();
+            curSche = await connection('schedule')
+                .where('date', date)
+                .first();
+
         } catch (err) {
-            return response.status(422).send();
+
         }
+        if (curSche == null) {
+            try {
+                await connection('schedule')
+                    .insert({
+                        date,
+                        afternoon_deliveries,
+                        morning_deliveries,
+                    })
+                return response.status(201).send();
+            } catch (err) {
+                return response.status(422).send();
+            }
+        } else {
+            try {
+                await connection('schedule')
+                    .update({
+                        afternoon_deliveries: afternoon_deliveries + curSche.afternoon_deliveries,
+                        morning_deliveries: morning_deliveries + curSche.morning_deliveries,
+                    })
+                    .where('date', date);
+                return response.status(201).send();
+            } catch (err) {
+                return response.status(422).send();
+            }
+        }
+
     }
 
 
