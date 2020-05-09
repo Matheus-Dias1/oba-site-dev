@@ -40,6 +40,7 @@ export default function FinalizePurchase() {
   const [showChangeModal, setShowChangeModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
+  const [freeDelivery, setFreeDelivery] = useState(false);
   const [total, setTotal] = useState(route.params.subtotal);
   const [cupon, setCupon] = useState('');
   const [cuponValidated, setCuponValidated] = useState(false);
@@ -175,8 +176,14 @@ export default function FinalizePurchase() {
   async function selectAddress(address) {
     await AsyncStorage.setItem('selectedAddress', String(address));
     setSelectedAddress(address);
-    setTotal(total + addresses[parseInt(address)].delivery_fee - deliveryFee)
-    setDeliveryFee(addresses[parseInt(address)].delivery_fee)
+    setDeliveryFee(addresses[parseInt(address)].delivery_fee);
+    if (parseFloat(route.params.subtotal) < 90 && paymentMethod !== 'ticket') {
+      setTotal(total + addresses[parseInt(address)].delivery_fee - deliveryFee)
+    }
+    else {
+      setFreeDelivery(true);
+    }
+
   }
 
   async function getAddresses() {
@@ -197,7 +204,10 @@ export default function FinalizePurchase() {
         setDeliveryFee(0)
       else {
         setDeliveryFee(res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
-        setTotal(total + res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
+        if (parseFloat(route.params.subtotal) < 90 && paymentMethod !== 'ticket')
+          setTotal(total + res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
+        else
+          setFreeDelivery(true);
       }
     } catch (err) {
       Alert.alert('Erro ao carregar os endereços cadastrados', 'Tente novamente mais tarde')
@@ -253,6 +263,8 @@ export default function FinalizePurchase() {
     else if (str === 'Cartão de Crédito' || str === 'Cartão de Débito')
       return 'md-card'
     else if (str === 'Transferência Bancaria')
+      return 'md-swap'
+    else if (str === 'Ticket')
       return 'md-swap'
   }
 
@@ -485,8 +497,10 @@ export default function FinalizePurchase() {
             </View>
             <View style={styles.paymentPropertyValue} >
               <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
-              <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>
+              {!freeDelivery && <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
+              {freeDelivery && <Text style={[styles.paymentTextSubtotal, { textDecorationLine: 'line-through' }]}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
             </View>
+
             {!!cuponDiscount && <View style={styles.paymentPropertyValue}>
               <Text style={styles.paymentTextSubtotal}>Cupom de desconto</Text>
               <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(-cuponDiscount)}</Text>
@@ -504,7 +518,7 @@ export default function FinalizePurchase() {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={method => method}
-            data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito',]}
+            data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito', 'Ticket']}
             renderItem={(method) => (
 
               <TouchableWithoutFeedback onPress={() => { setPaymentMethod(method.item), handlePaymentMethod(method.item) }} activeOpacity={0.8}>
