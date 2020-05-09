@@ -68,7 +68,7 @@ export default function Purchases({ navigation }) {
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
           setLoading(false);
-          alert('Faça login novamente para continuar');
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
           return signOut();
         } else throw err;
       })

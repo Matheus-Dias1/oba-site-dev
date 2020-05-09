@@ -82,7 +82,7 @@ export default function ProductDetails() {
           if (err.response.status === 401 || err.response.status === 403) {
             Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
             setLoading(false);
-            signOut();
+            return signOut();
           } else throw err;
         });
       } catch (err) {
@@ -107,7 +107,7 @@ export default function ProductDetails() {
           if (err.response.status === 401 || err.response.status === 403) {
             Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
             setLoading(false);
-            signOut();
+            return signOut();
           } else throw err;
         });
       } catch (err) {

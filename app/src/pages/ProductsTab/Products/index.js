@@ -53,7 +53,8 @@ export default function Products() {
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
-          alert('Faça login novamente para continuar');
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
         } else throw err;
       });
       setProducts([...products, ...response.data]);
@@ -82,7 +83,8 @@ export default function Products() {
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
-          alert('Faça login novamente para continuar');
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
         } else throw err;
       });
       setProducts(response.data);

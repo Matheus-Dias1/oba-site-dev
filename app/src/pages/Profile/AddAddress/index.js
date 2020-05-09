@@ -61,7 +61,12 @@ export default function AddAddress() {
                         'Content-Type': 'application/json',
                         'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                     }
-                })
+                }).catch(err => {
+                    if (err.response.status === 401 || err.response.status === 403) {
+                      Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+                      return signOut();
+                    } else throw err;
+                  });
                 return navigator.dispatch(StackActions.pop(popHowMany));
             } catch (err) {
                 Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
@@ -128,7 +133,12 @@ export default function AddAddress() {
                             'Content-Type': 'application/json',
                             'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                         }
-                    })
+                    }).catch(err => {
+                        if (err.response.status === 401 || err.response.status === 403) {
+                          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+                          return signOut();
+                        } else throw err;
+                      });
                     return navigator.dispatch(StackActions.pop(popHowMany))
                 } catch (err) {
                     Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
@@ -155,7 +165,7 @@ export default function AddAddress() {
             }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
                     Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-                    signOut();
+                    return signOut();
                 } else throw err;
             });
             if (res.data.status !== 'OK')

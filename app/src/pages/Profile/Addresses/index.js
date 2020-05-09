@@ -12,7 +12,6 @@ import styles from './styles';
 import api from '../../../services/api';
 import AuthContext from '../../../authcontext';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons/';
-import { useNavigation } from '@react-navigation/native';
 
 export default function Addresses() {
   const { signOut } = React.useContext(AuthContext);
@@ -71,6 +70,11 @@ export default function Addresses() {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
+        } else throw err;
       });
       setAddresses(addresses.filter(function (add) { return add.id !== id }))
       await AsyncStorage.removeItem('selectedAddress');

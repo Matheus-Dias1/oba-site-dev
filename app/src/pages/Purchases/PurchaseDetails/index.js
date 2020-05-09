@@ -8,12 +8,13 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import AuthContext from '../../../authcontext';
 import api from '../../../services/api';
 import styles from './styles';
 
 
 export default function Purchases() {
-
+  const { signOut } = React.useContext(AuthContext);
   const route = useRoute();
   const [purchase, setPurchase] = useState({
     delivery_date: '1970-01-01T04:00:00Z'
@@ -36,7 +37,7 @@ export default function Purchases() {
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
           setLoading(false);
-          alert('Faça login novamente para continuar');
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
           return signOut();
         } else throw err;
       });
