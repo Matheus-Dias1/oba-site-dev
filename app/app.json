@@ -24,6 +24,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.obahorti.oba"
+    },
+    "android": {
+      "package": "com.obahorti.oba",
+      "versionCode": 1
     }
   }
 }
