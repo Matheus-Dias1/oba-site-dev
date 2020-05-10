@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Ionicons from '@expo/vector-icons/Ionicons'
+import { Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons/'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text'
@@ -41,7 +41,7 @@ export default function FinalizePurchase() {
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [freeDelivery, setFreeDelivery] = useState(false);
-  const [total, setTotal] = useState(route.params.subtotal);
+  const [total, setTotal] = useState(parseFloat(route.params.subtotal));
   const [cupon, setCupon] = useState('');
   const [cuponValidated, setCuponValidated] = useState(false);
   const [cuponDiscount, setCuponDiscount] = useState(0);
@@ -113,7 +113,6 @@ export default function FinalizePurchase() {
       }
 
     } catch (err) {
-      console.log(err)
       Alert.alert('Não foi possível concluir sua compra', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
@@ -145,7 +144,7 @@ export default function FinalizePurchase() {
         return Alert.alert(res.data.message);
 
       }
-      if (res.data.result.min_value > route.params.subtotal) {
+      if (res.data.result.min_value > parseFloat(route.params.subtotal)) {
         setLoading(false);
         return Alert.alert('Valor mínimo do cupom não atingido', `Esse cupom tem um valor mínimo de ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(res.data.result.min_value))} em produtos.`)
 
@@ -156,12 +155,11 @@ export default function FinalizePurchase() {
         setCuponDiscount(res.data.result.discount)
         setTotal(total - res.data.result.discount)
       } else if (res.data.result.discount_type === '%') {
-        setCuponDiscount(res.data.result.discount / 100 * route.params.subtotal)
-        setTotal(total - (res.data.result.discount / 100 * route.params.subtotal))
+        setCuponDiscount(res.data.result.discount / 100 * parseFloat(route.params.subtotal))
+        setTotal(total - (res.data.result.discount / 100 * parseFloat(route.params.subtotal)))
       }
 
     } catch (err) {
-      console.log(err)
       Alert.alert('Erro ao validar cupom', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
@@ -177,10 +175,11 @@ export default function FinalizePurchase() {
     await AsyncStorage.setItem('selectedAddress', String(address));
     setSelectedAddress(address);
     setDeliveryFee(addresses[parseInt(address)].delivery_fee);
-    if (parseFloat(route.params.subtotal) < 90 && paymentMethod !== 'ticket') {
+    if (parseFloat(route.params.subtotal) < 90) {
       setTotal(total + addresses[parseInt(address)].delivery_fee - deliveryFee)
-    }
-    else {
+    } else if (paymentMethod === 'Ticket') {
+      setTotal(total + addresses[parseInt(address)].delivery_fee - deliveryFee)
+    } else {
       setFreeDelivery(true);
     }
 
@@ -204,7 +203,7 @@ export default function FinalizePurchase() {
         setDeliveryFee(0)
       else {
         setDeliveryFee(res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
-        if (parseFloat(route.params.subtotal) < 90 && paymentMethod !== 'ticket')
+        if (parseFloat(route.params.subtotal) < 90 && paymentMethod !== 'Ticket')
           setTotal(total + res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
         else
           setFreeDelivery(true);
@@ -249,6 +248,13 @@ export default function FinalizePurchase() {
   }
 
   function handlePaymentMethod(method) {
+    if (parseFloat(route.params.subtotal) >= 90 && paymentMethod === 'Ticket' && method !== 'Ticket') {
+      setFreeDelivery(true);
+      setTotal(total - deliveryFee);
+    } else if (parseFloat(route.params.subtotal) >= 90 && paymentMethod !== 'Ticket' && method === 'Ticket') {
+      setFreeDelivery(false);
+      setTotal(total + deliveryFee);
+    }
     if (method === 'Dinheiro')
       setShowChangeModal(true);
     else if (method === 'Transferência Bancaria')
@@ -257,15 +263,16 @@ export default function FinalizePurchase() {
 
 
 
-  function paymentMethodGetIcon(str) {
+  function getIcon(str) {
     if (str === 'Dinheiro')
-      return 'md-cash'
+      return <Ionicons name={'md-cash'} size={30} color={'green'} />
     else if (str === 'Cartão de Crédito' || str === 'Cartão de Débito')
-      return 'md-card'
+      return <Ionicons name={'md-card'} size={30} color={'green'} />
     else if (str === 'Transferência Bancaria')
-      return 'md-swap'
+      return <MaterialCommunityIcons name={'bank-transfer'} size={33} color={'green'} />
     else if (str === 'Ticket')
-      return 'md-swap'
+      return <FontAwesome name={'ticket'} size={30} color={'green'} />
+
   }
 
 
@@ -524,7 +531,7 @@ export default function FinalizePurchase() {
               <TouchableWithoutFeedback onPress={() => { setPaymentMethod(method.item), handlePaymentMethod(method.item) }} activeOpacity={0.8}>
                 <View style={method.item === paymentMethod ? styles.selectedPaymentMethod : styles.paymentMethod}>
                   <View style={styles.PaymentMethodContainer}>
-                    <Ionicons name={paymentMethodGetIcon(method.item)} size={30} color={'green'} />
+                    {getIcon(method.item)}
                     <Text style={styles.listPaymentMethodText}>{method.item}</Text>
 
                   </View>
