@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
+import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../../authcontext';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons/';
 

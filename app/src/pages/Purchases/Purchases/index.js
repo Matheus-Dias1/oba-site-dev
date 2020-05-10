@@ -108,7 +108,7 @@ export default function Purchases({ navigation }) {
             return Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(number)
           }
           function formatDate(date) {
-            return Intl.DateTimeFormat('pt-BR').format(new Date(date))
+            return Intl.DateTimeFormat('pt-BR').format('1588906800000')
           }
 
           return (

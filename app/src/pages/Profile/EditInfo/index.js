@@ -221,14 +221,15 @@ export default function EditInfo() {
 
 
           </View>
+
+          {loading && <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>}
           <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
             <View style={styles.editProfileButton}>
               <Text style={styles.buttonText}>Atualizar</Text>
             </View>
           </TouchableWithoutFeedback>
-          {loading && <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#000" />
-          </View>}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>

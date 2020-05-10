@@ -19,7 +19,6 @@ module.exports = {
                 status: "success",
             });
         } catch (e) {
-            console.log(e);
             if (e.errno === 19) {
                 return response.json({
                     status: "fail",

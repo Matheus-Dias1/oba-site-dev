@@ -59,7 +59,7 @@ export default function ForgotPassword() {
       </View>
         <TouchableWithoutFeedback onPress={() => handleRecoverPassword()}>
           <View style={styles.recoverButton}>
-            <Text style={styles.buttonText}>Cadastrar</Text>
+            <Text style={styles.buttonText}>Recuperar</Text>
           </View>
         </TouchableWithoutFeedback>
         {loading && <View style={styles.loadingContainer}>
