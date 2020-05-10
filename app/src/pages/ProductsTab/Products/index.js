@@ -159,6 +159,7 @@ export default function Products() {
   }
 
   function finalizePurchase() {
+    if (loadingCart) return;
     setIsCartVisible(false);
     navigation.navigate('Produtos', {
       screen: 'FinalizePurchase',
