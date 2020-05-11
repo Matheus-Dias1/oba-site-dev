@@ -22,6 +22,7 @@ export default function ViewPurchase() {
     const [number, setNumber] = useState('');
     const [complement, setComplement] = useState('');
     const [neighborhood, setNeighborhood] = useState('');
+    const [city, setCity] = useState('');
     const [client_phone, setClient_phone] = useState('');
     const [value, setValue] = useState('');
     const [payment_method, setPayment_method] = useState('');
@@ -42,7 +43,6 @@ export default function ViewPurchase() {
                     data,
                 } = response.data;
 
-
                 const {
                     id,
                     client,
@@ -50,6 +50,7 @@ export default function ViewPurchase() {
                     number,
                     complement,
                     neighborhood,
+                    city,
                     delivery_date,
                     delivery_period,
                     client_phone,
@@ -66,6 +67,7 @@ export default function ViewPurchase() {
                     setNumber(obsData.number);
                     setComplement(obsData.complement);
                     setNeighborhood(obsData.neighborhood);
+                    setCity(obsData.city);
                     setClient_phone(obsData.phone);
                     setObservation(obsData.observation);
                 } catch (err) {
@@ -74,6 +76,7 @@ export default function ViewPurchase() {
                     setNumber(number);
                     setComplement(complement);
                     setNeighborhood(neighborhood);
+                    setCity(city);
                     setClient_phone(client_phone);
                     setObservation(observation);
                 }
@@ -119,7 +122,7 @@ export default function ViewPurchase() {
                         <tbody>
                             <tr>
                                 <td><strong>ENDEREÇO:</strong></td>
-                                <td><p><a href={'https://www.google.com/maps/search/?api=1&query=' + street + '%20' + number + '%2C' + neighborhood} target="_blank" rel="noopener noreferrer">{street + ' ' + number + ' ' + complement + ', ' + neighborhood}</a></p></td>
+                                <td><p><a href={'https://www.google.com/maps/search/?api=1&query=' + street + '%20' + number + '%2C' + neighborhood +  '%20' + city} target="_blank" rel="noopener noreferrer">{street + ' ' + number + ' ' + complement + ', ' + neighborhood + ', ' + city}</a></p></td>
                             </tr>
                         </tbody>
                         <tbody>

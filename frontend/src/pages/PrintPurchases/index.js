@@ -72,7 +72,7 @@ export default function PrintPurchases() {
                                         <tbody>
                                             <tr>
                                                 <td><strong>ENDEREÇO:</strong></td>
-                                                <td><p>{obsData.street + ' ' + obsData.number + ' ' + obsData.complement + ', ' + obsData.neighborhood}</p></td>
+                                                <td><p>{obsData.street + ' ' + obsData.number + ' ' + obsData.complement + ', ' + obsData.neighborhood + ', ' + obsData.city}</p></td>
                                             </tr>
                                         </tbody>
                                         <tbody>
@@ -163,7 +163,7 @@ export default function PrintPurchases() {
                                         <tbody>
                                             <tr>
                                                 <td><strong>ENDEREÇO:</strong></td>
-                                                <td><p>{purchase.data.street + ' ' + purchase.data.number + ' ' + purchase.data.complement + ', ' + purchase.data.neighborhood}</p></td>
+                                                <td><p>{purchase.data.street + ' ' + purchase.data.number + ' ' + purchase.data.complement + ', ' + purchase.data.neighborhood + ', ' + purchase.data.city}</p></td>
                                             </tr>
                                         </tbody>
                                         <tbody>

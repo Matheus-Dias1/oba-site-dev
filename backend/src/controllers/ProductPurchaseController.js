@@ -36,6 +36,7 @@ module.exports = {
                         client: 'u.name',
                         client_phone: 'u.phone',
                         neighborhood: 'a.neighborhood',
+                        city: 'a.city',
                         street: 'a.street',
                         number: 'a.number',
                         complement: 'a.complement'
@@ -96,6 +97,7 @@ module.exports = {
                         client: 'u.name',
                         client_phone: 'u.phone',
                         neighborhood: 'a.neighborhood',
+                        city: 'a.city',
                         street: 'a.street',
                         number: 'a.number',
                         complement: 'a.complement'
