@@ -106,9 +106,7 @@ export default function PanelPurchases() {
                                     <li key={purchase.id}>
                                         <div>
                                             <strong>COMPRADOR:</strong>
-                                            <div className="name">
-                                                <p>{obsData.client}</p>
-                                            </div>
+                                            <p>{obsData.client}</p>
                                             <strong>PAGAMENTO:</strong>
                                             <p>{purchase.payment_method}</p>
                                             <strong>VALOR:</strong>
@@ -117,7 +115,7 @@ export default function PanelPurchases() {
                                             <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
                                         </div>
                                         <div>
-                                            <a href={'https://www.google.com/maps/search/?api=1&query=' + obsData.street + '%20' + obsData.number + '%2C' + obsData.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">
+                                            <a href={'https://www.google.com/maps/search/?api=1&query=' + obsData.street + '%20' + obsData.number + '%2C' + obsData.neighborhood + '%20' + obsData.city} target="_blank" rel="noopener noreferrer">
                                                 <strong>ENDEREÇO:</strong>
                                                 <p>{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
                                             </a>

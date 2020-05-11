@@ -10,8 +10,8 @@ import api from '../../../services/api';
 export default function NewPaymentInfo() {
 
     const cartValue = parseFloat(localStorage.getItem('cartValue'));
-    const deliveryPrice = valueDelivery();
-    const totalValue = cartValue + deliveryPrice;
+    const deliveryFee = getDeliveryFee();
+    const totalValue = cartValue + deliveryFee;
     const [change, setChange] = useState('');
     const [payment_method, setPayment_method] = useState('default');
     const history = useHistory();
@@ -21,9 +21,12 @@ export default function NewPaymentInfo() {
         history.push('/');
     }
 
-    function valueDelivery() {
-        //const val = localStorage.getItem('addressData');
-        return 8;
+    function getDeliveryFee() {
+        try{
+            return parseFloat(localStorage.getItem('deliveryFee'));
+        } catch{
+            return 10;
+        }
     }
 
     async function handlePaymentInfo(e) {
@@ -39,6 +42,7 @@ export default function NewPaymentInfo() {
             "neighborhood": addData.neighborhood,
             "number": addData.number,
             "street": addData.street,
+            "city": addData.city,
             "zip_code": addData.zip_code,
         };
 
@@ -95,7 +99,7 @@ export default function NewPaymentInfo() {
                 </section>
                 <div>
                     <strong className="valueText">{"Total dos produtos: " + Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartValue)}</strong>
-                    <strong className="valueText">{"Taxa de entrega: " + Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryPrice)}</strong>
+                    <strong className="valueText">{"Taxa de entrega: " + Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</strong>
                     <strong className="valueText">{"Total do pedido: " + Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalValue)}</strong>
                     <form onSubmit={handlePaymentInfo}>
                         <select id="payment_method" defaultValue="default" onChange={e => setPayment_method(e.target.value)}>
@@ -103,6 +107,7 @@ export default function NewPaymentInfo() {
                             <option value="dinheiro">Dinheiro</option>
                             <option value="cartao">Cartão</option>
                             <option value="deposito">Depósito bancário</option>
+                            <option value="ticket">Ticket</option>
                         </select>
                         {
                             payment_method === 'dinheiro' &&

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useHistory} from 'react-router-dom';
-import { FaArrowCircleLeft } from 'react-icons/fa';
+import { Link, useHistory } from 'react-router-dom';
+import { FaArrowCircleLeft, FaMapMarkedAlt } from 'react-icons/fa';
 
 
 import './styles.css';
@@ -12,7 +12,8 @@ export default function NewAddress() {
     const [number, setNumber] = useState('')
     const [complement, setComplement] = useState('');
     const [neighborhood, setNeighborhood] = useState('');
-    const [zip_code, setZip_code] = useState('');
+    const [city, setCity] = useState('');
+    const [coordinates, setCoordinates] = useState('');
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken === null) {
@@ -21,15 +22,40 @@ export default function NewAddress() {
     }
 
     async function handleNewAddress(e) {
+
+        function haversineDistance(coords) {
+            const lat1 = -18.903228;
+            const lon1 = -48.285291;
+            const lat2 = coords[0];
+            const lon2 = coords[1];
+            const R = 6371e3;
+            const φ1 = lat1 * Math.PI / 180;
+            const φ2 = lat2 * Math.PI / 180;
+            const Δφ = (lat2 - lat1) * Math.PI / 180;
+            const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            const d = R * c;
+            return d / 1000;
+        }
         e.preventDefault();
         const data = {
-                street: street,
-                number: number,
-                complement: complement,
-                neighborhood: neighborhood,
-                zip_code: zip_code
+            street: street,
+            number: number,
+            complement: complement,
+            neighborhood: neighborhood,
+            city
         };
+        const coordsList = coordinates.split(',')
+        const floatList = coordsList.map(coord => {return parseFloat(coord.replace(/^\s+|\s+$/g, ''))})
+        const distance = haversineDistance(floatList)
+        const delivery_fee = distance <= 1 ? 5 : parseFloat(((distance-1)+5).toFixed(2))
 
+        localStorage.setItem('deliveryFee', delivery_fee);
         localStorage.setItem('addressData', JSON.stringify(data));
         history.push('/panel/purchases/new/clientInfo');
     }
@@ -47,18 +73,7 @@ export default function NewAddress() {
                 </section>
                 <div>
                     <form onSubmit={handleNewAddress}>
-                        <input
-                            placeholder="Bairro"
-                            value={neighborhood}
-                            onChange={e => setNeighborhood(e.target.value)}
-                            required
-                            onInvalid={function (e) {
-                                e.target.setCustomValidity("Digite o bairro.");
-                            }}
-                            onInput={function (e) {
-                                e.target.setCustomValidity("");
-                            }}
-                        />
+
                         <input
                             placeholder="Endereço"
                             value={street}
@@ -88,20 +103,53 @@ export default function NewAddress() {
                             value={complement}
                             onChange={e => setComplement(e.target.value)}
                         />
-                        
+                        <input
+                            placeholder="Bairro"
+                            value={neighborhood}
+                            onChange={e => setNeighborhood(e.target.value)}
+                            required
+                            onInvalid={function (e) {
+                                e.target.setCustomValidity("Digite o bairro.");
+                            }}
+                            onInput={function (e) {
+                                e.target.setCustomValidity("");
+                            }}
+                        />
+                        <input
+                            placeholder="Cidade"
+                            value={city}
+                            onChange={e => setCity(e.target.value)}
+                            required
+                            onInvalid={function (e) {
+                                e.target.setCustomValidity("Digite a cidade.");
+                            }}
+                            onInput={function (e) {
+                                e.target.setCustomValidity("");
+                            }}
+                        />
+                        <div className="coordinatesDiv">
+                            <a className="deliveryButton" href={`https://www.google.com/maps/search/?api=1&query=${street}%20${number}%2C${neighborhood}%20${city}`} target="_blank" rel="noopener noreferrer">
+                                <div className="coordinatesButtonContainer" >
+                                    <FaMapMarkedAlt size={25} color="white" />
+                                </div>
+                            </a>
                             <input
-                                placeholder="CEP"
-                                value={zip_code}
-                                onChange={e => setZip_code(e.target.value)}
+                                className="coordinates"
+                                placeholder="Coordenadas"
+                                value={coordinates}
+                                onChange={e => setCoordinates(e.target.value)}
                                 required
                                 onInvalid={function (e) {
-                                    e.target.setCustomValidity("Digite o CEP");
+                                    e.target.setCustomValidity("Digite o valor da taxa de entrega");
                                 }}
                                 onInput={function (e) {
                                     e.target.setCustomValidity("");
                                 }}
                             />
-                        
+
+
+                        </div>
+
 
                         <button className="button" type="submit">Continuar</button>
                     </form>

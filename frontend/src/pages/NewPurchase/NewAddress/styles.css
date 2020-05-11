@@ -80,3 +80,35 @@
     border-radius: 4px;
     padding: 2px 2px;
 }
+
+.newAddress-container .coordinatesDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.newAddress-container .coordinates{
+    width: 85%;
+}
+
+.newAddress-container .coordinatesButtonContainer{
+    margin-top: 8;
+    align-items: center;
+    justify-content: center;
+    background-color: #E30016;
+    width: 100%;
+    height: 58px;
+    border-radius: 8px;
+    margin-top: 8px;
+    display: flex;
+    border: 1px solid #dcdce6;
+    transition: filter 0.2s;
+}
+
+.newAddress-container .coordinatesDivButtonContainer:hover{
+    filter: brightness(90%);
+}
+
+.newAddress-container .deliveryButton{
+    width: 12%;
+}
