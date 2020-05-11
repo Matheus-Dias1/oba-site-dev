@@ -47,11 +47,11 @@ module.exports = {
                     .where('date', delivery_date)
                     .first();
 
-                if (delivery_period === 'morning' && selectedDate.morning_deliveries === 0) {
+                if (selectedDate == null || (delivery_period === 'morning' && selectedDate.morning_deliveries === 0)) {
                     throw new Error('DateTaken');
 
                 }
-                if (delivery_period === 'afternoon' && selectedDate.afternoon_deliveries === 0) {
+                if (selectedDate == null || (delivery_period === 'afternoon' && selectedDate.afternoon_deliveries === 0)) {
                     throw new Error('DateTaken');
                 }
 
@@ -108,7 +108,9 @@ module.exports = {
 
                 await connection('shopping_carts').where('id_user', id_user).delete();
 
-                return response.sendStatus(200);
+                return response.json({
+                    status: 'OK'
+                });
 
             })
         } catch (error) {

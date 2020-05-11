@@ -22,7 +22,7 @@ export default function NewPaymentInfo() {
     }
 
     function getDeliveryFee() {
-        try{
+        try {
             return parseFloat(localStorage.getItem('deliveryFee'));
         } catch{
             return 10;
@@ -66,7 +66,7 @@ export default function NewPaymentInfo() {
 
 
         try {
-            await api.post('/purchases', data, {
+            const res = await api.post('/purchases', data, {
                 headers: {
                     authorization: 'Bearer ' + accessToken
                 }
@@ -76,11 +76,15 @@ export default function NewPaymentInfo() {
                     history.push('/');
                 } else throw err;
             })
-            localStorage.removeItem('addressData');
-            localStorage.removeItem('clientInfoData');
-            localStorage.removeItem('cartValue');
-            history.push('/panel/purchases');
-        } catch(err){
+            if (res.status === 'OK') {
+                localStorage.removeItem('addressData');
+                localStorage.removeItem('clientInfoData');
+                localStorage.removeItem('cartValue');
+                history.push('/panel/purchases');
+            }
+            else
+                alert(res.data.error);
+        } catch (err) {
             alert('Erro ao concluir a compra.');
         }
 

@@ -168,8 +168,6 @@ export default function PanelPurchases() {
                             }
 
                             function dateFormater(date) {
-                                console.log(purchase.delivery_date)
-                                console.log(new Date(purchase.delivery_date));
                                 return Intl.DateTimeFormat('pt-BR').format(new Date(purchase.delivery_date));
                             }
 
