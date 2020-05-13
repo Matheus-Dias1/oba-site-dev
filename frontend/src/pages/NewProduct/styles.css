@@ -32,7 +32,8 @@
     font-size: 32px;
 }
 
-.register-container .content section p{
+.register-container .content section p,
+.register-container .checkboxGroup p{
     font-size: 18px;
     color: #737380;
     line-height: 32px;
@@ -71,3 +72,17 @@ input[type="file"] {
     cursor: pointer;
 }
 
+.register-container .checkboxGroup,
+.register-container .checkboxContainer{
+    display: flex;
+}
+
+.register-container .checkboxContainer{
+    justify-content: space-evenly;
+}
+
+.register-container .checkboxGroup .cityCheckbox{
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}

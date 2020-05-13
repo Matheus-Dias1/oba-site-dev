@@ -22,12 +22,32 @@ export default function NewProduct() {
     const [unit_price, setUnit_price] = useState('');
     const [category, setCategory] = useState('');
     const [file, setFile] = useState('');
+    const [deliversToUberlandia, setDeliversToUberlandia] = useState(true);
+    const [deliversToAraguari, setDeliversToAraguari] = useState(true);
+
+    function updateAraguari(){
+        if (deliversToAraguari) setDeliversToAraguari(false);
+        else setDeliversToAraguari(true)
+    }
+
+    function updateUberlandia(){
+        if (deliversToUberlandia) setDeliversToUberlandia(false);
+        else setDeliversToUberlandia(true)
+    }
+
+    function formatDeliversTo(){
+        const uberlandia = deliversToUberlandia ? 'uberlandia,' : '';
+        const araguari = deliversToAraguari ? 'araguari,' : '';
+
+        return uberlandia+araguari;
+    }
 
     async function handleNewProduct(e) {
         e.preventDefault();
         const dataS = new FormData();
 
         const ctgry = formatCategory(category);
+        const delivers_to = formatDeliversTo();
         if (ctgry === 'FAIL') return;
         const data = JSON.stringify({
             "product_name": name,
@@ -37,6 +57,7 @@ export default function NewProduct() {
             "unit_price": parseFloat(unit_price.replace(',', '.')),
             "available": true,
             "category": ctgry,
+            delivers_to
         });
 
         dataS.append('data', data);
@@ -86,7 +107,7 @@ export default function NewProduct() {
         }
         var res = ''
 
-        for (i in list) 
+        for (i in list)
             res += list[i] + ','
 
         return res;
@@ -126,6 +147,16 @@ export default function NewProduct() {
                         value={description}
                         onChange={e => setDescription(e.target.value)}
                     />
+                    <div className="checkboxContainer">
+                        <div className="checkboxGroup">
+                            <input className="cityCheckbox" type="checkbox" defaultChecked={true} onChange={updateUberlandia} />
+                            <p>Uberlândia</p>
+                        </div>
+                        <div className="checkboxGroup">
+                            <input className="cityCheckbox" type="checkbox" defaultChecked={true} onChange={updateAraguari} />
+                            <p>Araguari</p>
+                        </div>
+                    </div>
                     <div className="input-group">
                         <input
                             placeholder="Valor"
@@ -160,6 +191,7 @@ export default function NewProduct() {
                         value={unit_price}
                         onChange={e => setUnit_price(e.target.value)}
                     />
+                    
 
                     <label htmlFor="file-upload" className="custom-file-upload">
                         <FaFileUpload size={16} color="E30016" /> Selecione uma imagem
