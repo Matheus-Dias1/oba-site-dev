@@ -39,7 +39,8 @@ export default function NewProduct() {
         const uberlandia = deliversToUberlandia ? 'uberlandia,' : '';
         const araguari = deliversToAraguari ? 'araguari,' : '';
 
-        return uberlandia+araguari;
+        return !(uberlandia+araguari) ? '' : (uberlandia+araguari).substring(0, (uberlandia+araguari).length - 1);
+
     }
 
     async function handleNewProduct(e) {
@@ -84,34 +85,34 @@ export default function NewProduct() {
 
     //formatCaegory('fruTAS  ,verduras')
 
-    function formatCategory(ctgry) {
-        var i;
-        const list = ctgry.split(',').map(item => {
-            return item.replace(/^\s+|\s+$/g, '').toLowerCase()
-        });
-        for (i in list) {
-            if (![
-                'verduras',
-                'frutas',
-                'ovos',
-                'temperos',
-                'queijos',
-                'congelados',
-                'carnes',
-                'doces',
-                'folhas'
-            ].includes(list[i])) {
-                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas');
-                return 'FAIL'
+        function formatCategory(ctgry) {
+            var i;
+            const list = ctgry.split(',').map(item => {
+                return item.replace(/^\s+|\s+$/g, '').toLowerCase()
+            });
+            for (i in list) {
+                if (!!list[i] && ![
+                    'verduras',
+                    'frutas',
+                    'ovos',
+                    'temperos',
+                    'queijos',
+                    'congelados',
+                    'carnes',
+                    'doces',
+                    'folhas'
+                ].includes(list[i])) {
+                    alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas');
+                    return 'FAIL'
+                }
             }
+            var res = ''
+
+            for (i in list)
+                res += list[i] + ','
+
+            return res.substring(0, res.length - 1);
         }
-        var res = ''
-
-        for (i in list)
-            res += list[i] + ','
-
-        return res;
-    }
 
     return (
         <div className="register-container">
@@ -149,11 +150,11 @@ export default function NewProduct() {
                     />
                     <div className="checkboxContainer">
                         <div className="checkboxGroup">
-                            <input className="cityCheckbox" type="checkbox" defaultChecked={true} onChange={updateUberlandia} />
+                            <input className="cityCheckbox" type="checkbox" checked={deliversToUberlandia} onChange={updateUberlandia} />
                             <p>Uberlândia</p>
                         </div>
                         <div className="checkboxGroup">
-                            <input className="cityCheckbox" type="checkbox" defaultChecked={true} onChange={updateAraguari} />
+                            <input className="cityCheckbox" type="checkbox" checked={deliversToAraguari} onChange={updateAraguari} />
                             <p>Araguari</p>
                         </div>
                     </div>

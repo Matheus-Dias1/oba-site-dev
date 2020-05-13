@@ -4,20 +4,6 @@ module.exports = {
     async update(request, response) {
         const admin = request.data.admin;
         if (admin !== 1) return response.status(401).send();
-        function string_to_slug(str) {
-            str = str.replace(/^\s+|\s+$/g, '');
-            str = str.toLowerCase();
-            var from = "ãàáäâèéẽëêĩìíïîõòóöôũùúüûñç·/_,:;";
-            var to = "aaaaaeeeeeiiiiiooooouuuuunc------";
-            for (var i = 0, l = from.length; i < l; i++) {
-                str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-            }
-            str = str.replace(/[^a-z0-9 -]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-');
-
-            return str;
-        }
 
         const { id } = request.params;
         const {
@@ -27,19 +13,20 @@ module.exports = {
             measurement_unit,
             price,
             unit_price,
+            delivers_to
         } = request.body;
-        const slug = string_to_slug(product_name);
+
         try {
             await connection('products')
                 .where({ id: id })
                 .update({
                     "product_name": product_name,
-                    "slug": slug,
                     "description": description,
                     "measurement_unit": measurement_unit,
                     "price": price,
                     "unit_price": unit_price,
                     "category": category,
+                    "delivers_to": delivers_to
                 })
 
             return response.status(201).send();
@@ -60,7 +47,8 @@ module.exports = {
                     'measurement_unit',
                     'price',
                     'unit_price',
-                    'category'
+                    'category',
+                    'delivers_to'
                 )
                 .first();
             return response.json(products);

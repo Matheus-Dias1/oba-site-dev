@@ -22,7 +22,61 @@ export default function EditProduct() {
     const [measurement_unit, setMeasurement_unit] = useState('');
     const [unit_price, setUnit_price] = useState('');
     const [category, setCategory] = useState('');
+    const [deliversToUberlandia, setDeliversToUberlandia] = useState(false);
+    const [deliversToAraguari, setDeliversToAraguari] = useState(false);
 
+
+    function updateAraguari(){
+        if (deliversToAraguari) setDeliversToAraguari(false);
+        else setDeliversToAraguari(true)
+    }
+
+    function updateUberlandia(){
+        if (deliversToUberlandia) setDeliversToUberlandia(false);
+        else setDeliversToUberlandia(true)
+    }
+
+
+    function formatCategory(ctgry) {
+        var i;
+        const list = ctgry.split(',').map(item => {
+            return item.replace(/^\s+|\s+$/g, '').toLowerCase()
+        });
+        for (i in list) {
+            if (!!list[i] && ![
+                'verduras',
+                'frutas',
+                'ovos',
+                'temperos',
+                'queijos',
+                'congelados',
+                'carnes',
+                'doces',
+                'folhas'
+            ].includes(list[i])) {
+                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas');
+                return 'FAIL'
+            }
+        }
+        var res = ''
+
+        for (i in list)
+            res += list[i] + ','
+
+        return res.substring(0, res.length - 1);;
+    }
+
+    function formatDeliversTo(){
+        const uberlandia = deliversToUberlandia ? 'uberlandia,' : '';
+        const araguari = deliversToAraguari ? 'araguari,' : '';
+
+        return !(uberlandia+araguari) ? '' : (uberlandia+araguari).substring(0, (uberlandia+araguari).length - 1);
+
+    }
+    function setCheckboxes(str){
+        if (str.includes('uberlandia')) setDeliversToUberlandia(true);
+        if (str.includes('araguari')) setDeliversToAraguari(true);
+    }
 
     useEffect(() => {
         try {
@@ -39,8 +93,9 @@ export default function EditProduct() {
                     product_name,
                     unit_price,
                     category,
+                    delivers_to
                 } = response.data;
-
+                console.log(response.data)
                 setCategory(category);
                 setId(id);
                 setName(product_name);
@@ -50,10 +105,15 @@ export default function EditProduct() {
                     .replace('.', ',')
                 );
                 setMeasurement_unit(measurement_unit);
-                setUnit_price(unit_price
-                    .toString()
-                    .replace('.', ',')
-                );
+                try{
+                    setUnit_price(unit_price
+                        .toString()
+                        .replace('.', ',')
+                    );
+                }catch(err){
+
+                }
+                setCheckboxes(delivers_to);
 
             }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
@@ -66,20 +126,21 @@ export default function EditProduct() {
         }
     }, [accessToken, history]);
 
-    function formatCategory(ctgry) {
-        return ctgry;
-    }
 
     async function handleEditProduct(e) {
         e.preventDefault();
 
+        const ctgry = formatCategory(category);
+        const delivers_to = formatDeliversTo();
+        if (ctgry === 'FAIL') return;
         const data = {
             "product_name": name,
             "description": description,
             "price": parseFloat(price.replace('.', '').replace(',', '.')),
             "measurement_unit": measurement_unit.toUpperCase(),
             "unit_price": parseFloat(unit_price.replace('.', '').replace(',', '.')),
-            "category": formatCategory(category),
+            "category": ctgry,
+            "delivers_to": delivers_to
         };
 
 
@@ -90,6 +151,7 @@ export default function EditProduct() {
                 }
             }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
+
                     alert('Você não tem permissão para acessar essa página');
                     history.push('/');
                 } else throw err;
@@ -135,6 +197,16 @@ export default function EditProduct() {
                         value={description}
                         onChange={e => setDescription(e.target.value)}
                     />
+                    <div className="checkboxContainer">
+                        <div className="checkboxGroup">
+                            <input className="cityCheckbox" type="checkbox" checked={deliversToUberlandia} onChange={updateUberlandia} />
+                            <p>Uberlândia</p>
+                        </div>
+                        <div className="checkboxGroup">
+                            <input className="cityCheckbox" type="checkbox" checked={deliversToAraguari} onChange={updateAraguari} />
+                            <p>Araguari</p>
+                        </div>
+                    </div>
                     <div className="input-group">
                         <input
                             placeholder="Valor"
