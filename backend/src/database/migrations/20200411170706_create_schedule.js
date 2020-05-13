@@ -4,6 +4,7 @@ exports.up = function(knex) {
       table.date('date').primary();
       table.integer('morning_deliveries').notNullable();
       table.integer('afternoon_deliveries').notNullable();
+      table.string('city').notNullable();
     });
   };
   

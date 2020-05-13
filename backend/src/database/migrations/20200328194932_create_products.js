@@ -4,12 +4,14 @@ exports.up = function(knex) {
       table.increments('id').primary().notNullable();
       table.string('product_name').notNullable();
       table.string('category');
+      table.string('delivers_to').notNullable();
       table.string('description');
       table.float('price').notNullable();
       table.string('measurement_unit').notNullable();
       table.float('unit_price');
       table.string('picture_path').notNullable();
       table.boolean('available').notNullable().defaultTo(true);
+      
     });
   };
   

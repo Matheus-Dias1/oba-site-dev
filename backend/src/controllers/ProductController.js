@@ -12,6 +12,7 @@ module.exports = {
             price,
             unit_price,
             category,
+            delivers_to
         } = JSON.parse(request.body.data);
 
         const picture_path = request.file.filename;
@@ -25,7 +26,8 @@ module.exports = {
                 measurement_unit,
                 price,
                 unit_price,
-                picture_path
+                picture_path,
+                delivers_to,
             });
             return response.status(201).send();
         } catch (err) {
