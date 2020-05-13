@@ -105,7 +105,7 @@ export default function PanelProducts() {
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
                 <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
                 <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
-           
+
             </Menu>
             <div className="panel-container">
                 <header>
@@ -119,15 +119,7 @@ export default function PanelProducts() {
                 <ul>
                     {
                         products.map(product => {
-                            var up;
-                            if (product.unit_price === null)
-                                up = '';
-                            else
-                                up = product.unit_price;
-
                             function toReais(number) {
-                                if (number === '')
-                                    return '---'
                                 return Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(number);
                             }
 
@@ -145,8 +137,10 @@ export default function PanelProducts() {
                                     <p>{product.description}</p>
                                     <strong>VALOR / {product.measurement_unit}:</strong>
                                     <p>{toReais(product.price)}</p>
-                                    <strong>VALOR / UN:</strong>
-                                    <p>{toReais(up)}</p>
+                                    {!!product.unit_price && <>
+                                        <strong>VALOR / UN:</strong>
+                                        <p>{toReais(product.unit_price)}</p>
+                                    </>}
                                     <button onClick={() => { handleDeleteProduct(product.id) }} type="button">
                                         <FiTrash2 size={20} color="a8a8b3" />
                                     </button>
