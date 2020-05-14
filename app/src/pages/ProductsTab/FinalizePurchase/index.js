@@ -45,6 +45,8 @@ export default function FinalizePurchase() {
   const [cupon, setCupon] = useState('');
   const [cuponValidated, setCuponValidated] = useState(false);
   const [cuponDiscount, setCuponDiscount] = useState(0);
+  const [addressLocked, setAddressLocked] = useState(false);
+  const [lockedProducts, setLockedProduts] = useState('');
 
   const [addressesLoading, setAddressesLoading] = useState(true);
   const [datesLoading, setDatesLoading] = useState(true);
@@ -63,6 +65,10 @@ export default function FinalizePurchase() {
 
   async function finalizePurchase() {
     if (loading) return;
+    if (addressLocked) {
+      Alert.alert('Não é possível concluir sua compra', lockedProducts)
+      return;
+    }
     if (selectedAddress == null || selectedAddress < 0)
       return Alert.alert('Nenhum endereço de entrega foi selecionado');
     if (selectedDate < 0)
@@ -173,6 +179,21 @@ export default function FinalizePurchase() {
 
   async function selectAddress(address) {
     await AsyncStorage.setItem('selectedAddress', String(address));
+    const curCity = await AsyncStorage.getItem('selectedCity');
+    if ((addresses[address].city).toLowerCase() === 'araguari') {
+      if (curCity !== 'araguari') {
+        await AsyncStorage.setItem('newCity', 'true');
+        checkForCity('araguari');
+      }
+      await AsyncStorage.setItem('selectedCity', 'araguari')
+    }
+    if (['uberlandia', 'uberlândia', 'udi'].includes((addresses[address].city).toLowerCase())) {
+      if (curCity !== 'uberlandia') {
+        await AsyncStorage.setItem('newCity', 'true');
+        checkForCity('uberlandia');
+      }
+      await AsyncStorage.setItem('selectedCity', 'uberlandia')
+    }
     setSelectedAddress(address);
     setDeliveryFee(addresses[parseInt(address)].delivery_fee);
     if (parseFloat(route.params.subtotal) < 90) {
@@ -183,6 +204,41 @@ export default function FinalizePurchase() {
       setFreeDelivery(true);
     }
 
+  }
+
+  async function checkForCity(city) {
+    try {
+      const res = await api.get('shopping_carts/check', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params: {
+          city: city
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          setAddressesLoading(false);
+          return signOut();
+        } else throw err;
+      })
+
+      if (res.data.status === 'OK') {
+        setAddressLocked(false)
+      }
+      else {
+        setAddressLocked(true)
+        var str = '';
+        for (let i in res.data.products) {
+          str += res.data.products[i] + ', '
+        }
+        setLockedProduts('\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length-2))
+        Alert.alert('Você escolheu produtos que não entregamos no endereço selecionado', '\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length-2))
+      }
+
+    } catch (err) {
+      Alert.alert('Erro ao verificar carrinho', 'É possível que tenha produtos no seu carrinho que não entreguemos no endereço selecionado')
+    }
   }
 
   async function getAddresses() {
