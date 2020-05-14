@@ -40,6 +40,7 @@ routes.put('/purchases/delivery/:id', AuthTokenController.authenticateToken, Pur
 routes.post('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.create);
 routes.delete('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.delete);
 routes.get('/shopping_carts', AuthTokenController.authenticateToken, ShoppingCartController.index);
+routes.get('/shopping_carts/check', AuthTokenController.authenticateToken, ShoppingCartController.checkForCity);
 
 
 routes.get('/profile/addresses', AuthTokenController.authenticateToken, ProfileController.indexAddresses);
@@ -50,12 +51,9 @@ routes.delete('/profile/shopping_cart', AuthTokenController.authenticateToken, P
 routes.get('/profile/shopping_cart/value', AuthTokenController.authenticateToken, ProfileController.getCartTotal);
 routes.get('/profile/productsPurchase/:id_purchase', AuthTokenController.authenticateToken, ProfileController.indexProductsPurchase);
 
-
 routes.get('/profile/edit/', AuthTokenController.authenticateToken, ProfileUpdateController.getData);
 routes.put('/profile/edit/', AuthTokenController.authenticateToken, ProfileUpdateController.update);
 routes.put('/profile/edit/password', AuthTokenController.authenticateToken, ProfileUpdateController.updatePassword);
-
-
 
 routes.get('/productsPurchases/:idP', AuthTokenController.authenticateToken, ProductPurchaseController.index);
 

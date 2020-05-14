@@ -32,15 +32,15 @@ module.exports = {
                     unit,
                     observation,
                 });
-            }else{
+            } else {
                 await connection('shopping_carts')
-                .update('amount', curCart.amount+amount)
-                .where({
-                    id_user,
-                    id_product,
-                    unit,
-                    observation, 
-                });
+                    .update('amount', curCart.amount + amount)
+                    .where({
+                        id_user,
+                        id_product,
+                        unit,
+                        observation,
+                    });
             }
 
             const data = await connection('products')
@@ -54,7 +54,6 @@ module.exports = {
             else value = amount * data.price;
             return response.json({ value: value });
         } catch (err) {
-            console.log(err);
             return response.status(422).send();
         }
     },
@@ -80,7 +79,39 @@ module.exports = {
 
             return response.json(shopping_carts);
         } catch (err) {
-            console.log(err)
+            return response.status(422).send();
+        }
+    },
+
+    async checkForCity(request, response) {
+        const id = request.data.id;
+        const { city } = request.query;
+        try {
+            const products = await connection({
+                sc: 'shopping_carts',
+                p: 'products'
+            })
+                .select({
+                    name: 'p.product_name',
+                })
+                .whereRaw('sc.id_product = p.id')
+                .whereNot('delivers_to', 'like', `%${city}%`)
+                .where('sc.id_user', id);
+
+            if (products.length === 0)
+                return response.json({
+                    status: 'OK',
+                    products: []
+                })
+            var resProds = [];
+            for (i in products){
+                resProds.push(products[i].name);
+            }
+            return response.json({
+                status: 'FAIL',
+                products: resProds
+            });
+        } catch (err) {
             return response.status(422).send();
         }
     },
