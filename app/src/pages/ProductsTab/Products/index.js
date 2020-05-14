@@ -114,7 +114,6 @@ export default function Products() {
         },
         params: {
           page: 1,
-          category: selectedCategory,
           city: city
         }
       }).catch(err => {
@@ -128,7 +127,7 @@ export default function Products() {
       setPage(2);
 
     } catch (err) {
-      alert('Erro ao carregar nova categoria', 'Tente novamente mais tarde')
+      Alert.alert('Erro ao carregar nova categoria', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
       setSwitchingCategory(false);
@@ -194,12 +193,12 @@ export default function Products() {
 
   }
 
-  async function updateCity(){
-    const newCity = await AsyncStorage.getItem('selectedCity');
-    if (!!newCity && newCity !== selectedCity){
-      alert('new city!')
-      setSelectedCity(newCity);
-      loadNewCity(newCity);
+  async function updateCity() {
+    if (!!await AsyncStorage.getItem('newCity')) {
+      await AsyncStorage.removeItem('newCity');
+      setSelectedCity(await AsyncStorage.getItem('selectedCity'));
+      loadNewCity(await AsyncStorage.getItem('selectedCity'));
+      setSelectedCategory('');
     }
   }
 

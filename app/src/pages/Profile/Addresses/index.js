@@ -43,6 +43,17 @@ export default function Addresses() {
 
   async function selectAddress(address) {
     await AsyncStorage.setItem('selectedAddress', String(address));
+    const curCity = await AsyncStorage.getItem('selectedCity');
+    if ((addresses[address].city).toLowerCase() === 'araguari') {
+      if (curCity !== 'araguari')
+        await AsyncStorage.setItem('newCity', 'true');
+      await AsyncStorage.setItem('selectedCity', 'araguari')
+    }
+    if (['uberlandia', 'uberlândia', 'udi'].includes((addresses[address].city).toLowerCase())) {
+      if (curCity !== 'uberlandia')
+        await AsyncStorage.setItem('newCity', 'true');
+      await AsyncStorage.setItem('selectedCity', 'uberlandia')
+    }
     setSelectedAddresses(address);
   }
 
@@ -80,7 +91,6 @@ export default function Addresses() {
       setAddresses(addresses.filter(function (add) { return add.id !== id }))
       await AsyncStorage.removeItem('selectedAddress');
     } catch (err) {
-      console.log(err)
       Alert.alert('Erro ao deletar endereço!');
     } finally {
       setLoading(false);
