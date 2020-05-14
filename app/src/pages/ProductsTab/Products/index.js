@@ -37,6 +37,7 @@ export default function Products() {
   const [loadingCart, setLoadingCart] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
 
   async function loadProducts() {
     if (loading) return;
@@ -49,7 +50,8 @@ export default function Products() {
         },
         params: {
           page,
-          category: selectedCategory
+          category: selectedCategory,
+          city: selectedCity
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
@@ -79,7 +81,8 @@ export default function Products() {
         },
         params: {
           page: 1,
-          category: category
+          category: category,
+          city: selectedCity
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
@@ -101,8 +104,44 @@ export default function Products() {
 
   }
 
+  async function loadNewCity(city) {
+    setLoading(true);
+    setSwitchingCategory(true);
+    try {
+      const response = await api.get('/profile/products', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params: {
+          page: 1,
+          category: selectedCategory,
+          city: city
+        }
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
+        } else throw err;
+      });
+      setProducts(response.data);
+      setTotalProducts(response.headers['x-total-count']);
+      setPage(2);
+
+    } catch (err) {
+      alert('Erro ao carregar nova categoria', 'Tente novamente mais tarde')
+    } finally {
+      setLoading(false);
+      setSwitchingCategory(false);
+    }
+
+  }
+
   useEffect(() => {
     loadProducts();
+    const unsubscribe = navigation.addListener('focus', () => {
+      updateCity();
+    });
+    return unsubscribe;
   }, [])
 
   function handleCategoryClick(category) {
@@ -151,6 +190,16 @@ export default function Products() {
       Alert.alert('Erro ao carregar o carrinho, tente novamente.');
     } finally {
       setLoadingCart(false);
+    }
+
+  }
+
+  async function updateCity(){
+    const newCity = await AsyncStorage.getItem('selectedCity');
+    if (!!newCity && newCity !== selectedCity){
+      alert('new city!')
+      setSelectedCity(newCity);
+      loadNewCity(newCity);
     }
   }
 

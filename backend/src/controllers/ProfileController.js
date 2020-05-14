@@ -113,17 +113,20 @@ module.exports = {
         const {
                 page = 1,
                 category = '',
+                city
             } = request.query;
         try {
             const [count] = await connection('products')
             .where('available', true)
             .where('category', 'like', `%${category}%`)
+            .where('delivers_to', 'like', `%${city}%` )
             .count();
             const addresses = await connection('products')
                 .limit(10)
                 .offset((page - 1) * 10)
                 .select('*')
                 .where('available', true)
+                .where('delivers_to', 'like', `%${city}%` )
                 .where('category', 'like', `%${category}%`)
 
             response.header('X-Total-Count', count['count(*)']);
