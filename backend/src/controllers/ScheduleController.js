@@ -3,11 +3,14 @@ const connection = require('../database/connection');
 
 module.exports = {
     async index(request, response) {
+        const { city } = request.query;
         try {
             const dates = await connection('schedule')
                 .select('*')
-                .whereRaw("morning_deliveries > 0 or afternoon_deliveries > 0")
+                .whereRaw("(morning_deliveries > 0 or afternoon_deliveries > 0)")
+                .where('city', city)
                 .orderByRaw('date(date) asc')
+
             var res = [];
             var cDate;
             const now = new Date();
@@ -64,6 +67,7 @@ module.exports = {
             date,
             afternoon_deliveries,
             morning_deliveries,
+            city
         } = request.body;
 
         try {
@@ -80,7 +84,10 @@ module.exports = {
         var curSche;
         try {
             curSche = await connection('schedule')
-                .where('date', date)
+                .where({
+                    date,
+                    city
+                })
                 .first();
 
         } catch (err) {
@@ -93,6 +100,7 @@ module.exports = {
                         date,
                         afternoon_deliveries,
                         morning_deliveries,
+                        city
                     })
                 return response.status(201).send();
             } catch (err) {
@@ -105,7 +113,10 @@ module.exports = {
                         afternoon_deliveries: afternoon_deliveries + curSche.afternoon_deliveries,
                         morning_deliveries: morning_deliveries + curSche.morning_deliveries,
                     })
-                    .where('date', date);
+                    .where({
+                        date,
+                        city
+                    });
                 return response.status(201).send();
             } catch (err) {
                 return response.status(422).send();

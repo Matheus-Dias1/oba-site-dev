@@ -1,10 +1,11 @@
 
 exports.up = function(knex) {
     return knex.schema.createTable('schedule', function (table){
-      table.date('date').primary();
+      table.date('date');
+      table.string('city');
       table.integer('morning_deliveries').notNullable();
       table.integer('afternoon_deliveries').notNullable();
-      table.string('city').notNullable();
+      table.primary(['date', 'city']);
     });
   };
   
