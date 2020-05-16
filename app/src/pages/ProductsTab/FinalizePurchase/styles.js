@@ -61,6 +61,7 @@ export default StyleSheet.create({
     addressContainer: {
         marginVertical: 10,
         minHeight: 100,
+        elevation: 1,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.2,
@@ -79,6 +80,7 @@ export default StyleSheet.create({
         borderRadius: 8,
         borderWidth: 2,
         borderColor: '#049434',
+        elevation: 1,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.2,
@@ -93,6 +95,7 @@ export default StyleSheet.create({
         borderRadius: 8,
         borderWidth: 2,
         borderColor: 'white',
+        elevation: 1,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.2,
@@ -132,6 +135,7 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
+        elevation: 1,
         shadowOpacity: 0.2,
         shadowRadius: 2,
 
@@ -141,6 +145,7 @@ export default StyleSheet.create({
         marginHorizontal: 15,
         marginVertical: 15,
         borderRadius: 8,
+        elevation: 1,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.2,
@@ -329,6 +334,7 @@ export default StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.2,
+        elevation: 1,
         shadowRadius: 2,
     },
     cuponTextInput:{
