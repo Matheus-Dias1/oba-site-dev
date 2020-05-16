@@ -14,12 +14,14 @@ export default function AddToSchedule() {
     const [date, setDate] = useState('');
     const [morning_deliveries, setMorning_deliveries] = useState('');
     const [afternoon_deliveries, setAfternoon_deliveries] = useState('');
+    const [city, setCity] = useState('');
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken === null) {
         localStorage.clear();
         history.push('/');
     }
+
 
     async function handleSchedule(e) {
         e.preventDefault();
@@ -30,16 +32,17 @@ export default function AddToSchedule() {
         }
 
         let year = list[2];
-        if (list[2].length === 2){
-            year = '20'+list[2];
+        if (list[2].length === 2) {
+            year = '20' + list[2];
         }
 
-        const date2 = Date.UTC(parseInt(year), parseInt(list[1])-1, parseInt(list[0]), 3, 0, 0);
+        const date2 = Date.UTC(parseInt(year), parseInt(list[1]) - 1, parseInt(list[0]), 3, 0, 0);
         console.log(date2);
         const data = {
             "date": date2,
             "morning_deliveries": parseInt(morning_deliveries),
             "afternoon_deliveries": parseInt(afternoon_deliveries),
+            "city": city
         };
         try {
             await api.post('/schedule', data, {
@@ -72,7 +75,7 @@ export default function AddToSchedule() {
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
                 <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
                 <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
-          
+
             </Menu>
             <div className="schedule-container">
                 <div className="content">
@@ -121,6 +124,30 @@ export default function AddToSchedule() {
                                         e.target.setCustomValidity("");
                                     }}
                                 />
+                                <div className="radioInputGroup">
+                                    <div>
+                                        <input
+                                            className="radioInput"
+                                            type="radio"
+                                            id="uberlandia"
+                                            name="city"
+                                            value=""
+                                            onClick={() => setCity('uberlandia')}
+                                        />
+                                        <label for="uberlandia">Uberlândia</label>
+                                    </div>
+                                    <div>
+                                        <input
+                                            className="radioInput"
+                                            type="radio"
+                                            id="aragarui"
+                                            name="city"
+                                            value=""
+                                            onClick={() => setCity('araguari')}
+                                        />
+                                        <label for="aragarui">Araguari</label>
+                                    </div>
+                                </div>
                             </div>
                             <button className="button" type="submit">Confirmar</button>
 

@@ -47,6 +47,7 @@ export default function FinalizePurchase() {
   const [cuponDiscount, setCuponDiscount] = useState(0);
   const [addressLocked, setAddressLocked] = useState(false);
   const [lockedProducts, setLockedProduts] = useState('');
+  const [dateLock, setDateLock] = useState(true);
 
   const [addressesLoading, setAddressesLoading] = useState(true);
   const [datesLoading, setDatesLoading] = useState(true);
@@ -184,6 +185,8 @@ export default function FinalizePurchase() {
       if (curCity !== 'araguari') {
         await AsyncStorage.setItem('newCity', 'true');
         checkForCity('araguari');
+        getDates('araguari');
+        setSelectedDate(-1);
       }
       await AsyncStorage.setItem('selectedCity', 'araguari')
     }
@@ -191,6 +194,8 @@ export default function FinalizePurchase() {
       if (curCity !== 'uberlandia') {
         await AsyncStorage.setItem('newCity', 'true');
         checkForCity('uberlandia');
+        getDates('uberlandia');
+        setSelectedDate(-1);
       }
       await AsyncStorage.setItem('selectedCity', 'uberlandia')
     }
@@ -271,11 +276,22 @@ export default function FinalizePurchase() {
     }
   }
 
-  async function getDates() {
+  async function getDates(paramCity) {
+    const city = await AsyncStorage.getItem('selectedCity');
+    if (!city){
+      setDateLock(true);
+      setDatesLoading(false);
+      return;
+    };
+    setDateLock(false);
+    setDatesLoading(true);
     try {
       const res = await api.get('schedule', {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params:{
+          city: paramCity == null ? city : paramCity
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
@@ -287,7 +303,8 @@ export default function FinalizePurchase() {
       setDates(res.data)
 
     } catch (err) {
-      Alert.alert('Erro ao carregar os endereços cadastrados', 'Tente novamente mais tarde')
+      console.log(err)
+      Alert.alert('Erro ao carregar os horários cadastrados', 'Tente novamente mais tarde')
     } finally {
       setDatesLoading(false);
     }
@@ -502,7 +519,13 @@ export default function FinalizePurchase() {
               <View>
                 <ActivityIndicator size="small" color="#000" />
               </View>
-              : <FlatList
+              : ( dateLock ? 
+                <>
+                    {dateLock && <View style={{alignItems:'center'}}>
+                      <Text style={{fontSize:15, color: '#41414b'}}>{'Selecione um endereço para continuar'}</Text>
+                    </View>}
+                  </>
+                :<FlatList
                 ListFooterComponent={<View style={{ marginRight: 10 }} />}
                 contentContainerStyle={styles.datesList}
                 horizontal
@@ -525,7 +548,7 @@ export default function FinalizePurchase() {
                     </View>
                   </TouchableWithoutFeedback>
                 )}
-              />
+              />)
           }
 
 
