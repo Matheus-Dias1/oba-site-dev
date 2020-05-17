@@ -381,7 +381,7 @@ export default function Products() {
             onEndReached={() => loadProducts()}
             data={products}
             renderItem={({ item: product }) => (
-              <TouchableOpacity onPress={() => navigateToDetails(product)} activeOpacity={0.8}>
+              <TouchableWithoutFeedback onPress={() => navigateToDetails(product)}>
                 <View style={styles.product}>
 
                   <View style={styles.productInfo}>
@@ -400,7 +400,7 @@ export default function Products() {
                   />
 
                 </View>
-              </TouchableOpacity>
+              </TouchableWithoutFeedback>
             )}
           />
           <TouchableWithoutFeedback onPress={() => openCart()}>

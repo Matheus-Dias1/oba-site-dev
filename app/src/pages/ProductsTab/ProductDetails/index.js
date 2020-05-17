@@ -9,7 +9,8 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   AsyncStorage,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import AuthContext from '../../../authcontext';
@@ -22,6 +23,7 @@ import env from '../../../variables';
 
 
 import styles from './styles';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ProductDetails() {
   const route = useRoute();
@@ -66,7 +68,7 @@ export default function ProductDetails() {
     var data;
     setLoading(true);
     if (amount[0] > 0) {
-      
+
       data = {
         id_product: product.id,
         amount: amount[0],
@@ -118,107 +120,218 @@ export default function ProductDetails() {
     return navigation.goBack();
   }
 
-  return (
-    <>
-      <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <View>
-            <StatusBar barStyle="dark-content" />
-            <View style={styles.imageContainer}>
-              <Image
-                style={styles.image}
-                defaultSource={require('../../../assets/default.png')}
-                source={{
-                  uri: imageUrl + product.picture_path
-                }}
 
-              />
-              <Text style={styles.productName}>{product.product_name}</Text>
-              <Text style={styles.productDescription}>{product.description}</Text>
-            </View>
-            <View style={styles.amountContainer}>
-              {['KG'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
-                <TextInput
-                  maxLength={10}
-                  autoCompleteType="off"
-                  placeholder="Quantidade"
-                  style={styles.AmountInputStyle}
-                  keyboardType={'numeric'}
-                  onChange={e => updateFloatValue(e.nativeEvent.text.replace(',', '.'))}
+  if (Platform.OS === "android")
+    return (
+      <>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.container}>
+            <View>
+              <StatusBar barStyle="dark-content" />
+              <View style={styles.imageContainer}>
+                <Image
+                  style={styles.image}
+                  defaultSource={require('../../../assets/default.png')}
+                  source={{
+                    uri: imageUrl + product.picture_path
+                  }}
+
                 />
-                <Text>{product.measurement_unit}</Text>
-                <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
-              </View>}
-              {['UN', 'BDJ', 'BD', 'CX', 'DZ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
-                <View style={styles.intValueCounterContainer}>
-                  {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
-                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
-                  </TouchableOpacity>}
-                  {amount[0] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
-                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
-                  </TouchableOpacity>}
-                  <Text style={styles.intValueCounterContainerText}>{amount[0]}</Text>
-                  <TouchableOpacity onPress={() => updateIntValue(0, 1)} activeOpacity={0.5}>
-                    <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
-                  </TouchableOpacity>
-                </View>
-                <Text>{product.measurement_unit}</Text>
-                <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
-              </View>}
-              {product.unit_price !== null && <View
-                style={{
-                  borderBottomColor: 'lightgray',
-                  borderBottomWidth: 1,
-                  opacity: 0.4,
-                  width: 325,
+                <Text style={styles.productName}>{product.product_name}</Text>
+                <Text style={styles.productDescription}>{product.description}</Text>
+              </View>
+              <View style={styles.amountContainer}>
+                {['KG'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                  <TextInput
+                    maxLength={10}
+                    autoCompleteType="off"
+                    placeholder="Quantidade"
+                    style={styles.AmountInputStyle}
+                    keyboardType={'numeric'}
+                    onChange={e => updateFloatValue(e.nativeEvent.text.replace(',', '.'))}
+                  />
+                  <Text>{product.measurement_unit}</Text>
+                  <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
+                </View>}
+                {['UN', 'BDJ', 'BD', 'CX', 'DZ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                  <View style={styles.intValueCounterContainer}>
+                    {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>}
+                    {amount[0] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
+                    </TouchableOpacity>}
+                    <Text style={styles.intValueCounterContainerText}>{amount[0]}</Text>
+                    <TouchableOpacity onPress={() => updateIntValue(0, 1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text>{product.measurement_unit}</Text>
+                  <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
+                </View>}
+                {product.unit_price !== null && <View
+                  style={{
+                    borderBottomColor: 'lightgray',
+                    borderBottomWidth: 1,
+                    opacity: 0.4,
+                    width: 325,
 
-                }}
-              />}
-              {product.unit_price !== null && <View style={styles.measurementUnit}>
-                <View style={styles.intValueCounterContainer}>
-                  {amount[1] > 0 && <TouchableOpacity onPress={() => updateIntValue(1, -1)} activeOpacity={0.5}>
-                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
-                  </TouchableOpacity>}
-                  {amount[1] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
-                    <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
-                  </TouchableOpacity>}
-                  <Text style={styles.intValueCounterContainerText}>{amount[1]}</Text>
-                  <TouchableOpacity onPress={() => updateIntValue(1, 1)} activeOpacity={0.5}>
-                    <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
-                  </TouchableOpacity>
-                </View>
-                <Text>UN</Text>
-                <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[1])}</Text>
-              </View>}
+                  }}
+                />}
+                {product.unit_price !== null && <View style={styles.measurementUnit}>
+                  <View style={styles.intValueCounterContainer}>
+                    {amount[1] > 0 && <TouchableOpacity onPress={() => updateIntValue(1, -1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>}
+                    {amount[1] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
+                    </TouchableOpacity>}
+                    <Text style={styles.intValueCounterContainerText}>{amount[1]}</Text>
+                    <TouchableOpacity onPress={() => updateIntValue(1, 1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text>UN</Text>
+                  <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[1])}</Text>
+                </View>}
 
+              </View>
+              <View style={styles.obsContainer}>
+                <TextInput
+                  placeholder="Observações sobre o produto"
+                  maxLength={240}
+                  textAlignVertical={'top'}
+                  style={styles.textArea}
+                  multiline={true}
+                  numberOfLines={4}
+                  onChangeText={(text) => setObservation(text)}
+                  value={observation}
+                />
+              </View>
             </View>
-            <View style={styles.obsContainer}>
-              <TextInput
-                placeholder="Observações sobre o produto"
-                maxLength={240}
-                style={styles.textArea}
-                multiline={true}
-                numberOfLines={4}
-                onChangeText={(text) => setObservation(text)}
-                value={observation}
-              />
-            </View>
+
+            {loading && <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>}
+
           </View>
 
-          {loading && <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#000" />
-          </View>}
+        </ScrollView>
+        <TouchableWithoutFeedback onPress={() => addToCart()}>
+          <View style={styles.addToCartButton}>
+            <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
+            <Ionicons name={'ios-cart'} size={28} color={'white'} />
+          </View>
+        </TouchableWithoutFeedback>
+      </>
 
-        </View>
+    );
+  else
+    return (
 
-      </KeyboardAwareScrollView>
-      <TouchableWithoutFeedback onPress={() => addToCart()}>
-        <View style={styles.addToCartButton}>
-          <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
-          <Ionicons name={'ios-cart'} size={28} color={'white'} />
-        </View>
-      </TouchableWithoutFeedback>
-    </>
+      <>
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <View>
+              <StatusBar barStyle="dark-content" />
+              <View style={styles.imageContainer}>
+                <Image
+                  style={styles.image}
+                  defaultSource={require('../../../assets/default.png')}
+                  source={{
+                    uri: imageUrl + product.picture_path
+                  }}
 
-  );
+                />
+                <Text style={styles.productName}>{product.product_name}</Text>
+                <Text style={styles.productDescription}>{product.description}</Text>
+              </View>
+              <View style={styles.amountContainer}>
+                {['KG'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                  <TextInput
+                    maxLength={10}
+                    autoCompleteType="off"
+                    placeholder="Quantidade"
+                    style={styles.AmountInputStyle}
+                    keyboardType={'numeric'}
+                    onChange={e => updateFloatValue(e.nativeEvent.text.replace(',', '.'))}
+                  />
+                  <Text>{product.measurement_unit}</Text>
+                  <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
+                </View>}
+                {['UN', 'BDJ', 'BD', 'CX', 'DZ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                  <View style={styles.intValueCounterContainer}>
+                    {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>}
+                    {amount[0] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
+                    </TouchableOpacity>}
+                    <Text style={styles.intValueCounterContainerText}>{amount[0]}</Text>
+                    <TouchableOpacity onPress={() => updateIntValue(0, 1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text>{product.measurement_unit}</Text>
+                  <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
+                </View>}
+                {product.unit_price !== null && <View
+                  style={{
+                    borderBottomColor: 'lightgray',
+                    borderBottomWidth: 1,
+                    opacity: 0.4,
+                    width: 325,
+
+                  }}
+                />}
+                {product.unit_price !== null && <View style={styles.measurementUnit}>
+                  <View style={styles.intValueCounterContainer}>
+                    {amount[1] > 0 && <TouchableOpacity onPress={() => updateIntValue(1, -1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>}
+                    {amount[1] <= 0 && <TouchableOpacity onPress={() => { }} activeOpacity={0.5}>
+                      <Ionicons name={'md-remove-circle-outline'} size={25} color={'gray'} />
+                    </TouchableOpacity>}
+                    <Text style={styles.intValueCounterContainerText}>{amount[1]}</Text>
+                    <TouchableOpacity onPress={() => updateIntValue(1, 1)} activeOpacity={0.5}>
+                      <Ionicons name={'md-add-circle-outline'} size={25} color={'#049434'} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text>UN</Text>
+                  <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[1])}</Text>
+                </View>}
+
+              </View>
+              <View style={styles.obsContainer}>
+                <TextInput
+                  placeholder="Observações sobre o produto"
+                  maxLength={240}
+                  textAlignVertical={'top'}
+                  style={styles.textArea}
+                  multiline={true}
+                  numberOfLines={4}
+                  onChangeText={(text) => setObservation(text)}
+                  value={observation}
+                />
+              </View>
+            </View>
+
+            {loading && <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>}
+
+          </View>
+
+        </KeyboardAwareScrollView>
+        <TouchableWithoutFeedback onPress={() => addToCart()}>
+          <View style={styles.addToCartButton}>
+            <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
+            <Ionicons name={'ios-cart'} size={28} color={'white'} />
+          </View>
+        </TouchableWithoutFeedback>
+      </>
+
+    );
 }

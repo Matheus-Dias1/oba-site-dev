@@ -15,6 +15,7 @@ import api from '../../../services/api';
 
 import styles from './styles';
 import { Alert } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 export default function AddAddress() {
 
     const { signOut } = React.useContext(AuthContext);
@@ -63,10 +64,10 @@ export default function AddAddress() {
                     }
                 }).catch(err => {
                     if (err.response.status === 401 || err.response.status === 403) {
-                      Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-                      return signOut();
+                        Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+                        return signOut();
                     } else throw err;
-                  });
+                });
                 return navigator.dispatch(StackActions.pop(popHowMany));
             } catch (err) {
                 Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
@@ -135,10 +136,10 @@ export default function AddAddress() {
                         }
                     }).catch(err => {
                         if (err.response.status === 401 || err.response.status === 403) {
-                          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-                          return signOut();
+                            Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+                            return signOut();
                         } else throw err;
-                      });
+                    });
                     return navigator.dispatch(StackActions.pop(popHowMany))
                 } catch (err) {
                     Alert.alert('Erro ao concluir o cadastro', 'Tente novamente mais tarde');
@@ -202,7 +203,6 @@ export default function AddAddress() {
     return (
         <View style={{ flex: 1 }}>
             <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.container}>
                         <View style={styles.inputGroup}>
                             <View style={selectedInput === 0 ? styles.focusedGroup1InputContainer : styles.group1InputContainer}>
@@ -292,13 +292,14 @@ export default function AddAddress() {
                             />
                         </View>
                     </View>
+                <TouchableWithoutFeedback onPress={handleAddAddress}>
+                    <View style={styles.addAddressButton}>
+                        <Text style={styles.buttonText}>Adicionar</Text>
+                    </View>
                 </TouchableWithoutFeedback>
+
             </KeyboardAwareScrollView>
-            <TouchableWithoutFeedback onPress={handleAddAddress}>
-                <View style={styles.addAddressButton}>
-                    <Text style={styles.buttonText}>Adicionar</Text>
-                </View>
-            </TouchableWithoutFeedback>
+
             {loading && <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#000" />
             </View>}

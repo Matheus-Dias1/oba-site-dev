@@ -238,7 +238,7 @@ export default function FinalizePurchase() {
           str += res.data.products[i] + ', '
         }
         setLockedProduts('\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length-2))
-        Alert.alert('Você escolheu produtos que não entregamos no endereço selecionado', '\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length-2))
+        Alert.alert('Não entregamos algum item no endereço selecionado', '\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length-2))
       }
 
     } catch (err) {

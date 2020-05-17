@@ -300,11 +300,12 @@ export default function Routes() {
               tabBarOptions={{
                 activeTintColor: '#049434',
                 inactiveTintColor: 'gray',
+                keyboardHidesTabBar: true
               }}
             >
               <Tab.Screen name="Produtos" component={ProductsTab} />
               <Tab.Screen name="Pedidos" component={PurchaseTab} />
-              <Tab.Screen name="Perfil" component={ProfileTab} />
+              <Tab.Screen name="Perfil"component={ProfileTab} />
             </Tab.Navigator>
           )}
       </NavigationContainer>
