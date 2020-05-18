@@ -124,8 +124,11 @@ export default function ProductDetails() {
   if (Platform.OS === "android")
     return (
       <>
+        <StatusBar backgroundColor="#f2f2f2"/>
         <ScrollView
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+
         >
           <View style={styles.container}>
             <View>

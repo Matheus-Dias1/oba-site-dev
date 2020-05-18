@@ -120,6 +120,7 @@ export default function FinalizePurchase() {
       }
 
     } catch (err) {
+      console.log(err)
       Alert.alert('Não foi possível concluir sua compra', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
@@ -237,8 +238,8 @@ export default function FinalizePurchase() {
         for (let i in res.data.products) {
           str += res.data.products[i] + ', '
         }
-        setLockedProduts('\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length-2))
-        Alert.alert('Não entregamos algum item no endereço selecionado', '\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length-2))
+        setLockedProduts('\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length - 2))
+        Alert.alert('Não entregamos algum item no endereço selecionado', '\nPor enquanto, não estregamos o(s) seguinte(s) produto(s) no endereço selecionado: ' + str.substring(0, str.length - 2))
       }
 
     } catch (err) {
@@ -278,7 +279,7 @@ export default function FinalizePurchase() {
 
   async function getDates(paramCity) {
     const city = await AsyncStorage.getItem('selectedCity');
-    if (!city){
+    if (!city) {
       setDateLock(true);
       setDatesLoading(false);
       return;
@@ -290,7 +291,7 @@ export default function FinalizePurchase() {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         },
-        params:{
+        params: {
           city: paramCity == null ? city : paramCity
         }
       }).catch(err => {
@@ -382,6 +383,7 @@ export default function FinalizePurchase() {
 
   return (
     <View style={styles.container}>
+        <StatusBar backgroundColor="#f2f2f2"/>
 
       <Modal
         isVisible={showChangeModal}
@@ -519,36 +521,36 @@ export default function FinalizePurchase() {
               <View>
                 <ActivityIndicator size="small" color="#000" />
               </View>
-              : ( dateLock ? 
+              : (dateLock ?
                 <>
-                    {dateLock && <View style={{alignItems:'center'}}>
-                      <Text style={{fontSize:15, color: '#41414b'}}>{'Selecione um endereço para continuar'}</Text>
-                    </View>}
-                  </>
-                :<FlatList
-                ListFooterComponent={<View style={{ marginRight: 10 }} />}
-                contentContainerStyle={styles.datesList}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={date => String(dates.indexOf(date))}
-                data={dates}
-                renderItem={({ item: date }) => (
+                  {dateLock && <View style={{ alignItems: 'center' }}>
+                    <Text style={{ fontSize: 15, color: '#41414b' }}>{'Selecione um endereço para continuar'}</Text>
+                  </View>}
+                </>
+                : <FlatList
+                  ListFooterComponent={<View style={{ marginRight: 10 }} />}
+                  contentContainerStyle={styles.datesList}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={date => String(dates.indexOf(date))}
+                  data={dates}
+                  renderItem={({ item: date }) => (
 
-                  <TouchableWithoutFeedback onPress={() => { setSelectedDate(dates.indexOf(date)) }} activeOpacity={0.8}>
-                    <View style={dates.indexOf(date) === selectedDate ? styles.selectedDate : styles.date}>
-                      <View style={styles.dateInfoContainer}>
-                        <Text style={styles.dateInfo}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</Text>
-                        <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
+                    <TouchableWithoutFeedback onPress={() => { setSelectedDate(dates.indexOf(date)) }} activeOpacity={0.8}>
+                      <View style={dates.indexOf(date) === selectedDate ? styles.selectedDate : styles.date}>
+                        <View style={styles.dateInfoContainer}>
+                          <Text style={styles.dateInfo}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</Text>
+                          <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
 
-                        {[1, 4].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : '14h00 - 19h00'}</Text>}
-                        {[2, 3, 5].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h00 - 13h00' : '14h00 - 19h00'}</Text>}
-                        {new Date(date.date).getUTCDay() === 6 && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h30 - 13h30' : '14h00 - 19h00'}</Text>}
+                          {[1, 4].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : '14h00 - 19h00'}</Text>}
+                          {[2, 3, 5].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h00 - 13h00' : '14h00 - 19h00'}</Text>}
+                          {new Date(date.date).getUTCDay() === 6 && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h30 - 13h30' : '14h00 - 19h00'}</Text>}
 
+                        </View>
                       </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                )}
-              />)
+                    </TouchableWithoutFeedback>
+                  )}
+                />)
           }
 
 
@@ -625,6 +627,7 @@ export default function FinalizePurchase() {
             placeholder="Ex: Interfone não funciona, casa em reforma, casa sem número"
             style={styles.textArea}
             multiline={true}
+            textAlignVertical={'top'}
             numberOfLines={4}
             onChangeText={(text) => setObservation(text)}
             value={observation}

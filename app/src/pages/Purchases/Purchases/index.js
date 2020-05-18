@@ -7,6 +7,7 @@ import {
   Alert,
   AsyncStorage,
   ActivityIndicator,
+  StatusBar
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
@@ -95,6 +96,8 @@ export default function Purchases({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="white" />
+
       <FlatList
         showsVerticalScrollIndicator={false}
         data={purchases}

@@ -6,7 +6,8 @@ import {
   Keyboard,
   Image,
   StatusBar,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native';
 import AuthContext from '../../../authcontext';
 import { useNavigation } from '@react-navigation/native';
@@ -41,7 +42,11 @@ export default function Login() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
+        {Platform.OS === "android" ?
+          <StatusBar barStyle="light-content" backgroundColor="#049434" />
+          :
+          <StatusBar barStyle="dark-content" />
+        }
         <Image
           style={styles.logo}
           source={logo}

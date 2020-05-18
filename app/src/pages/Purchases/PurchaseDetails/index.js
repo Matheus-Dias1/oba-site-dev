@@ -5,7 +5,8 @@ import {
   ScrollView,
   AsyncStorage,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  StatusBar
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import AuthContext from '../../../authcontext';
@@ -63,6 +64,7 @@ export default function Purchases() {
   return (
     <ScrollView>
       <View style={styles.container}>
+        <StatusBar backgroundColor="#f2f2f2" />
         <View style={styles.content}>
           <View style={styles.sectionContainer}>
             <View style={styles.sectionContent}>

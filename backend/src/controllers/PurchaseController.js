@@ -130,7 +130,7 @@ module.exports = {
                     error: 'O cupom expirou ou foi usado por outra pessoa'
                 })
             else {
-                //console.log(error)
+                console.log(error)
                 return response.status(422).send();
             }
 

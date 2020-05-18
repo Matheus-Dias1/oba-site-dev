@@ -8,6 +8,9 @@ import {
   ActivityIndicator,
   Alert,
   AsyncStorage,
+  Platform,
+  ScrollView,
+  StatusBar
 
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -47,7 +50,7 @@ export default function EditInfo() {
     } catch (err) {
       Alert.alert('Erro ao recuperar suas informações', 'Tente novamente mais tarde');
       navigator.goBack();
-    } finally{
+    } finally {
       setLoading(false);
     }
   }
@@ -58,7 +61,7 @@ export default function EditInfo() {
   }, [])
 
   async function handleEditProfile() {
-    if(loading) return;
+    if (loading) return;
     if (name === '') {
       setErrorText('O campo nome é obrigatório');
       return;
@@ -95,7 +98,7 @@ export default function EditInfo() {
       navigator.goBack();
     }
     else {
-      if (newPassword.length < 5){
+      if (newPassword.length < 5) {
         setLoading(false)
         return setErrorText('A nova senha informada é muito curta');
       }
@@ -117,7 +120,7 @@ export default function EditInfo() {
 
         if (res.data.status === 'OK')
           navigator.goBack();
-        else if (res.data.status === 'FAIL'){
+        else if (res.data.status === 'FAIL') {
           setLoading(false);
           return Alert.alert('Erro ao alterar senha', 'A senha atual informada está incorreta');
         }
@@ -126,113 +129,222 @@ export default function EditInfo() {
       } catch (err) {
         Alert.alert('Erro ao atualizar sua senha', 'Tente novamente mais tarde')
       }
-      
+
     }
     setLoading(false);
   }
 
 
-  return (
-    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+  if (Platform.OS === "android")
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }} 
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-        <View style={styles.container}>
-          <View style={styles.content}>
+          <View style={styles.container}>
+            <StatusBar backgroundColor="#f2f2f2"/>
+            <View style={styles.content}>
 
-            <Text style={styles.title}>Editar perfil</Text>
-            {errorText !== '' &&
-              <View style={styles.errorTextContainer}>
-                <Text style={styles.errorText}>{errorText}</Text>
+              <Text style={styles.title}>Editar perfil</Text>
+              {errorText !== '' &&
+                <View style={styles.errorTextContainer}>
+                  <Text style={styles.errorText}>{errorText}</Text>
+                </View>
+              }
+              <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  value={name}
+                  placeholder={'Nome'}
+                  onChange={(e) => setName(e.nativeEvent.text)}
+                  onFocus={() => setSelectedInput(0)}
+                  onBlur={() => setSelectedInput(-1)}
+                  clearButtonMode="while-editing"
+                  enablesReturnKeyAutomatically={true}
+                />
               </View>
-            }
-            <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
-              <TextInput
-                style={styles.textInput}
-                value={name}
-                placeholder={'Nome'}
-                onChange={(e) => setName(e.nativeEvent.text)}
-                onFocus={() => setSelectedInput(0)}
-                onBlur={() => setSelectedInput(-1)}
-                clearButtonMode="while-editing"
-                enablesReturnKeyAutomatically={true}
-              />
-            </View>
-            <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
-              <TextInput
-                keyboardType='email-address'
-                style={[styles.textInput, { color: 'gray' }]}
-                value={email}
-                editable={false}
-                placeholder='E-mail'
-                onFocus={() => setSelectedInput(1)}
-                onBlur={() => setSelectedInput(-1)}
-                onChange={(e) => setEmail(e.nativeEvent.text)}
-                enablesReturnKeyAutomatically={true}
-                clearButtonMode="while-editing"
-              />
-            </View>
-            <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
-              <TextInputMask
-                style={styles.textInput}
-                type={'cel-phone'}
-                placeholder="Telefone"
-                onFocus={() => setSelectedInput(2)}
-                onBlur={() => setSelectedInput(-1)}
-                options={{
-                  maskType: 'BRL',
-                  withDDD: true,
-                  dddMask: '(99) '
-                }}
-                value={phone}
-                onChangeText={e => setPhone(e)}
-              />
-            </View>
-            <View style={[selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer, { marginTop: 40 }]}>
-              <TextInput
-                keyboardType='email-address'
-                style={styles.textInput}
-                value={newPassword}
-                placeholder='Nova senha'
-                secureTextEntry={true}
-                onFocus={() => setSelectedInput(3)}
-                onBlur={() => setSelectedInput(-1)}
-                onChange={(e) => setNewPassword(e.nativeEvent.text)}
-                enablesReturnKeyAutomatically={true}
-                clearButtonMode="while-editing"
-              />
-            </View>
-            <View style={selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer}>
-              <TextInput
-                keyboardType='email-address'
-                style={styles.textInput}
-                value={oldPassword}
-                secureTextEntry={true}
-                placeholder='Senha atual'
-                onFocus={() => setSelectedInput(4)}
-                onBlur={() => setSelectedInput(-1)}
-                onChange={(e) => setOldPassword(e.nativeEvent.text)}
-                enablesReturnKeyAutomatically={true}
-                clearButtonMode="while-editing"
-              />
-            </View>
+              <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  keyboardType='email-address'
+                  style={[styles.textInput, { color: 'gray' }]}
+                  value={email}
+                  editable={false}
+                  placeholder='E-mail'
+                  onFocus={() => setSelectedInput(1)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setEmail(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+              <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInputMask
+                  style={styles.textInput}
+                  type={'cel-phone'}
+                  placeholder="Telefone"
+                  onFocus={() => setSelectedInput(2)}
+                  onBlur={() => setSelectedInput(-1)}
+                  options={{
+                    maskType: 'BRL',
+                    withDDD: true,
+                    dddMask: '(99) '
+                  }}
+                  value={phone}
+                  onChangeText={e => setPhone(e)}
+                />
+              </View>
+              <View style={[selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer, { marginTop: 40 }]}>
+                <TextInput
+                  keyboardType='email-address'
+                  style={styles.textInput}
+                  value={newPassword}
+                  placeholder='Nova senha'
+                  secureTextEntry={true}
+                  onFocus={() => setSelectedInput(3)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setNewPassword(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+              <View style={selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  keyboardType='email-address'
+                  style={styles.textInput}
+                  value={oldPassword}
+                  secureTextEntry={true}
+                  placeholder='Senha atual'
+                  onFocus={() => setSelectedInput(4)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setOldPassword(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
 
 
 
 
 
+            </View>
+
+            {loading && <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>}
+            <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
+              <View style={styles.editProfileButton}>
+                <Text style={styles.buttonText}>Atualizar</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
 
-          {loading && <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#000" />
-          </View>}
-          <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
-            <View style={styles.editProfileButton}>
-              <Text style={styles.buttonText}>Atualizar</Text>
+    );
+  else
+    return (
+      <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
+          <View style={styles.container}>
+            <View style={styles.content}>
+
+              <Text style={styles.title}>Editar perfil</Text>
+              {errorText !== '' &&
+                <View style={styles.errorTextContainer}>
+                  <Text style={styles.errorText}>{errorText}</Text>
+                </View>
+              }
+              <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  value={name}
+                  placeholder={'Nome'}
+                  onChange={(e) => setName(e.nativeEvent.text)}
+                  onFocus={() => setSelectedInput(0)}
+                  onBlur={() => setSelectedInput(-1)}
+                  clearButtonMode="while-editing"
+                  enablesReturnKeyAutomatically={true}
+                />
+              </View>
+              <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  keyboardType='email-address'
+                  style={[styles.textInput, { color: 'gray' }]}
+                  value={email}
+                  editable={false}
+                  placeholder='E-mail'
+                  onFocus={() => setSelectedInput(1)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setEmail(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+              <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInputMask
+                  style={styles.textInput}
+                  type={'cel-phone'}
+                  placeholder="Telefone"
+                  onFocus={() => setSelectedInput(2)}
+                  onBlur={() => setSelectedInput(-1)}
+                  options={{
+                    maskType: 'BRL',
+                    withDDD: true,
+                    dddMask: '(99) '
+                  }}
+                  value={phone}
+                  onChangeText={e => setPhone(e)}
+                />
+              </View>
+              <View style={[selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer, { marginTop: 40 }]}>
+                <TextInput
+                  keyboardType='email-address'
+                  style={styles.textInput}
+                  value={newPassword}
+                  placeholder='Nova senha'
+                  secureTextEntry={true}
+                  onFocus={() => setSelectedInput(3)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setNewPassword(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+              <View style={selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  keyboardType='email-address'
+                  style={styles.textInput}
+                  value={oldPassword}
+                  secureTextEntry={true}
+                  placeholder='Senha atual'
+                  onFocus={() => setSelectedInput(4)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setOldPassword(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+
+
+
+
+
             </View>
-          </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAwareScrollView>
 
-  );
+            {loading && <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>}
+            <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
+              <View style={styles.editProfileButton}>
+                <Text style={styles.buttonText}>Atualizar</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAwareScrollView>
+
+    );
 }

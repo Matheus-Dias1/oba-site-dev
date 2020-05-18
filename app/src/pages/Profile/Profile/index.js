@@ -6,6 +6,7 @@ import {
   AsyncStorage,
   SafeAreaView,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import AuthContext from '../../../authcontext';
 import { Ionicons } from '@expo/vector-icons/'
@@ -37,6 +38,7 @@ export default function Profile() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+        <StatusBar backgroundColor="#F2F2F2"/>
         <View style={styles.helloContainer}>
           <Text style={styles.helloText}>{'Olá, ' + name + '.'}</Text>
         </View>

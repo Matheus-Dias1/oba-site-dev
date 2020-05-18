@@ -2,6 +2,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('purchases', function (table) {
     table.increments('id').primary().notNullable();
+    table.string('cupon').notNullable();
     table.string('id_user').notNullable();
     table.string('id_address').notNullable();
     table.float('value').notNullable();

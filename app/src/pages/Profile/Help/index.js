@@ -4,6 +4,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Linking,
+  StatusBar,
 } from 'react-native';
 import styles from './styles';
 import * as MailComposer from 'expo-mail-composer';
@@ -26,6 +27,7 @@ function sendEmail() {
 export default function Help() {
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#f2f2f2"/>
       <View style={styles.content}>
         <View>
           <Text style={styles.bodyText}>Entre em contato conosco por um dos meios listados abaixo.</Text>

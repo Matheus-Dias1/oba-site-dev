@@ -252,7 +252,7 @@ export default function Products() {
 
   return (
     <View style={{ flex: 1 }}>
-
+    {isCartVisible ? <StatusBar backgroundColor="#4d4d4d"/> : <StatusBar backgroundColor="white"/> }
       <Modal
         propagateSwipe={true}
         isVisible={isCartVisible}
