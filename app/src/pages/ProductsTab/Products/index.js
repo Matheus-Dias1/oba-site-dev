@@ -136,11 +136,12 @@ export default function Products() {
   }
 
   useEffect(() => {
+    const abortController = new AbortController();
     loadProducts();
     const unsubscribe = navigation.addListener('focus', () => {
       updateCity();
     });
-    return unsubscribe;
+    return abortController.abort();
   }, [])
 
   function handleCategoryClick(category) {
@@ -381,7 +382,7 @@ export default function Products() {
             onEndReached={() => loadProducts()}
             data={products}
             renderItem={({ item: product }) => (
-              <TouchableWithoutFeedback onPress={() => navigateToDetails(product)}>
+              <TouchableOpacity  activeOpacity={0.8} onPress={() => navigateToDetails(product)}>
                 <View style={styles.product}>
 
                   <View style={styles.productInfo}>
@@ -400,7 +401,7 @@ export default function Products() {
                   />
 
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             )}
           />
           <TouchableWithoutFeedback onPress={() => openCart()}>
