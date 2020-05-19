@@ -145,6 +145,14 @@ export default function Addresses() {
       <FlatList
         style={styles.addressesList}
         showsVerticalScrollIndicator={false}
+        ListFooterComponent={
+          <View style={styles.emptyListTextContainer} >
+
+            {loading && <ActivityIndicator size="small" color="#000" />}
+            {!loading && addresses.length === 0 &&
+              <Text style={styles.emptyListText}>Nenhum endereço cadastrado</Text>
+            }
+          </View>}
         keyExtractor={address => String(address.id)}
         data={addresses}
         renderItem={({ item: address }) => (
@@ -164,9 +172,6 @@ export default function Addresses() {
           </TouchableWithoutFeedback>
         )}
       />
-      {loading && <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000" />
-      </View>}
     </View>
 
   );

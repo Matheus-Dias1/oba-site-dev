@@ -94,7 +94,6 @@ export default StyleSheet.create({
     loadingContainer: {
         width: 70,
         height: 70,
-        backgroundColor: '#ccc',
         borderRadius: 12,
         opacity: 0.7,
         position: 'absolute',
@@ -103,6 +102,16 @@ export default StyleSheet.create({
         alignItems: 'center',
         bottom: 0,
         top: '20%',
+    },
+    emptyListTextContainer: {
+        marginBottom: 30,
+        marginTop: 30,
+        alignItems: 'center'
+    },
+    emptyListText: {
+        fontSize: 14,
+        color: "#41414b",
+        fontWeight: "normal"
     },
 
 
