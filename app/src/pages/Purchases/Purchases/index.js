@@ -35,7 +35,6 @@ export default function Purchases({ navigation }) {
     const needsUpdate = await AsyncStorage.getItem('needsUpdate')
     if (needsUpdate === 'true') {
       getPurchases();
-      await AsyncStorage.removeItem('needsUpdate');
     }
   }
 
@@ -51,11 +50,11 @@ export default function Purchases({ navigation }) {
     if (loading) {
       return;
     }
-
     const needsUpdate = await AsyncStorage.getItem('needsUpdate');
-    if (totalPurchases > 0 && purchases.length == totalPurchases && needsUpdate !== 'false') {
+    if (totalPurchases > 0 && purchases.length == totalPurchases && needsUpdate == null) {
       return;
     }
+
     setLoading(true);
 
     try {
@@ -84,8 +83,7 @@ export default function Purchases({ navigation }) {
         setPurchases([...purchases, ...res.data]);
         setPage(page + 1);
       }
-      await AsyncStorage.setItem('needsUpdate', 'false');
-
+      await AsyncStorage.removeItem('needsUpdate');
 
     } catch (err) {
       Alert.alert('Erro ao recuperar pedidos', 'Tente novamente mais tarde')
@@ -113,7 +111,7 @@ export default function Purchases({ navigation }) {
             return Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(number)
           }
           function formatDate(date) {
-            return Intl.DateTimeFormat('pt-BR').format('1588906800000')
+            return Intl.DateTimeFormat('pt-BR').format(date)
           }
 
           return (

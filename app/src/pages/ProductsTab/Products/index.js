@@ -322,7 +322,7 @@ export default function Products() {
             <ActivityIndicator size="small" color="#000" />
           </View>}
 
-          <TouchableWithoutFeedback onPress={() => finalizePurchase()}>
+          <TouchableWithoutFeedback onPress={() => {(loadingCart || shoppingCart.length === 0) ? {} : finalizePurchase()}}>
             <View style={styles.finalizePurchase}>
               <Text style={styles.buyButton}>Concluir compra</Text>
               <Text style={styles.buyButton}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(subtotalValue)}</Text>
