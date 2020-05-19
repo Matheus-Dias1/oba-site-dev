@@ -137,9 +137,10 @@ export default function Products() {
   useEffect(() => {
     const abortController = new AbortController();
     loadProducts();
-    const unsubscribe = navigation.addListener('focus', () => {
+    navigation.addListener('focus', () => {
       updateCity();
     });
+
     return abortController.abort();
   }, [])
 

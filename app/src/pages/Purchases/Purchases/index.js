@@ -54,7 +54,6 @@ export default function Purchases({ navigation }) {
     if (totalPurchases > 0 && purchases.length == totalPurchases && needsUpdate == null) {
       return;
     }
-
     setLoading(true);
 
     try {

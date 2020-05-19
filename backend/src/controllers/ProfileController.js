@@ -103,7 +103,6 @@ module.exports = {
             }
             return response.json({cartValue: sum});
         } catch (err) {
-            console.log(err)
             return response.status(422).send();
         }
 
@@ -197,7 +196,6 @@ module.exports = {
 
             return response.json(items);
         } catch (err) {
-            console.log(err)
             return response.status(422).send();
         }
 
