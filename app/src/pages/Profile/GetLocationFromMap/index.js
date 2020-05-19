@@ -112,12 +112,6 @@ export default function AddAddress() {
         pitchEnabled={false}
         onRegionChangeComplete={e => handleMapMovement(e)}
       >
-        <Marker
-          coordinate={{
-            latitude: initialLocation.latitude,
-            longitude: initialLocation.longitude
-          }}
-        />
       </MapView>
       <View style={Platform.OS === "android" ? styles.markerFixedAndroid : styles.markerFixed}>
         <MaterialCommunityIcons

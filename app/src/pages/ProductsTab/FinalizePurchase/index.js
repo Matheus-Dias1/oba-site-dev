@@ -383,7 +383,7 @@ export default function FinalizePurchase() {
 
   return (
     <View style={styles.container}>
-        <StatusBar backgroundColor="#f2f2f2"/>
+      <StatusBar backgroundColor="#f2f2f2" />
 
       <Modal
         isVisible={showChangeModal}
@@ -542,8 +542,17 @@ export default function FinalizePurchase() {
                           <Text style={styles.dateInfo}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</Text>
                           <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
 
-                          {[1, 4].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : '14h00 - 19h00'}</Text>}
-                          {[2, 3, 5].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h00 - 13h00' : '14h00 - 19h00'}</Text>}
+                          {
+                            ['uberlandia', 'uberlândia', 'udi'].includes(addresses[selectedAddress].city.toLowerCase()) &&
+                            [1, 4].includes(new Date(date.date).getUTCDay()) &&
+                            <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h30 - 13h00' : '15h00 - 19h30'}</Text>
+                          }
+                          {
+                            ['araguari'].includes(addresses[selectedAddress].city.toLowerCase()) &&
+                            [1, 4].includes(new Date(date.date).getUTCDay()) &&
+                            <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : '15h00 - 19h30'}</Text>
+                          }
+                          {[2, 3, 5].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : '15h00 - 19h30'}</Text>}
                           {new Date(date.date).getUTCDay() === 6 && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h30 - 13h30' : '14h00 - 19h00'}</Text>}
 
                         </View>
