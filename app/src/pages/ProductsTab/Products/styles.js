@@ -18,9 +18,9 @@ export default StyleSheet.create({
         borderRadius: 5,
         marginBottom: 8,
         backgroundColor: '#fff',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 1
@@ -63,8 +63,8 @@ export default StyleSheet.create({
         alignItems: "center",
 
     },
-    buttonContainer:{
-        
+    buttonContainer: {
+
         alignItems: 'center',
     },
     modalContainer: {
@@ -95,7 +95,7 @@ export default StyleSheet.create({
         fontWeight: '600',
         fontSize: 16
     },
-    cartListingValue:{
+    cartListingValue: {
         marginTop: 8,
     },
     cartListingNameAndAmout: {
@@ -145,22 +145,22 @@ export default StyleSheet.create({
         fontWeight: '600',
         marginBottom: Platform.OS === "android" ? 0 : 15,
     },
-    removeFromCartIcon:{
+    removeFromCartIcon: {
         justifyContent: 'center',
         alignItems: 'center',
         width: '13%',
         height: 30
     },
-    categoryList:{
+    categoryList: {
         marginBottom: 15,
     },
-    categoryContainer:{
+    categoryContainer: {
         backgroundColor: '#049434',
         marginLeft: 10,
         borderRadius: 20,
         justifyContent: 'center',
     },
-    categoryText:{
+    categoryText: {
         marginHorizontal: 20,
         marginVertical: 10,
         fontSize: 15,
@@ -168,10 +168,10 @@ export default StyleSheet.create({
         color: 'white',
         textTransform: 'capitalize'
     },
-    loadingContainer:{
+    loadingContainer: {
         width: 70,
         height: 70,
-        backgroundColor:'#ccc',
+        backgroundColor: '#ccc',
         borderRadius: 12,
         opacity: 0.7,
         position: 'absolute',
@@ -181,7 +181,7 @@ export default StyleSheet.create({
         bottom: 0,
         top: '20%',
     },
-    loadingCartContainer:{
+    loadingCartContainer: {
         width: 70,
         height: 70,
         right: '40%',
@@ -189,6 +189,11 @@ export default StyleSheet.create({
         alignItems: 'center',
         bottom: 0,
         top: '20%',
+    },
+    emptyListText: {
+        marginBottom: 30,
+        marginTop: 30,
+        alignItems: 'center'
     }
 
 });

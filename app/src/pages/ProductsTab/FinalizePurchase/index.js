@@ -94,6 +94,7 @@ export default function FinalizePurchase() {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
       }).catch(err => {
+        console.log(err);
         if (err.response.status === 401 || err.response.status === 403) {
           Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
           setLoading(false);

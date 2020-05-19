@@ -63,5 +63,15 @@ export default StyleSheet.create({
         bottom: 0,
         top: '20%',
     },
+    emptyListTextContainer: {
+        marginBottom: 30,
+        marginTop: 30,
+        alignItems: 'center'
+    },
+    emptyListText: {
+        fontSize: 14,
+        color: "#41414b",
+        fontWeight: "normal"
+    },
 
 });

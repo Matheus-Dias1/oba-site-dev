@@ -30,7 +30,7 @@ module.exports = {
 
                     if (dbCupon.amount > 1) {
                         await connection('cupons')
-                            .update('amount', dbCupon.amount-1)
+                            .update('amount', dbCupon.amount - 1)
                             .where('code', cupon);
                     }
                     else {
@@ -42,16 +42,25 @@ module.exports = {
 
                 }
 
+                const {city} = await connection('addresses')
+                    .select('city')
+                    .where('id', id_address)
+                    .first();
                 const selectedDate = await connection('schedule')
                     .select('*')
-                    .where('date', delivery_date)
+                    .where({
+                        date: delivery_date,
+                        city: ['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase()) ? 'uberlandia' : 'araguari'
+                    })
                     .first();
+
 
                 if (selectedDate == null || (delivery_period === 'morning' && selectedDate.morning_deliveries === 0)) {
                     throw new Error('DateTaken');
 
                 }
                 if (selectedDate == null || (delivery_period === 'afternoon' && selectedDate.afternoon_deliveries === 0)) {
+
                     throw new Error('DateTaken');
                 }
 
@@ -130,7 +139,6 @@ module.exports = {
                     error: 'O cupom expirou ou foi usado por outra pessoa'
                 })
             else {
-                console.log(error)
                 return response.status(422).send();
             }
 

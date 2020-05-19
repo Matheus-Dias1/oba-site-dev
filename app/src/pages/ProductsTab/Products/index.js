@@ -319,7 +319,7 @@ export default function Products() {
             }}
           />
           {loadingCart && <View style={{ marginBottom: 300 }}>
-            <ActivityIndicator size="large" color="#000" />
+            <ActivityIndicator size="small" color="#000" />
           </View>}
 
           <TouchableWithoutFeedback onPress={() => finalizePurchase()}>
@@ -373,13 +373,18 @@ export default function Products() {
                 />
               </View>
             }
-            ListFooterComponent={<View style={{ marginBottom: 30 }} />}
+            ListFooterComponent={
+              <View style={styles.emptyListText} >
+                {!loading && products.length === 0 &&
+                  <Text style={styles.productProperty}>Nenhum produto nessa categoria</Text>
+                }
+              </View>}
             keyExtractor={product => String(product.id)}
             onEndReachedThreshold={0.1}
             onEndReached={() => loadProducts()}
             data={products}
             renderItem={({ item: product }) => (
-              <TouchableOpacity  activeOpacity={0.8} onPress={() => navigateToDetails(product)}>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => navigateToDetails(product)}>
                 <View style={styles.product}>
 
                   <View style={styles.productInfo}>

@@ -51,8 +51,9 @@ export default function Purchases({ navigation }) {
     if (loading) {
       return;
     }
+
     const needsUpdate = await AsyncStorage.getItem('needsUpdate');
-    if (totalPurchases > 0 && purchases.length == totalPurchases && needsUpdate !== 'true') {
+    if (totalPurchases > 0 && purchases.length == totalPurchases && needsUpdate !== 'false') {
       return;
     }
     setLoading(true);
@@ -83,10 +84,10 @@ export default function Purchases({ navigation }) {
         setPurchases([...purchases, ...res.data]);
         setPage(page + 1);
       }
+      await AsyncStorage.setItem('needsUpdate', 'false');
 
 
     } catch (err) {
-      console.log(err)
       Alert.alert('Erro ao recuperar pedidos', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
@@ -95,6 +96,10 @@ export default function Purchases({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {!loading && purchases.length === 0 && 
+        <View style={styles.emptyListTextContainer}>
+        <Text style={styles.emptyListText}>{'Você ainda não fez nenhum pedido'}</Text>
+      </View>}
       <FlatList
         showsVerticalScrollIndicator={false}
         data={purchases}
