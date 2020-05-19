@@ -5,10 +5,11 @@ import {
   TouchableWithoutFeedback,
   Alert,
   Dimensions,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { TextInputMask } from 'react-native-masked-text'
 
 import styles from './styles';
@@ -111,8 +112,14 @@ export default function AddAddress() {
         pitchEnabled={false}
         onRegionChangeComplete={e => handleMapMovement(e)}
       >
+        <Marker
+          coordinate={{
+            latitude: initialLocation.latitude,
+            longitude: initialLocation.longitude
+          }}
+        />
       </MapView>
-      <View style={styles.markerFixed}>
+      <View style={Platform.OS === "android" ? styles.markerFixedAndroid : styles.markerFixed}>
         <MaterialCommunityIcons
           style={{ color: '#D34036' }}
           size={45}

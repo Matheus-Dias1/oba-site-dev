@@ -36,7 +36,9 @@ module.exports = {
         } = request.body;
 
         const distance = haversineDistance([lat,lng]);
-        const delivery_fee = distance <= 1 ? 5 : parseFloat(((distance-1)+5).toFixed(2))
+        const delivery_fee = 
+            city.toLowerCase() === 'araguari' ? 9
+            : (distance <= 1 ? 5 : parseFloat(((distance-1)+5).toFixed(2)))
 
         const id_user = request.data.id;
         try {

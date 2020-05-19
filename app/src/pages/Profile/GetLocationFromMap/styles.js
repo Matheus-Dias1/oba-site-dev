@@ -30,7 +30,16 @@ export default StyleSheet.create({
         marginLeft: 0,
         marginTop: 0,
         position: 'absolute',
-        top: '48.5%',
+        top: '47.5%',
+        alignItems: 'center',
+      },
+      markerFixedAndroid: {
+        left: 0,
+        right: 0,
+        marginLeft: 0,
+        marginTop: 0,
+        position: 'absolute',
+        top: '43.5%',
         alignItems: 'center',
       },
       map:{
