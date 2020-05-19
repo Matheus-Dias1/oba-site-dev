@@ -10,7 +10,6 @@ import api from '../../../services/api'
 import {
   View,
   Text,
-  StatusBar,
   FlatList,
   TouchableWithoutFeedback,
   TextInput,
@@ -383,8 +382,6 @@ export default function FinalizePurchase() {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#f2f2f2" />
-
       <Modal
         isVisible={showChangeModal}
         avoidKeyboard={true}
@@ -485,7 +482,6 @@ export default function FinalizePurchase() {
         </View>
       </Modal>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar barStyle="dark-content" />
         <Text style={styles.subtitle}>Endereço de entrega</Text>
         <View style={styles.addressContainer}>
           {

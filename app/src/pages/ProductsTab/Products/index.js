@@ -5,13 +5,12 @@ import {
   FlatList,
   Text,
   Image,
-  StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
   AsyncStorage,
   Alert,
   ActivityIndicator,
-
+  StatusBar,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
@@ -253,7 +252,6 @@ export default function Products() {
 
   return (
     <View style={{ flex: 1 }}>
-    {isCartVisible ? <StatusBar backgroundColor="#4d4d4d"/> : <StatusBar backgroundColor="white"/> }
       <Modal
         propagateSwipe={true}
         isVisible={isCartVisible}
@@ -332,7 +330,6 @@ export default function Products() {
           </TouchableWithoutFeedback>
         </View>
       </Modal>
-      <StatusBar barStyle="dark-content" />
 
       <SafeAreaView style={{ flex: 0, backgroundColor: '#049434' }} />
 

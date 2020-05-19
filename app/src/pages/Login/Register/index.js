@@ -8,8 +8,6 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  StatusBar,
-  Platform
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
@@ -74,11 +72,6 @@ export default function Register() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
         <View style={styles.container}>
-          {Platform.OS === "android" ?
-            <StatusBar barStyle="light-content" backgroundColor="#049434" />
-            :
-            <StatusBar barStyle="dark-content" />
-          }
           <View style={styles.content}>
             <Image
               style={styles.logo}

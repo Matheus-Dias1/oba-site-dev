@@ -10,7 +10,6 @@ import {
   AsyncStorage,
   Platform,
   ScrollView,
-  StatusBar
 
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -144,7 +143,6 @@ export default function EditInfo() {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
           <View style={styles.container}>
-            <StatusBar backgroundColor="#f2f2f2"/>
             <View style={styles.content}>
 
               <Text style={styles.title}>Editar perfil</Text>

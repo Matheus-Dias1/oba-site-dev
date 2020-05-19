@@ -6,8 +6,6 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
-  StatusBar,
-  Platform
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
@@ -42,11 +40,6 @@ export default function ForgotPassword() {
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        {Platform.OS === "android" ?
-          <StatusBar barStyle="light-content" backgroundColor="#049434" />
-          :
-          <StatusBar barStyle="dark-content" />
-        }
         <View style={styles.content}>
           <Text style={styles.title}>Recuperar senha</Text>
           <Text style={styles.bodyText}>Enviaremos um e-mail com uma nova senha gerada aleatóriamente para o e-mail que usou no cadastro da sua conta.</Text>

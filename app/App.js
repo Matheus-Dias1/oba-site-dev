@@ -2,7 +2,7 @@ import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
 import React from 'react';
 
-import { Platform } from "react-native";
+import { Platform, StatusBar } from "react-native";
 
 if (Platform.OS === "android") {
   if (typeof (Intl).__disableRegExpRestore === "function") {
@@ -15,6 +15,11 @@ import Routes from './src/routes';
 export default function App() {
   return (
     <>
+      {Platform.OS === "android" ?
+        <StatusBar barStyle="light-content" />
+        :
+        <StatusBar barStyle="dark-content" />
+      }
       <Routes />
     </>
   );

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  StatusBar,
   TouchableOpacity,
   TextInput,
   TouchableWithoutFeedback,
@@ -124,7 +123,6 @@ export default function ProductDetails() {
   if (Platform.OS === "android")
     return (
       <>
-        <StatusBar backgroundColor="#f2f2f2"/>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -132,7 +130,6 @@ export default function ProductDetails() {
         >
           <View style={styles.container}>
             <View>
-              <StatusBar barStyle="dark-content" />
               <View style={styles.imageContainer}>
                 <Image
                   style={styles.image}
@@ -238,7 +235,6 @@ export default function ProductDetails() {
         <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <View>
-              <StatusBar barStyle="dark-content" />
               <View style={styles.imageContainer}>
                 <Image
                   style={styles.image}

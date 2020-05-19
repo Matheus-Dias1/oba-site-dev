@@ -8,7 +8,6 @@ import {
     AsyncStorage,
     ActivityIndicator,
     Platform,
-    StatusBar
 } from 'react-native';
 import AuthContext from '../../../authcontext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -211,7 +210,6 @@ export default function AddAddress() {
                 >
 
                     <View style={styles.container}>
-                        <StatusBar backgroundColor="#f2f2f2"/>
                         <View style={styles.inputGroup}>
                             <View style={selectedInput === 0 ? styles.focusedGroup1InputContainer : styles.group1InputContainer}>
                                 <TextInput

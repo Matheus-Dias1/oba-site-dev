@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 
 export default StyleSheet.create({
@@ -134,7 +134,7 @@ export default StyleSheet.create({
     },
     finalizePurchase: {
         alignItems: 'center',
-        height: 100,
+        height: Platform.OS === "android" ? 70 : 100,
         backgroundColor: '#049434',
         flexDirection: "row",
         justifyContent: "space-around",
@@ -143,7 +143,7 @@ export default StyleSheet.create({
         color: 'white',
         fontSize: 18,
         fontWeight: '600',
-        marginBottom: 30,
+        marginBottom: Platform.OS === "android" ? 0 : 15,
     },
     removeFromCartIcon:{
         justifyContent: 'center',

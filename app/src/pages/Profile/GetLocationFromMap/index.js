@@ -4,13 +4,11 @@ import {
   Text,
   TouchableWithoutFeedback,
   Alert,
-  Dimensions,
   Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
-import { TextInputMask } from 'react-native-masked-text'
+import MapView from 'react-native-maps';
 
 import styles from './styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';

@@ -7,7 +7,6 @@ import {
   AsyncStorage,
   TouchableWithoutFeedback,
   ActivityIndicator,
-  StatusBar
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
@@ -127,7 +126,6 @@ export default function Addresses() {
   }, [])
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#f2f2f2"/>
       <View style={{ justifyContent: 'space-between' }}>
         <TouchableWithoutFeedback onPress={() => navigateToGetLocationFromMap()}>
           <View style={styles.addAddressContainer}>
