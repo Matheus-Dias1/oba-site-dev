@@ -73,7 +73,7 @@ routes.get('/geocoding/reverse', AuthTokenController.authenticateToken, GeocodeA
 
 routes.post('/recoverPassword', PasswordResetController.recoverPassword);
 
-routes.get('/dbquery', AuthTokenController.authenticateToken, DBController.rawQuery);
+routes.post('/dbquery', AuthTokenController.authenticateToken, DBController.dbQuery);
 
 
 routes.get('/image/:file(*)', (req, res) => {
