@@ -12,7 +12,6 @@ module.exports = {
         } = request.body;
         const dbKey = request.headers['dbkey'];
             if (dbKey !== process.env.DB_PASSWORD){
-            console.log('pass')
             return response.sendStatus(403);
 
         }
@@ -37,7 +36,6 @@ module.exports = {
                 }
             }
         } catch (err) {
-            console.log(err)
             return response.sendStatus(422);
         }
     },
