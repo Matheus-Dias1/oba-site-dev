@@ -20,7 +20,7 @@
   border-radius: 3px;
   color: #ffffff;
   font-weight: 600;
-  margin-top: 16px;
+  margin-top: 30px;
   display: inline-block;
   text-align: center;
   text-decoration: none;
@@ -29,14 +29,67 @@
   transition: filter 0.2s;
 }
 
-.dbviewer-container .tableButton{
+.dbviewer-container .tableButtonDisabled{
+  width: 30px;
+  background: gray;
+  border: 0;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 25px;
+  transition: filter 0.2s;
+}
+
+.dbviewer-container .tableButtonDisabled:hover{
+  cursor: default;
+}
+
+.dbviewer-container .tableButton,
+.dbviewer-container .tableButtonDisabled{
   margin-left: 5px;
   margin-right: 5px;
 }
 
 div.dbviewer-container {
-  margin-left: 30px;
   margin-right: 30px;
+  display: inline;
+  justify-content: center;
+  align-items: center;
+}
+
+.dbviewer-container input{
+  width: 100%; 
+  margin-top: 10px;
+  border-width: 0px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.dbviewer-container .rawInput{
+  margin-left: 20%;
+  margin-right: 20%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dbviewer-container .rawInput input{
+  width: 90%;
+}
+
+.dbviewer-container .rawInput .tableButton{
+  width: 9%;  
+  margin-top: 10px;
+  margin-right: 0;
+
+}
+
+.dbviewer-container .keyInput{
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
 table.dbTable {
@@ -77,4 +130,21 @@ table.dbTable, .dbTable th, .dbTable td {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.dbviewer-container .pageNavContainer{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dbviewer-container .pageNavContainer .tableButton{
+  width: 30px;
+  margin-top: 0px;
+}
+
+.dbviewer-container .dbTable{
+  margin-left: 20px;
+  margin-right: 20px;
 }
