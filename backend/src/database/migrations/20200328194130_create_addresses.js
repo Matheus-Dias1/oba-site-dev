@@ -2,7 +2,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('addresses', function (table) {
     table.increments('id').primary().notNullable();
-    table.string('id_user').notNullable();
+    table.integer('id_user').notNullable();
     table.string('country').notNullable();
     table.string('state').notNullable();
     table.string('city').notNullable();

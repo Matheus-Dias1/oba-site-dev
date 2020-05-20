@@ -1,0 +1,80 @@
+.dbviewer-container .tables-container{
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dbviewer-container .tableName{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.dbviewer-container .tableButton{
+  width: 100%;
+  background: #E30016;
+  border: 0;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 16px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 25px;
+  transition: filter 0.2s;
+}
+
+.dbviewer-container .tableButton{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+div.dbviewer-container {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+table.dbTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.dbTable, .dbTable th, .dbTable td {
+  border: 1px solid #cdcdcd;
+  padding: 5px;
+
+}
+
+.dbTable th {
+  color: white;
+  background-color: gray;
+  font-weight: 300;
+  height: 25px;
+  transition: opacity 0.1s;
+}
+
+.dbTable th:hover{
+  opacity: 70%;
+  cursor: pointer;
+}
+
+.dbviewer-container tr:nth-child(even) {
+  background-color: #e8e8e8;
+}
+
+.dbviewer-container tr{
+  background-color: white;
+}
+
+
+.dbviewer-content{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

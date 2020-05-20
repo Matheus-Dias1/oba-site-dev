@@ -5,8 +5,8 @@ exports.up = function(knex) {
         table.string('observation');
         table.string('unit').notNullable();
 
-        table.string('id_purchase').notNullable();
-        table.string('id_product').notNullable();
+        table.integer('id_purchase').notNullable();
+        table.integer('id_product').notNullable();
 
         table.foreign('id_purchase').references('purchases.id');
         table.foreign('id_product').references('products.id');

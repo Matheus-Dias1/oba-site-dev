@@ -1,8 +1,8 @@
 
 exports.up = function(knex) {
     return knex.schema.createTable('shopping_carts', function (table){
-        table.string('id_user').notNullable();
-        table.string('id_product').notNullable();
+        table.integer('id_user').notNullable();
+        table.integer('id_product').notNullable();
         table.float('amount').notNullable();
         table.string('observation');
         table.string('unit').notNullable();
