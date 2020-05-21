@@ -16,6 +16,7 @@ export default function CreateCupon() {
     const [discount, setDiscount] = useState('');
     const [minValue, setMinValue] = useState('');
     const [cupon, setCupon] = useState('');
+    const [code, setCode] = useState('');
 
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
@@ -27,14 +28,17 @@ export default function CreateCupon() {
     async function handlecupon(e) {
         e.preventDefault();
         if (discountType === 'default')
-            return alert('É necessário escolher um tipo de desconto')
+            return alert('É necessário escolher um tipo de desconto');
+        if (code !== "" && code.length < 5)
+            return alert('O código do cupom deve ter ao menos 5 dígitos');
         try {
             const data = {
+                code,
                 amount: parseInt(amount),
                 expiration: parseInt(expiration),
                 discount_type: discountType,
-                discount: parseFloat(discount.replace(',','*').replace('.',',').replace('*','.')),
-                min_value: parseFloat(minValue.replace(',','*').replace('.',',').replace('*','.')),
+                discount: parseFloat(discount.replace(',', '*').replace('.', ',').replace('*', '.')),
+                min_value: parseFloat(minValue.replace(',', '*').replace('.', ',').replace('*', '.')),
             };
             const res = await api.post('cupons', data, {
                 headers: {
@@ -47,6 +51,7 @@ export default function CreateCupon() {
                 } else throw err;
             })
             setCupon('CÓDIGO: ' + res.data.code);
+            setCode('');
             setAmount('');
             setExpiration('');
             setDiscount('');
@@ -79,7 +84,11 @@ export default function CreateCupon() {
                             <h1>{cupon}</h1>
                         </div>}
                         <form onSubmit={handlecupon}>
-
+                            <input
+                                placeholder="Código do cupom (opicional)"
+                                value={code}
+                                onChange={e => setCode(e.target.value)}
+                            />
                             <div className="firstRow">
                                 <input
                                     placeholder="Quantidade de usos"
