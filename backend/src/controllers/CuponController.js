@@ -17,13 +17,17 @@ module.exports = {
             discount_type,
             discount,
             min_value,
+            code
         } = request.body;
         const exp = validUntil(expiration);
-        const code = crypto.randomBytes(3).toString('HEX').toUpperCase();
+        let rCode;
+        if (code === '')
+            rCode = crypto.randomBytes(3).toString('HEX').toUpperCase();
+
         try {
             await connection('cupons')
                 .insert({
-                    code,
+                    code: code === '' ? rCode : code.toUpperCase(),
                     amount,
                     expiration_date: exp,
                     discount_type,
@@ -31,9 +35,10 @@ module.exports = {
                     min_value,
                 })
             return response.json({
-                code: code
+                code: code === '' ? rCode : code.toUpperCase()
             })
         } catch (err) {
+            console.log(err)
             return response.status(422).send();
         }
     },
