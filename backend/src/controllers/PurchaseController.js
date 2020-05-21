@@ -17,8 +17,8 @@ module.exports = {
                     delivery_date,
                     delivery_period,
                     cupon,
+                    pcity
                 } = request.body;
-
                 if (cupon !== 'NO_CUPON') {
                     const dbCupon = await connection('cupons')
                         .select('*')
@@ -41,11 +41,20 @@ module.exports = {
 
 
                 }
+                var city
+                if (pcity == null) {
+                    try {
+                        var { city } = await connection('addresses')
+                            .select('city')
+                            .where('id', id_address)
+                            .first();
+                    } catch (err) {
 
-                const {city} = await connection('addresses')
-                    .select('city')
-                    .where('id', id_address)
-                    .first();
+                    }
+                } else {
+                    city = pcity
+                }
+
                 const selectedDate = await connection('schedule')
                     .select('*')
                     .where({
@@ -53,6 +62,7 @@ module.exports = {
                         city: ['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase()) ? 'uberlandia' : 'araguari'
                     })
                     .first();
+
 
 
                 if (selectedDate == null || (delivery_period === 'morning' && selectedDate.morning_deliveries === 0)) {
@@ -191,7 +201,7 @@ module.exports = {
                     complement: 'a.complement'
                 })
                 .whereRaw('p.id_user = u.id and p.id_address = a.id and p.delivered = false')
-                .orderByRaw('date(p.delivery_date) asc, delivery_period asc');
+                .orderByRaw('p.delivery_date asc, delivery_period desc');
 
 
             return response.json(purchases);

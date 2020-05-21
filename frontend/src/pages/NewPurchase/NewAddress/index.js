@@ -50,12 +50,15 @@ export default function NewAddress() {
             neighborhood: neighborhood,
             city
         };
-        const coordsList = coordinates.split(',')
-        const floatList = coordsList.map(coord => {return parseFloat(coord.replace(/^\s+|\s+$/g, ''))})
-        const distance = haversineDistance(floatList)
-        const delivery_fee = distance <= 1 ? 5 : parseFloat(((distance-1)+5).toFixed(2))
-
-        localStorage.setItem('deliveryFee', delivery_fee);
+        if (coordinates === '') {
+            localStorage.setItem('deliveryFee', 0);
+        } else {
+            const coordsList = coordinates.split(',')
+            const floatList = coordsList.map(coord => { return parseFloat(coord.replace(/^\s+|\s+$/g, '')) })
+            const distance = haversineDistance(floatList)
+            const delivery_fee = distance <= 1 ? 5 : parseFloat(((distance - 1) + 5).toFixed(2))
+            localStorage.setItem('deliveryFee', delivery_fee);
+        }
         localStorage.setItem('addressData', JSON.stringify(data));
         history.push('/panel/purchases/new/clientInfo');
     }
@@ -138,13 +141,6 @@ export default function NewAddress() {
                                 placeholder="Coordenadas"
                                 value={coordinates}
                                 onChange={e => setCoordinates(e.target.value)}
-                                required
-                                onInvalid={function (e) {
-                                    e.target.setCustomValidity("Digite o valor da taxa de entrega");
-                                }}
-                                onInput={function (e) {
-                                    e.target.setCustomValidity("");
-                                }}
                             />
 
 

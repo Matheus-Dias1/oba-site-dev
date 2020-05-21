@@ -80,5 +80,21 @@
     text-align: center;
 }
 
+.newPaymentInfo-container .deliveryFeeContainer{
+    display: flex;   
+}
 
+.newPaymentInfo-container .deliveryFeeContainer input{
+    margin-left: 10px;
+}
+
+.newPaymentInfo-container .deliveryFeeInput{
+    width: 100px;
+    border-color: #DCDCE6;
+    font: 400 18px Roboto, sans-serif;
+    color: #333333;
+    border: 1px solid #dcdce6;
+    border-radius: 8px;
+    padding: 4px;
+}
 

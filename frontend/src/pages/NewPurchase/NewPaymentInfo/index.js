@@ -5,13 +5,14 @@ import { FaArrowCircleLeft } from 'react-icons/fa';
 
 import './styles.css';
 import api from '../../../services/api';
+import { useEffect } from 'react';
 
 
 export default function NewPaymentInfo() {
 
     const cartValue = parseFloat(localStorage.getItem('cartValue'));
-    const deliveryFee = getDeliveryFee();
-    const totalValue = cartValue + deliveryFee;
+    const [deliveryFee, setDeliveryFee] = useState('');
+    const [totalValue, setTotalValue] = useState(cartValue + deliveryFee);
     const [change, setChange] = useState('');
     const [payment_method, setPayment_method] = useState('default');
     const history = useHistory();
@@ -21,12 +22,22 @@ export default function NewPaymentInfo() {
         history.push('/');
     }
 
+    useEffect(() => {
+        setDeliveryFee(getDeliveryFee());
+    }, [])
+
     function getDeliveryFee() {
         try {
-            return parseFloat(localStorage.getItem('deliveryFee'));
+            return localStorage.getItem('deliveryFee').replace(',','*').replace('.',',').replace('*','.');
         } catch{
             return 10;
         }
+    }
+
+    function changeFee(e){
+        const fee = e.target.value === '' ? 0 : parseFloat((e.target.value).replace(',','*').replace('.',',').replace('*','.'));
+        setDeliveryFee(e.target.value);
+        setTotalValue(cartValue + fee);
     }
 
     async function handlePaymentInfo(e) {
@@ -61,7 +72,8 @@ export default function NewPaymentInfo() {
             observation: JSON.stringify(observation),
             delivery_date: date,
             delivery_period: time,
-            cupon: 'NO_CUPON'
+            cupon: 'NO_CUPON',
+            pcity: (JSON.parse(localStorage.getItem('addressData'))).city
         };
 
 
@@ -76,7 +88,7 @@ export default function NewPaymentInfo() {
                     history.push('/');
                 } else throw err;
             })
-            if (res.status === 'OK') {
+            if (res.data.status === 'OK') {
                 localStorage.removeItem('addressData');
                 localStorage.removeItem('clientInfoData');
                 localStorage.removeItem('cartValue');
@@ -102,8 +114,23 @@ export default function NewPaymentInfo() {
                     </Link>
                 </section>
                 <div>
+                    <div className="deliveryFeeContainer">
+                        <strong className="valueText">{"Taxa de entrega: "}</strong>
+                        <input
+                            placeholder="Taxa"
+                            value={deliveryFee}
+                            onChange={e => changeFee(e)}
+                            className="deliveryFeeInput"
+                            required
+                            onInvalid={function (e) {
+                                e.target.setCustomValidity("Digite o valor da taxa de entrega");
+                            }}
+                            onInput={function (e) {
+                                e.target.setCustomValidity("");
+                            }}
+                        />
+                    </div>
                     <strong className="valueText">{"Total dos produtos: " + Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartValue)}</strong>
-                    <strong className="valueText">{"Taxa de entrega: " + Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</strong>
                     <strong className="valueText">{"Total do pedido: " + Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalValue)}</strong>
                     <form onSubmit={handlePaymentInfo}>
                         <select id="payment_method" defaultValue="default" onChange={e => setPayment_method(e.target.value)}>

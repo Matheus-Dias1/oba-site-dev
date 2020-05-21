@@ -25,10 +25,17 @@ export default function NewClientInformation() {
 
     useEffect(() => {
         try {
-            api.get('schedule', {
+            const addressData = JSON.parse(localStorage.getItem('addressData'));
+            var city;
+            if (['uberlandia', 'uberlândia', 'udi'].includes(addressData.city.toLowerCase()))
+                city = 'uberlandia'
+            else if (['araguari'].includes(addressData.city.toLowerCase()))
+                city = 'araguari'
+
+            api.get('schedule?city=' + city, {
                 headers: {
                     authorization: 'Bearer ' + accessToken
-                }
+                },
             }).then(response => {
                 setDateTime(response.data);
             }).catch(err => {
@@ -60,7 +67,6 @@ export default function NewClientInformation() {
             observation
         };
 
-        console.log(data);
         localStorage.setItem('clientInfoData', JSON.stringify(data));
         history.push('/panel/purchases/new/payment');
 

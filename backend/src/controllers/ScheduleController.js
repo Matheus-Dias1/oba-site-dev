@@ -57,6 +57,7 @@ module.exports = {
             }
             return response.json(res);
         } catch (err) {
+            console.log(err)
             return response.status(422).send();
         }
     },

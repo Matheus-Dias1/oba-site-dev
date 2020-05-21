@@ -221,9 +221,21 @@ export default function DBViewer() {
                         {
                             data.map(row => (
                                 <tr key={data.indexOf(row)}>
-                                    {columns.map(column => (
-                                        <td key={column + data.indexOf(row)}>{row[column]}</td>
-                                    ))}
+                                    {columns.map(column => {
+                                        function checkForJSON(row, column) {
+                                            if (column !== 'observation' || table !== 'purchases')
+                                                return row[column]
+                                            else {
+                                                try {
+                                                    JSON.parse(row[column])
+                                                    return <p onClick={() => { alert(row[column].replace('{"', '{\n    ').replace('"}', '\n}').replace(/","/g, '",\n    ').replace(/":/g, ': ')) }}>[object Object]</p>
+                                                } catch (err) {
+                                                    return row[column]
+                                                }
+                                            }
+                                        }
+                                        return (<td key={column + data.indexOf(row)}>{checkForJSON(row, column)}</td>)
+                                    })}
                                 </tr>
                             ))
                         }
