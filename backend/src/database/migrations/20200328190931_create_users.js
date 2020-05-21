@@ -7,6 +7,7 @@ exports.up = function (knex) {
     table.string('password').notNullable();
     table.string('phone').notNullable();
     table.boolean('admin').notNullable().defaultTo(false);
+    table.string('push_token').notNullable().defaultTo('');
   });
 };
 

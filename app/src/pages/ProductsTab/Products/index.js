@@ -13,6 +13,9 @@ import {
   StatusBar,
 } from 'react-native';
 import Modal from 'react-native-modal';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import env from '../../../variables';
@@ -37,6 +40,53 @@ export default function Products() {
 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
+
+  async function registerForPushNotificationsAsync() {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        if (await AsyncStorage.getItem('ExpoPushToken') !== null){
+          updatePushToken('');
+          await AsyncStorage.removeItem('ExpoPushToken');
+        }
+        return;
+      }
+      const token = await Notifications.getExpoPushTokenAsync();
+      const oldToken = await AsyncStorage.getItem('ExpoPushToken');
+      if (token !== oldToken){
+        updatePushToken(token);
+        await AsyncStorage.setItem('ExpoPushToken', token);
+      }
+      
+    }
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('default', {
+        name: 'default',
+        sound: true,
+        priority: 'max',
+        vibrate: [0, 250, 250, 250],
+      });
+    }
+  };
+
+  async function updatePushToken(token) {
+    try{
+      await api.put('/push',{
+        token
+      },{
+        headers:{
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      })
+    } catch (err){
+
+    }
+  }
 
   async function loadProducts() {
     if (loading) return;
@@ -136,6 +186,7 @@ export default function Products() {
 
   useEffect(() => {
     const abortController = new AbortController();
+    registerForPushNotificationsAsync();
     loadProducts();
     navigation.addListener('focus', () => {
       updateCity();
@@ -323,7 +374,7 @@ export default function Products() {
             <ActivityIndicator size="small" color="#000" />
           </View>}
 
-          <TouchableWithoutFeedback onPress={() => {(loadingCart || shoppingCart.length === 0) ? {} : finalizePurchase()}}>
+          <TouchableWithoutFeedback onPress={() => { (loadingCart || shoppingCart.length === 0) ? {} : finalizePurchase() }}>
             <View style={styles.finalizePurchase}>
               <Text style={styles.buyButton}>Concluir compra</Text>
               <Text style={styles.buyButton}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(subtotalValue)}</Text>

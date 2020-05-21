@@ -17,6 +17,7 @@ const CuponController = require('./controllers/CuponController');
 const ProfileUpdateController = require('./controllers/ProfileUpdateController');
 const PasswordResetController = require('./controllers/PasswordResetController');
 const DBController = require('./controllers/DBController');
+const PushNotificationController = require('./controllers/PushNotificationController');
 
 
 const routes = express.Router();
@@ -74,6 +75,8 @@ routes.get('/geocoding/reverse', AuthTokenController.authenticateToken, GeocodeA
 routes.post('/recoverPassword', PasswordResetController.recoverPassword);
 
 routes.post('/dbquery', AuthTokenController.authenticateToken, DBController.dbQuery);
+
+routes.put('/push', AuthTokenController.authenticateToken, PushNotificationController.updateExpoToken);
 
 
 routes.get('/image/:file(*)', (req, res) => {
