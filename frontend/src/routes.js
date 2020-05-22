@@ -16,6 +16,7 @@ import NewPaymentInfo from './pages/NewPurchase/NewPaymentInfo';
 import AddToSchedule from './pages/AddToSchedule';
 import CreateCupon from './pages/CreateCupon';
 import DBViewer from './pages/DBViewer'
+import SendPushNotification from './pages/SendPushNotification'
 
 
 
@@ -40,6 +41,7 @@ export default function Routes(){
                 <Route path= '/panel/schedule' component={AddToSchedule} />
                 <Route path= '/panel/cupon' component={CreateCupon} />
                 <Route path= '/panel/db' component={DBViewer} />
+                <Route path= '/panel/push/' component={SendPushNotification} />
                 
 
             </Switch>

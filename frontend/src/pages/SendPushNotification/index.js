@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaTags, FaBoxOpen, FaBell, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaTags, FaBoxOpen, FaChartLine, FaCalendarAlt, FaBell } from 'react-icons/fa';
 import api from '../../services/api';
 
 import { slide as Menu } from 'react-burger-menu';
@@ -9,7 +9,7 @@ import './styles.css';
 import '../../global.css';
 
 
-export default function AddToSchedule() {
+export default function SendPushNotification() {
     const [errorText, setErrorText] = useState('');
     const [date, setDate] = useState('');
     const [morning_deliveries, setMorning_deliveries] = useState('');
@@ -78,7 +78,7 @@ export default function AddToSchedule() {
                 <Link className='menu-link' to="/panel/push"><FaBell size={16} color="FFFFFF" />Enviar notificações</Link>
 
             </Menu>
-            <div className="schedule-container">
+            <div className="sendPush-container">
                 <div className="content">
                     <section>
                         <h1>Adicionar Horários</h1>

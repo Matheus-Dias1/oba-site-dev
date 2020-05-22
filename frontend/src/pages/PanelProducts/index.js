@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaTags, FaBoxOpen, FaSignOutAlt, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaTags, FaBoxOpen, FaBell, FaSignOutAlt, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import { FiTrash2, FiEdit, FiEyeOff, FiEye } from 'react-icons/fi';
 
 
@@ -105,6 +105,7 @@ export default function PanelProducts() {
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
                 <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
                 <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
+                <Link className='menu-link' to="/panel/push"><FaBell size={16} color="FFFFFF" />Enviar notificações</Link>
 
             </Menu>
             <div className="panel-container">

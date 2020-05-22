@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaTags, FaClipboardCheck, FaBoxOpen, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
+import { FaHome, FaTags, FaClipboardCheck, FaBoxOpen, FaBell, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import api from '../../services/api';
 
 import { slide as Menu } from 'react-burger-menu';
@@ -72,6 +72,7 @@ export default function CreateCupon() {
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
                 <Link className='menu-link' to="/panel/cupon"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
                 <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
+                <Link className='menu-link' to="/panel/push"><FaBell size={16} color="FFFFFF" />Enviar notificações</Link>
             </Menu>
             <div className="cupon-container">
                 <div className="content">

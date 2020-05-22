@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaTags, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaTags, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList, FaBell } from 'react-icons/fa';
 import { slide as Menu } from 'react-burger-menu';
 
 import api from '../../services/api';
@@ -84,6 +84,7 @@ export default function PanelPurchases() {
                 <Link className='menu-link' to="/panel/reports"><FaChartLine size={16} color="FFFFFF" />Relatórios</Link>
                 <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
                 <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
+                <Link className='menu-link' to="/panel/push"><FaBell size={16} color="FFFFFF" />Enviar notificações</Link>
 
             </Menu>
             <div className="purchase-container">
