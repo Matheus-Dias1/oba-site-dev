@@ -12,6 +12,7 @@ import '../../global.css';
 export default function SendPushNotification() {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
+    const [cupon, setCupon] = useState('');
     const [loading, setLoading] = useState(false);
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
@@ -25,17 +26,18 @@ export default function SendPushNotification() {
         e.preventDefault();
         if (loading) return;
         setLoading(true);
-        if(!body) return alert('Preencha o texto da notificação');
+        if (!body) return alert('Preencha o texto da notificação');
         try {
-            const res = await api.post('/push',{
+            const res = await api.post('/push', {
                 sendTo: 'all',
                 title,
-                body
-            },{
-                headers:{
+                body,
+                cupon
+            }, {
+                headers: {
                     authorization: 'Bearer ' + accessToken
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {
                     alert('Você não tem permissão para acessar essa página');
                     history.push('/');
@@ -44,10 +46,13 @@ export default function SendPushNotification() {
 
             if (res.data.status === 'ok')
                 alert('Notificações enviadas com sucesso.')
+            else if (res.data.error === 'cuponNotFound')
+                alert(res.data.message)
             else{
-                alert('Erro ao enviar algumas notificações, consulte um administrador')
-                console.log(res.data.errors);
+                alert('Notificação foram enviadas com alguns problemas, consulte um administrador')
+                console.log(res.data.details);
             }
+            
             setLoading(false);
         } catch (err) {
             alert('Erro ao enviar notificações')
@@ -91,6 +96,11 @@ export default function SendPushNotification() {
                                 placeholder="Texto da notificação"
                                 value={body}
                                 onChange={e => setBody(e.target.value)}
+                            />
+                            <input
+                                placeholder="Cupom (opicional)"
+                                value={cupon}
+                                onChange={e => setCupon(e.target.value)}
                             />
                             <button className="button" type="submit" disabled={loading}>Confirmar</button>
 

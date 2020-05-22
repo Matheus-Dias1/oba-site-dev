@@ -164,11 +164,14 @@ module.exports = {
             }
             errors = [...errors, ...errorList]
 
-            return response.json({
+            const resdata = {
                 status: errors.length > 0 ? 'error' : 'ok',
-                error: 'pushReceipts',
-                details: errors
-            });
+            }
+            if (errors.length > 0){
+                resdata.error= 'pushReceipts',
+                resdata.details= errors
+            }
+            return response.json(resdata);
         } catch (err) {
             return response.status(422).json(err);
         }
