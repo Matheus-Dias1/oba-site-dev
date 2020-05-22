@@ -194,6 +194,17 @@ export default StyleSheet.create({
         marginBottom: 30,
         marginTop: 30,
         alignItems: 'center'
-    }
+    },
+    addItensToCart: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    emptyCartContainer: {
+    alignItems: 'center',
+    marginTop: 30,
+    height: 50,
+    flexDirection: 'row',
+}
 
 });

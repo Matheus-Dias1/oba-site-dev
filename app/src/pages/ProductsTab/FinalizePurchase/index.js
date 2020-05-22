@@ -60,8 +60,18 @@ export default function FinalizePurchase() {
     getAddresses();
     getSelectedAddress();
     getDates();
+    setPushCupon();
   }, [])
 
+
+  async function setPushCupon(){
+    const pushCupon = JSON.parse(await AsyncStorage.getItem('pushCupon'));
+    console.log(pushCupon)
+    if (pushCupon && pushCupon.exp > new Date().valueOf()) 
+      setCupon(pushCupon.cupon)
+    else
+      await AsyncStorage.removeItem('pushCupon');
+  }
 
   async function finalizePurchase() {
     if (loading) return;
@@ -94,7 +104,6 @@ export default function FinalizePurchase() {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
       }).catch(err => {
-        console.log(err);
         if (err.response.status === 401 || err.response.status === 403) {
           Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
           setLoading(false);
@@ -104,6 +113,8 @@ export default function FinalizePurchase() {
       if (res.data.status === 'FAIL')
         Alert.alert(res.data.error)
       else {
+        if (cuponValidated && cupon === JSON.parse(await AsyncStorage.getItem('pushCupon')).cupon)
+          await AsyncStorage.removeItem('pushCupon');
         await AsyncStorage.setItem('needsUpdate', 'true');
         navigation.navigate('Pedidos', {
           screen: 'Purchases'
@@ -120,7 +131,6 @@ export default function FinalizePurchase() {
       }
 
     } catch (err) {
-      console.log(err)
       Alert.alert('Não foi possível concluir sua compra', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
@@ -304,7 +314,6 @@ export default function FinalizePurchase() {
       setDates(res.data)
 
     } catch (err) {
-      console.log(err)
       Alert.alert('Erro ao carregar os horários cadastrados', 'Tente novamente mais tarde')
     } finally {
       setDatesLoading(false);
@@ -540,11 +549,13 @@ export default function FinalizePurchase() {
                           <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
 
                           {
+                            addresses[selectedAddress] &&
                             ['uberlandia', 'uberlândia', 'udi'].includes(addresses[selectedAddress].city.toLowerCase()) &&
                             [1, 4].includes(new Date(date.date).getUTCDay()) &&
                             <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h30 - 13h00' : '15h00 - 19h30'}</Text>
                           }
                           {
+                            addresses[selectedAddress] &&
                             ['araguari'].includes(addresses[selectedAddress].city.toLowerCase()) &&
                             [1, 4].includes(new Date(date.date).getUTCDay()) &&
                             <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : '15h00 - 19h30'}</Text>

@@ -50,7 +50,7 @@ export default function Products() {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
-        if (await AsyncStorage.getItem('ExpoPushToken') !== null){
+        if (await AsyncStorage.getItem('ExpoPushToken') !== null) {
           updatePushToken('');
           await AsyncStorage.removeItem('ExpoPushToken');
         }
@@ -58,11 +58,11 @@ export default function Products() {
       }
       const token = await Notifications.getExpoPushTokenAsync();
       const oldToken = await AsyncStorage.getItem('ExpoPushToken');
-      if (token !== oldToken){
+      if (token !== oldToken) {
         updatePushToken(token);
         await AsyncStorage.setItem('ExpoPushToken', token);
       }
-      
+
     }
     if (Platform.OS === 'android') {
       Notifications.createChannelAndroidAsync('default', {
@@ -75,15 +75,15 @@ export default function Products() {
   };
 
   async function updatePushToken(token) {
-    try{
-      await api.put('/push',{
+    try {
+      await api.put('/push', {
         token
-      },{
-        headers:{
+      }, {
+        headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
       })
-    } catch (err){
+    } catch (err) {
 
     }
   }
@@ -184,8 +184,14 @@ export default function Products() {
 
   }
 
+
+  _handleNotification = async notification => {
+    await AsyncStorage.setItem('pushCupon', JSON.stringify(notification.data))
+  };
+
   useEffect(() => {
     const abortController = new AbortController();
+    Notifications.addListener(_handleNotification)
     registerForPushNotificationsAsync();
     loadProducts();
     navigation.addListener('focus', () => {
@@ -209,6 +215,7 @@ export default function Products() {
   }
 
   async function openCart() {
+    setShoppingCart([])
     setLoadingCart(true);
     setIsCartVisible(true);
     try {
@@ -326,8 +333,21 @@ export default function Products() {
             ListFooterComponent={(
               <TouchableWithoutFeedback onPress={() => closeCart()}>
                 <View style={styles.addMoreItensContainer}>
-                  <Text>Adicionar mais itens</Text>
-                  <Ionicons name={'ios-add'} style={{ marginLeft: 20, marginTop: 3 }} size={30} color={'#049434'} />
+                  {!loadingCart &&
+                    <View>
+                      {shoppingCart.length > 0 ?
+                        <View style={styles.addItensToCart}>
+                          <Text>Adicionar mais itens</Text>
+                          < Ionicons name={'ios-add'} style={{ marginLeft: 20, marginTop: 3 }} size={30} color={'#049434'} />
+                        </View>
+                        :
+                        <View style={styles.emptyCartContainer}>
+                          <Text>Adicionar itens</Text>
+                          < Ionicons name={'ios-add'} style={{ marginLeft: 10, marginTop: 3 }} size={30} color={'#049434'} />
+                        </View>
+                      }
+                    </View>
+                  }
                 </View>
               </TouchableWithoutFeedback>
             )}
