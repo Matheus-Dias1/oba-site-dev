@@ -186,7 +186,8 @@ export default function Products() {
 
 
   _handleNotification = async notification => {
-    await AsyncStorage.setItem('pushCupon', JSON.stringify(notification.data))
+    if (JSON.stringify(notification.data))
+      await AsyncStorage.setItem('pushCupon', JSON.stringify(notification.data))
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 
 exports.up = function (knex) {
     return knex.schema.createTable('cupons', function (table) {
-        table.string('code').notNullable();
+        table.string('code').primary().notNullable();
         table.integer('amount').notNullable();
         table.integer('expiration_date').notNullable();
         table.string('discount_type').notNullable();

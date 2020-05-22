@@ -66,7 +66,6 @@ export default function FinalizePurchase() {
 
   async function setPushCupon(){
     const pushCupon = JSON.parse(await AsyncStorage.getItem('pushCupon'));
-    console.log(pushCupon)
     if (pushCupon && pushCupon.exp > new Date().valueOf()) 
       setCupon(pushCupon.cupon)
     else

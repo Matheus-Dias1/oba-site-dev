@@ -26,8 +26,37 @@ module.exports = {
         const {
             sendTo,
             title,
-            body
+            body,
+            cupon
         } = request.body;
+
+        let cuponObj;
+        if (!!cupon) {
+            try {
+                const res = await connection('cupons')
+                    .select({
+                        cupon: 'code',
+                        exp: 'expiration_date'
+                    })
+                    .where('code', cupon)
+                    .first();
+
+                if (!res) {
+                    return response.json({
+                        status: 'error',
+                        code: 'cuponNotFound',
+                        message: 'Cupom informado não existe'
+                    })
+                }
+                cuponObj = res;
+            } catch (err) {
+                return response.json({
+                    status: 'error',
+                    code: 'cuponNotFound',
+                    message: 'Erro ao recuperar cupom, tente novamente'
+                })
+            }
+        }
 
         let errors = []
         try {
@@ -57,12 +86,23 @@ module.exports = {
             };
             let push_tickets = [];
             for (i in groupedTokens) {
-                push_tickets = await axios.post('https://exp.host/--/api/v2/push/send', {
-                    to: groupedTokens[i],
-                    title,
-                    body,
-                    sound: 'default'
-                })
+                push_tickets = await axios.post('https://exp.host/--/api/v2/push/send', (
+                    cupon === '' ?
+                        {
+                            to: groupedTokens[i],
+                            title,
+                            body,
+                            sound: 'default',
+                        }
+                        : 
+                        {
+                            to: groupedTokens[i],
+                            title,
+                            body,
+                            sound: 'default',
+                            data: cuponObj
+                        }
+                ))
                 if (push_tickets.data.data != null) {
                     try {
                         ticketsList.data = [...ticketsList.data, ...push_tickets.data.data];
@@ -126,10 +166,11 @@ module.exports = {
 
             return response.json({
                 status: errors.length > 0 ? 'error' : 'ok',
-                errors
+                error: 'pushReceipts',
+                details: errors
             });
         } catch (err) {
-            return response.sendStatus(422);
+            return response.status(422).json(err);
         }
     },
 }
