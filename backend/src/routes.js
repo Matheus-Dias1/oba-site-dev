@@ -77,7 +77,7 @@ routes.post('/recoverPassword', PasswordResetController.recoverPassword);
 routes.post('/dbquery', AuthTokenController.authenticateToken, DBController.dbQuery);
 
 routes.put('/push', AuthTokenController.authenticateToken, PushNotificationController.updateExpoToken);
-
+routes.post('/push', AuthTokenController.authenticateToken, PushNotificationController.sendPush);
 
 routes.get('/image/:file(*)', (req, res) => {
     try {
