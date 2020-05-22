@@ -10,11 +10,9 @@ import '../../global.css';
 
 
 export default function SendPushNotification() {
-    const [errorText, setErrorText] = useState('');
-    const [date, setDate] = useState('');
-    const [morning_deliveries, setMorning_deliveries] = useState('');
-    const [afternoon_deliveries, setAfternoon_deliveries] = useState('');
-    const [city, setCity] = useState('');
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken === null) {
@@ -23,46 +21,37 @@ export default function SendPushNotification() {
     }
 
 
-    async function handleSchedule(e) {
+    async function handlePushNotification(e) {
         e.preventDefault();
-        const list = date.split('/');
-        if (list.length !== 3) {
-            setErrorText('A data precisa estar no formato DD/MM/AAAA');
-            return;
-        }
-
-        let year = list[2];
-        if (list[2].length === 2) {
-            year = '20' + list[2];
-        }
-
-        const date2 = Date.UTC(parseInt(year), parseInt(list[1]) - 1, parseInt(list[0]), 3, 0, 0);
-        console.log(date2);
-        const data = {
-            "date": date2,
-            "morning_deliveries": parseInt(morning_deliveries),
-            "afternoon_deliveries": parseInt(afternoon_deliveries),
-            "city": city
-        };
+        if (loading) return;
+        setLoading(true);
+        if(!body) return alert('Preencha o texto da notificação');
         try {
-            await api.post('/schedule', data, {
-                headers: {
+            const res = await api.post('/push',{
+                sendTo: 'all',
+                title,
+                body
+            },{
+                headers:{
                     authorization: 'Bearer ' + accessToken
                 }
-            }).catch(err => {
+            }).catch(err=>{
                 if (err.response.status === 401 || err.response.status === 403) {
                     alert('Você não tem permissão para acessar essa página');
                     history.push('/');
                 } else throw err;
             });
-            setMorning_deliveries('');
-            setAfternoon_deliveries('');
-            setDate('');
-            setErrorText('');
-        } catch (err) {
-            alert('Erro ao cadastrar horário!');
-        }
 
+            if (res.data.status === 'ok')
+                alert('Notificações enviadas com sucesso.')
+            else{
+                alert('Erro ao enviar algumas notificações, consulte um administrador')
+                console.log(res.data.errors);
+            }
+            setLoading(false);
+        } catch (err) {
+            alert('Erro ao enviar notificações')
+        }
     }
     return (
         <div>
@@ -81,83 +70,37 @@ export default function SendPushNotification() {
             <div className="sendPush-container">
                 <div className="content">
                     <section>
-                        <h1>Adicionar Horários</h1>
-                        <p>Escolha a data e quantas entregas terão em cada período</p>
+                        <h1>Mandar Notificações</h1>
+                        <p>Preencha as informações da notificação a ser enviada</p>
                     </section>
                     <div>
-                        {errorText !== '' && <p className="errorText">{errorText}</p>}
-                        <form onSubmit={handleSchedule}>
-
+                        <form onSubmit={e => handlePushNotification(e)}>
                             <input
-                                placeholder="DD/MM/AAAA"
-                                value={date}
-                                onChange={e => setDate(e.target.value)}
+                                placeholder="Título"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
                                 required
                                 onInvalid={function (e) {
-                                    e.target.setCustomValidity("Digite a data");
+                                    e.target.setCustomValidity("Digite o título da notificação");
                                 }}
                                 onInput={function (e) {
                                     e.target.setCustomValidity("");
                                 }}
                             />
-                            <div className="periodAmout">
-                                <input
-                                    placeholder="Quantidade de entregas na manhã"
-                                    value={morning_deliveries}
-                                    onChange={e => setMorning_deliveries(e.target.value)}
-                                    required
-                                    onInvalid={function (e) {
-                                        e.target.setCustomValidity("Digite a quantidade de entregas na manhã");
-                                    }}
-                                    onInput={function (e) {
-                                        e.target.setCustomValidity("");
-                                    }}
-                                />
-                                <input
-                                    placeholder="Quantidade de entregas na tarde"
-                                    value={afternoon_deliveries}
-                                    onChange={e => setAfternoon_deliveries(e.target.value)}
-                                    required
-                                    onInvalid={function (e) {
-                                        e.target.setCustomValidity("Digite a quantidade de entregas na manhã");
-                                    }}
-                                    onInput={function (e) {
-                                        e.target.setCustomValidity("");
-                                    }}
-                                />
-                                <div className="radioInputGroup">
-                                    <div>
-                                        <input
-                                            className="radioInput"
-                                            type="radio"
-                                            id="uberlandia"
-                                            name="city"
-                                            value=""
-                                            onClick={() => setCity('uberlandia')}
-                                        />
-                                        <label for="uberlandia">Uberlândia</label>
-                                    </div>
-                                    <div>
-                                        <input
-                                            className="radioInput"
-                                            type="radio"
-                                            id="aragarui"
-                                            name="city"
-                                            value=""
-                                            onClick={() => setCity('araguari')}
-                                        />
-                                        <label for="aragarui">Araguari</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <button className="button" type="submit">Confirmar</button>
-
+                            <textarea
+                                placeholder="Texto da notificação"
+                                value={body}
+                                onChange={e => setBody(e.target.value)}
+                            />
+                            <button className="button" type="submit" disabled={loading}>Confirmar</button>
 
                         </form>
+
+
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 
 }

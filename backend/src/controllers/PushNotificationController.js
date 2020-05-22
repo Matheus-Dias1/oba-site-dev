@@ -91,7 +91,7 @@ module.exports = {
                 idsLists.push(idsList.splice(0, 1000))
             }
 
-            await sleep(15000);
+            await sleep(5000);
 
             let errorList = [];
 
@@ -124,8 +124,10 @@ module.exports = {
             }
             errors = [...errors, ...errorList]
 
-
-            return response.json({ errors });
+            return response.json({
+                status: errors.length > 0 ? 'error' : 'ok',
+                errors
+            });
         } catch (err) {
             return response.sendStatus(422);
         }

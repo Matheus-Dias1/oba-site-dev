@@ -69,6 +69,16 @@ form textarea {
     transition: filter 0.2s;
 }
 
+.button:disabled{
+  background: lightgrey;
+  cursor: default;
+
+}
+
+.button:disabled:hover{
+  filter: brightness(100%);
+}
+
 .button:hover{
     filter: brightness(90%);
 }

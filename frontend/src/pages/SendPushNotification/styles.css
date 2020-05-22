@@ -42,31 +42,10 @@
     max-width: 450px;
 }
 
-.sendPush-container .content form input{
+.sendPush-container .content input{
     margin-top: 8px;
 }
     
-
-.sendPush-container .errorText{
-    text-align: center;
-    font-weight: 500;
-    color: #fff;
-    font-size: 20px;
-    background-color: #E30016;
-    border-radius: 4px;
-    padding: 2px 2px;
-}
-
-.sendPush-container .content .radioInput{
-    width: 18px;
-    height: 18px;
-}
-
-.sendPush-container .content label{
-    font-size: 18px;
-    color: #737380;
-    margin-left: 10px;
-}
 
 .sendPush-container .content .radioInputGroup{
     margin-top: 5px;
