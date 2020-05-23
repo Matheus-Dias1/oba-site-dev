@@ -18,7 +18,7 @@ const ProfileUpdateController = require('./controllers/ProfileUpdateController')
 const PasswordResetController = require('./controllers/PasswordResetController');
 const DBController = require('./controllers/DBController');
 const PushNotificationController = require('./controllers/PushNotificationController');
-
+const FacebookPixelController = require('./controllers/FacebookPixelController');
 
 const routes = express.Router();
 
@@ -78,6 +78,8 @@ routes.post('/dbquery', AuthTokenController.authenticateToken, DBController.dbQu
 
 routes.put('/push', AuthTokenController.authenticateToken, PushNotificationController.updateExpoToken);
 routes.post('/push', AuthTokenController.authenticateToken, PushNotificationController.sendPush);
+routes.post('/fbPixel/test', AuthTokenController.authenticateToken, FacebookPixelController.FBPixelTest);
+
 
 routes.get('/image/:file(*)', (req, res) => {
     try {

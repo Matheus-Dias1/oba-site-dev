@@ -278,6 +278,7 @@ export default function AddAddress() {
                                     style={styles.textInput}
                                     value={state}
                                     placeholder='Estado'
+                                    maxLength={2}
                                     onFocus={() => setSelectedInput(5)}
                                     onBlur={() => setSelectedInput(-1)}
                                     onChange={(e) => setState(e.nativeEvent.text)}
@@ -386,6 +387,7 @@ export default function AddAddress() {
                                     style={styles.textInput}
                                     value={state}
                                     placeholder='Estado'
+                                    maxLength={2}
                                     onFocus={() => setSelectedInput(5)}
                                     onBlur={() => setSelectedInput(-1)}
                                     onChange={(e) => setState(e.nativeEvent.text)}
