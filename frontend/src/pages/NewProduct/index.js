@@ -45,6 +45,8 @@ export default function NewProduct() {
 
     async function handleNewProduct(e) {
         e.preventDefault();
+        if (file === '')
+            return alert('Selecione a imagem do produto');
         const dataS = new FormData();
 
         const ctgry = formatCategory(category);
@@ -75,7 +77,6 @@ export default function NewProduct() {
                     history.push('/');
                 } else throw err;
             });
-            alert('Produto cadastrado com sucesso!');
             history.push('/panel/products');
         } catch (err) {
             alert('Erro ao cadastrar produto!\nTente novamente.');
@@ -83,7 +84,6 @@ export default function NewProduct() {
 
     }
 
-    //formatCaegory('fruTAS  ,verduras')
 
         function formatCategory(ctgry) {
             var i;

@@ -34,6 +34,8 @@ routes.put('/products', AuthTokenController.authenticateToken, ProductController
 
 routes.get('/products/details/:id', AuthTokenController.authenticateToken, ProductUpdateController.getData);
 routes.put('/products/edit/:id', AuthTokenController.authenticateToken, ProductUpdateController.update);
+routes.put('/products/deal/create/:id', AuthTokenController.authenticateToken, ProductUpdateController.createDeal);
+routes.put('/products/deal/remove/:id', AuthTokenController.authenticateToken, ProductUpdateController.removeDeal);
 
 routes.get('/purchases', AuthTokenController.authenticateToken, PurchaseController.index);
 routes.post('/purchases', AuthTokenController.authenticateToken, PurchaseController.create);

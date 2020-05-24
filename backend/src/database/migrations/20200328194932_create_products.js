@@ -6,9 +6,11 @@ exports.up = function(knex) {
       table.string('category');
       table.string('delivers_to').notNullable();
       table.string('description');
-      table.float('price').notNullable();
       table.string('measurement_unit').notNullable();
-      table.float('unit_price');
+      table.float('price').notNullable();
+      table.float('full_price').defaultTo(null);
+      table.float('unit_price').defaultTo(null);
+      table.float('full_unit_price').defaultTo(null);
       table.string('picture_path').notNullable();
       table.boolean('available').notNullable().defaultTo(true);
       
@@ -19,3 +21,6 @@ exports.up = function(knex) {
     return knex.schema.dropTable('products');
   };
   
+
+    
+     

@@ -55,7 +55,63 @@ module.exports = {
         } catch (err) {
             return response.status(422).send();
         }
-    }
+    },
+    async createDeal(request, response) {
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
+        const {
+            dealUnitPrice,
+            unitPrice,
+            dealPrice,
+            price,
+            category
+        } = request.body;
+        const { id } = request.params;
+
+        try {
+            await connection('products')
+                .update({
+                    'price': dealPrice,
+                    'unit_price': dealUnitPrice,
+                    'full_price': price,
+                    'full_unit_price': unitPrice,
+                    'category': category + ',ofertas'
+                })
+                .where('id', id);
+
+            return response.status(201).send();
+        } catch (err) {
+            response.status(422).send();
+        }
+
+    },
+    async removeDeal(request, response) {
+        const admin = request.data.admin;
+        if (admin !== 1) return response.status(401).send();
+        const {
+            unitPrice,
+            price,
+            category
+        } = request.body;
+        const { id } = request.params;
+
+        try {
+            await connection('products')
+                .update({
+                    'price': price,
+                    'unit_price': unitPrice,
+                    'full_price': null,
+                    'full_unit_price': null,
+                    'category': category.replace(',ofertas', '')
+                })
+                .where('id', id);
+
+            return response.status(201).send();
+        } catch (err) {
+            response.status(422).send();
+        }
+
+    },
 };
 
 
