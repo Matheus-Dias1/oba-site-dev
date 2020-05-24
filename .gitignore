@@ -54,5 +54,3 @@ app/.expo/packager-info.json
 app/.expo/settings.json
 app/src/variables.js
 app/.expo/packager-info.json
-backend/src/database/db.sqlite
-backend/src/database/db.sqlite
