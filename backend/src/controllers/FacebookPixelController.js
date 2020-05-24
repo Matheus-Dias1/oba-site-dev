@@ -3,7 +3,7 @@ const bizSdk = require('facebook-nodejs-business-sdk');
 
 module.exports = {
     async CompleteRegistration(request, response) {
-        const {
+    const {
             platform,
             name,
             phone,
@@ -14,11 +14,9 @@ module.exports = {
             const EventRequest = bizSdk.EventRequest;
             const UserData = bizSdk.UserData;
             const CustomData = bizSdk.CustomData;
-            const Content = bizSdk.Content;
 
             const access_token = process.env.FB_ACCESS_TOKEN;
             const pixel_id = process.env.PIXEL_ID;
-            const api = bizSdk.FacebookAdsApi.init(access_token);
 
             let current_timestamp = Math.floor(new Date() / 1000);
 
@@ -59,7 +57,8 @@ module.exports = {
                 .setEvents(eventsData)
                 .setTestEventCode('TEST21943')
 
-            await eventRequest.execute();
+            const res = await eventRequest.execute();
+            console.log(res)
 
         } catch (err) {
 
@@ -137,11 +136,9 @@ module.exports = {
             const EventRequest = bizSdk.EventRequest;
             const UserData = bizSdk.UserData;
             const CustomData = bizSdk.CustomData;
-            const Content = bizSdk.Content;
 
             const access_token = process.env.FB_ACCESS_TOKEN;
             const pixel_id = process.env.PIXEL_ID;
-            const api = bizSdk.FacebookAdsApi.init(access_token);
 
             let current_timestamp = Math.floor(new Date() / 1000);
 
@@ -203,7 +200,6 @@ module.exports = {
 
             const access_token = process.env.FB_ACCESS_TOKEN;
             const pixel_id = process.env.PIXEL_ID;
-            const api = bizSdk.FacebookAdsApi.init(access_token);
 
             let current_timestamp = Math.floor(new Date() / 1000);
 

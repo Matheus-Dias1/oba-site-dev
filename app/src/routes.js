@@ -231,6 +231,7 @@ export default function Routes() {
           })
           AsyncStorage.setItem('accessToken', res.data.accessToken)
           AsyncStorage.setItem('name', res.data.name);
+          AsyncStorage.setItem('email', data.email.replace(/^\s+|\s+$/g, ''));
           dispatch({ type: 'SIGN_IN', token: res.data.accessToken });
         } catch (err) {
           if (err.response.status === 400)

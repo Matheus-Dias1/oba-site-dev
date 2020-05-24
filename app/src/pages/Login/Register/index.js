@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
@@ -25,6 +26,11 @@ export default function Register() {
   const [errorText, setErrorText] = useState('');
   const [selectedInput, setSelectedInput] = useState(-1);
   const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    const abortController = new AbortController();
+    return abortController.abort();
+  },[])
 
   async function handleRegistration() {
     if (loading) return;
@@ -57,6 +63,17 @@ export default function Register() {
       }
       else if (res.data.status === 'fail') {
         setErrorText(res.data.error);
+      }
+
+      try{
+        await api.post('fbPixel/register',{
+          name: name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+          email: email.replace(/^\s+|\s+$/g, ''),
+          phone,
+          platform: Platform.OS
+        })
+      } catch (err){
+
       }
     } catch (err) {
       Alert.alert('Erro ao realizar cadastro, tente novamente mais tarde');
