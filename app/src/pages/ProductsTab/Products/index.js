@@ -272,7 +272,8 @@ export default function Products() {
     navigation.navigate('Produtos', {
       screen: 'FinalizePurchase',
       params: {
-        subtotal: subtotalValue
+        cartSize: shoppingCart.length,
+        subtotal: subtotalValue,
       }
     });
   }

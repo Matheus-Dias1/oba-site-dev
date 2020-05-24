@@ -57,16 +57,32 @@ export default function FinalizePurchase() {
   const navigation = useNavigation();
 
   useEffect(() => {
+    sendPixel();
     getAddresses();
     getSelectedAddress();
     getDates();
     setPushCupon();
   }, [])
 
+  async function sendPixel() {
+    try {
+      await api.post('fbPixel/checkout/initiate', {
+        email: await AsyncStorage.getItem('email'),
+        name: await AsyncStorage.getItem('name'),
+        numItems: route.params.cartSize
+      },{
+        headers:{
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        }
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
-  async function setPushCupon(){
+  async function setPushCupon() {
     const pushCupon = JSON.parse(await AsyncStorage.getItem('pushCupon'));
-    if (pushCupon && pushCupon.exp > new Date().valueOf()) 
+    if (pushCupon && pushCupon.exp > new Date().valueOf())
       setCupon(pushCupon.cupon)
     else
       await AsyncStorage.removeItem('pushCupon');
