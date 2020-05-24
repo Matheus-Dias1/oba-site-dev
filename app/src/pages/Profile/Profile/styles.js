@@ -9,11 +9,10 @@ export default StyleSheet.create({
         marginHorizontal: 20,
         marginTop: 15,
         marginBottom: 15,
-        textTransform: 'capitalize'
-
     },
     helloText:{
         fontSize: 30,
+        textTransform: 'capitalize',
         fontWeight: '500'
     },
     optionContainer:{
