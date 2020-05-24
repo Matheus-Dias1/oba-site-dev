@@ -71,10 +71,10 @@ module.exports = {
         try {
             await connection('products')
                 .update({
-                    'price': dealPrice,
-                    'unit_price': dealUnitPrice,
-                    'full_price': price,
-                    'full_unit_price': unitPrice,
+                    'price': dealPrice ? dealPrice : price,
+                    'unit_price': dealUnitPrice ? dealUnitPrice : unitPrice,
+                    'full_price': dealPrice ? price : null,
+                    'full_unit_price': dealUnitPrice ? unitPrice : null,
                     'category': category + ',ofertas'
                 })
                 .where('id', id);
@@ -94,7 +94,6 @@ module.exports = {
             category
         } = request.body;
         const { id } = request.params;
-
         try {
             await connection('products')
                 .update({
