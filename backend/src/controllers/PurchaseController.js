@@ -110,11 +110,16 @@ module.exports = {
                     .select('id')
                     .orderBy('id', 'desc')
                     .first()
-                for (var product in products) {
+                let items = [];
+                for (let product in products) {
                     let amount = products[product]['amount'];
                     let id_product = products[product]['id_product']
                     let observation = products[product]['observation']
                     let unit = products[product]['unit']
+                    items.push({
+                        id: String(products[product]['id_product']) + unit,
+                        quantity: amount
+                    })
 
                     await connection('productsPurchases').insert({
                         amount,
@@ -127,8 +132,11 @@ module.exports = {
 
                 await connection('shopping_carts').where('id_user', id_user).delete();
 
+
                 return response.json({
-                    status: 'OK'
+                    status: 'OK',
+                    items,
+                    orderID: id_purchase.id,
                 });
 
             })

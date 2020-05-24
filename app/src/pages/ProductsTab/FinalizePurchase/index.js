@@ -57,21 +57,21 @@ export default function FinalizePurchase() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    sendPixel();
+    sendPixelInitiate();
     getAddresses();
     getSelectedAddress();
     getDates();
     setPushCupon();
   }, [])
 
-  async function sendPixel() {
+  async function sendPixelInitiate() {
     try {
       await api.post('fbPixel/checkout/initiate', {
         email: await AsyncStorage.getItem('email'),
         name: await AsyncStorage.getItem('name'),
         numItems: route.params.cartSize
-      },{
-        headers:{
+      }, {
+        headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
       })
@@ -128,6 +128,25 @@ export default function FinalizePurchase() {
       if (res.data.status === 'FAIL')
         Alert.alert(res.data.error)
       else {
+        try {
+          await api.post('fbPixel/checkout/finalize', {
+            email: await AsyncStorage.getItem('email'),
+            name: await AsyncStorage.getItem('name'),
+            value: total,
+            items: res.data.items,
+            orderID: res.data.orderID,
+            address: {
+              city: addresses[selectedAddress].city,
+              state: addresses[selectedAddress].state
+            },
+          }, {
+            headers: {
+              authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+            }
+          })
+        } catch (err) {
+          console.log(err)
+        }
         if (cuponValidated && cupon === JSON.parse(await AsyncStorage.getItem('pushCupon')).cupon)
           await AsyncStorage.removeItem('pushCupon');
         await AsyncStorage.setItem('needsUpdate', 'true');

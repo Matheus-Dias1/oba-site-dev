@@ -55,7 +55,7 @@ module.exports = {
             const eventsData = [serverEvent];
             const eventRequest = (new EventRequest(access_token, pixel_id))
                 .setEvents(eventsData)
-                .setTestEventCode('TEST21943')
+                .setTestEventCode('TEST66833')
 
             const res = await eventRequest.execute();
             console.log(res)
@@ -114,7 +114,7 @@ module.exports = {
             const eventsData = [serverEvent];
             const eventRequest = (new EventRequest(access_token, pixel_id))
                 .setEvents(eventsData)
-                .setTestEventCode('TEST21943')
+                .setTestEventCode('TEST66833')
 
             const res = await eventRequest.execute();
             console.log(res)
@@ -172,7 +172,7 @@ module.exports = {
             const eventsData = [serverEvent];
             const eventRequest = (new EventRequest(access_token, pixel_id))
                 .setEvents(eventsData)
-                .setTestEventCode('TEST21943')
+                .setTestEventCode('TEST66833')
 
             const res = await eventRequest.execute();
             console.log(res)
@@ -189,7 +189,8 @@ module.exports = {
             name,
             value,
             address,
-            items
+            items,
+            orderID
         } = request.body;
         try {
             const ServerEvent = bizSdk.ServerEvent;
@@ -224,7 +225,6 @@ module.exports = {
                 newContent = (new Content())
                     .setId(items[i].id)
                     .setQuantity(items[i].quantity)
-                    .setItemPrice(items[i].itemPrice)
                 contentsList.push(newContent)
             }
 
@@ -238,8 +238,10 @@ module.exports = {
             if (sendLastName)
                 userData.setLastName(sendLastName)
 
+            console.log(contentsList)
             const customData = (new CustomData())
-                .setContentType('products')
+                .setContentType('product')
+                .setOrderId(orderID)
                 .setCurrency('brl')
                 .setValue(value)
                 .setContents(contentsList)
@@ -253,7 +255,7 @@ module.exports = {
             const eventsData = [serverEvent];
             const eventRequest = (new EventRequest(access_token, pixel_id))
                 .setEvents(eventsData)
-                .setTestEventCode('TEST21943')
+                .setTestEventCode('TEST66833')
 
             const res = await eventRequest.execute();
             console.log(res)
