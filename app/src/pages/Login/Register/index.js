@@ -44,7 +44,7 @@ export default function Register() {
     setLoading(true);
     setErrorText('');
     const data = {
-      name: name.replace(/^\s+|\s+$/g, ''),
+      name: name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
       email: email.replace(/^\s+|\s+$/g, ''),
       password,
       phone,

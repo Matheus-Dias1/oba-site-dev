@@ -78,7 +78,10 @@ routes.post('/dbquery', AuthTokenController.authenticateToken, DBController.dbQu
 
 routes.put('/push', AuthTokenController.authenticateToken, PushNotificationController.updateExpoToken);
 routes.post('/push', AuthTokenController.authenticateToken, PushNotificationController.sendPush);
-routes.post('/fbPixel/test', AuthTokenController.authenticateToken, FacebookPixelController.FBPixelTest);
+routes.post('/fbPixel/register', AuthTokenController.authenticateToken, FacebookPixelController.CompleteRegistration);
+routes.post('/fbPixel/checkout/initiate', AuthTokenController.authenticateToken, FacebookPixelController.InitiateCheckout);
+routes.post('/fbPixel/checkout/finalize', AuthTokenController.authenticateToken, FacebookPixelController.FinalizeCheckout);
+routes.post('/fbPixel/contact', AuthTokenController.authenticateToken, FacebookPixelController.Contact);
 
 
 routes.get('/image/:file(*)', (req, res) => {
