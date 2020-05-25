@@ -227,7 +227,7 @@ export default StyleSheet.create({
     },
     dealValueText:{
         textDecorationLine: 'line-through',
-        textDecorationColor: '#737380cc',
+        textDecorationColor: '#737380',
     }
 
 
