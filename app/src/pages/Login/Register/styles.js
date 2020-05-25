@@ -40,6 +40,7 @@ export default StyleSheet.create({
         justifyContent:'flex-end'
     },
     registerButton: {
+        flexDirection: 'row',
         backgroundColor: '#049434',
         borderRadius: 18,
         height: 45,
@@ -74,18 +75,4 @@ export default StyleSheet.create({
         fontWeight: '400',
         textAlign:'center'
     },
-    loadingContainer: {
-        width: 70,
-        height: 70,
-        backgroundColor: '#ccc',
-        borderRadius: 12,
-        opacity: 0.7,
-        position: 'absolute',
-        right: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 0,
-        top: '45%',
-    },
-
 });
