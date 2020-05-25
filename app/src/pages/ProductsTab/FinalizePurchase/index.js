@@ -148,7 +148,7 @@ export default function FinalizePurchase() {
         } catch (err) {
           console.log(err)
         }
-        if (cuponValidated && cupon === JSON.parse(await AsyncStorage.getItem('pushCupon')).cupon)
+        if (cuponValidated && await AsyncStorage.getItem('pushCupon') && cupon === JSON.parse(await AsyncStorage.getItem('pushCupon')).cupon)
           await AsyncStorage.removeItem('pushCupon');
         await AsyncStorage.setItem('needsUpdate', 'true');
         navigation.navigate('Pedidos', {

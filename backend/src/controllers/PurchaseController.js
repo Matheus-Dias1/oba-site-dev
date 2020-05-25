@@ -22,20 +22,20 @@ module.exports = {
                 if (cupon !== 'NO_CUPON') {
                     const dbCupon = await connection('cupons')
                         .select('*')
-                        .where('code', cupon)
+                        .where('code', cupon.toUpperCase())
                         .first();
 
-                    if (dbCupon == null || dbCupon.amount === 0 || dbCupon.expiration_date < (new Date).getTime())
+                    if (dbCupon == null || dbCupon.amount === 0 || dbCupon.expiration_date < (new Date).valueOf())
                         throw new Error('InvalidCupon');
 
                     if (dbCupon.amount > 1) {
                         await connection('cupons')
                             .update('amount', dbCupon.amount - 1)
-                            .where('code', cupon);
+                            .where('code', cupon.toUpperCase());
                     }
                     else {
                         await connection('cupons')
-                            .where('code', cupon)
+                            .where('code', cupon.toUpperCase())
                             .delete();
                     }
 
@@ -157,7 +157,7 @@ module.exports = {
                     error: 'O cupom expirou ou foi usado por outra pessoa'
                 })
             else {
-                return response.status(422).send();
+                return response.sendStatus(422)
             }
 
         }
