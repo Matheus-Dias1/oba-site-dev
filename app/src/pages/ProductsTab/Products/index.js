@@ -93,6 +93,13 @@ export default function Products() {
     if (loading) return;
     if (totalProducts > 0 && products.length == totalProducts) return;
     setLoading(true);
+    let city = null;
+    if (!selectedCity) {
+      city = await AsyncStorage.getItem('selectedCity')
+      if (city){
+        setSelectedCity(city)
+      }
+    }
     try {
       const response = await api.get('/profile/products', {
         headers: {
@@ -101,7 +108,7 @@ export default function Products() {
         params: {
           page,
           category: selectedCategory,
-          city: selectedCity
+          city: city ? city : selectedCity
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
@@ -205,15 +212,12 @@ export default function Products() {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
     Notifications.addListener(_handleNotification)
     registerForPushNotificationsAsync();
     loadProducts();
     navigation.addListener('focus', () => {
       updateCity();
     });
-
-    return abortController.abort();
   }, [])
 
   function handleCategoryClick(category) {
@@ -399,8 +403,8 @@ export default function Products() {
                         <View style={styles.removeFromCartIcon}>
                           {
                             deletingItem === shoppingCart.indexOf(item)
-                            ? <ActivityIndicator size="small" color="#737380" />
-                            : <Ionicons name={'md-trash'} size={25} color={'#737380'} />
+                              ? <ActivityIndicator size="small" color="#737380" />
+                              : <Ionicons name={'md-trash'} size={25} color={'#737380'} />
 
                           }
                         </View>
