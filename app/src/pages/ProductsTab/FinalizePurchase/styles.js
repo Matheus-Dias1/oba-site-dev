@@ -4,9 +4,9 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     addressInfo: {
         margin: 10,
-        height: 60,
+        height: 68,
         width: 200,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     subtitle: {
         marginTop: 20,
@@ -55,8 +55,9 @@ export default StyleSheet.create({
         height: 90,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: 'white'
-
+        borderColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     addressContainer: {
         marginVertical: 10,
@@ -337,10 +338,13 @@ export default StyleSheet.create({
         elevation: 1,
         shadowRadius: 2,
     },
+    cuponInputContainer:{
+        width: '68%',
+    },  
     cuponTextInput:{
         marginLeft: 15,
         fontSize: 15,
-        width: 150,
+        width: '100%',
         height: 35,
     },
     cuponButtonContainer:{
@@ -348,7 +352,7 @@ export default StyleSheet.create({
         borderLeftColor: 'lightgray',
         borderLeftWidth: 1,
         justifyContent: 'center',
-        
+        minWidth: 80,
     },
     cuponButtonText:{
         fontSize: 15,
@@ -360,20 +364,5 @@ export default StyleSheet.create({
         minHeight: 110,
         justifyContent: 'center',
     },
-    loadingContainer: {
-        width: 70,
-        height: 70,
-        backgroundColor: '#ccc',
-        borderRadius: 12,
-        opacity: 0.7,
-        position: 'absolute',
-        right: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 0,
-        top: '45%',
-    },
-
-
 
 });

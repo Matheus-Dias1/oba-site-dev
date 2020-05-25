@@ -51,6 +51,7 @@ export default function FinalizePurchase() {
   const [addressesLoading, setAddressesLoading] = useState(true);
   const [datesLoading, setDatesLoading] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [cuponLoading, setCuponLoading] = useState(false);
 
   const { signOut } = React.useContext(AuthContext);
 
@@ -172,12 +173,12 @@ export default function FinalizePurchase() {
   }
 
   async function validateCupon() {
-    if (loading) return;
+    if (cuponLoading) return;
     if (cuponValidated)
       return Alert.alert('Você não pode utilizar mais de um cupom na mesma compra');
     if (cupon === '')
       return;
-    setLoading(true);
+    setCuponLoading(true);
     try {
       const res = await api.get(`cupons/${cupon}`, {
         headers: {
@@ -185,19 +186,19 @@ export default function FinalizePurchase() {
         }
       }).catch(err => {
         if (err.response.status === 401 || err.response.status === 403) {
-          setLoading(false);
+          setCuponLoading(false);
           Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
           return signOut();
         } else throw err;
       });
 
       if (res.data.status === 'FAIL') {
-        setLoading(false);
+        setCuponLoading(false);
         return Alert.alert(res.data.message);
 
       }
       if (res.data.result.min_value > parseFloat(route.params.subtotal)) {
-        setLoading(false);
+        setCuponLoading(false);
         return Alert.alert('Valor mínimo do cupom não atingido', `Esse cupom tem um valor mínimo de ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(res.data.result.min_value))} em produtos.`)
 
       }
@@ -205,7 +206,7 @@ export default function FinalizePurchase() {
       setCuponValidated(true);
       if (res.data.result.discount_type === '-') {
         setCuponDiscount(res.data.result.discount)
-        setTotal(total - res.data.result.discount)
+        setTotal((total - res.data.result.discount > 0) ? total - res.data.result.discount : 0)
       } else if (res.data.result.discount_type === '%') {
         setCuponDiscount(res.data.result.discount / 100 * parseFloat(route.params.subtotal))
         setTotal(total - (res.data.result.discount / 100 * parseFloat(route.params.subtotal)))
@@ -214,7 +215,7 @@ export default function FinalizePurchase() {
     } catch (err) {
       Alert.alert('Erro ao validar cupom', 'Tente novamente mais tarde')
     } finally {
-      setLoading(false);
+      setCuponLoading(false);
     }
   }
 
@@ -546,7 +547,10 @@ export default function FinalizePurchase() {
                     <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddress : styles.address}>
                       <View style={styles.addressInfo}>
                         <Text style={styles.addressInfoStreet}>{`${address.street}, ${address.number}`}</Text>
-                        <Text style={styles.addressInfoNeighborhood}>{address.neighborhood}</Text>
+                        <View>
+                          <Text style={styles.addressInfoNeighborhood}>{address.neighborhood}</Text>
+                          <Text style={styles.addressInfoNeighborhood}>{address.city}</Text>
+                        </View>
                       </View>
                     </View>
                   </TouchableWithoutFeedback>
@@ -620,7 +624,10 @@ export default function FinalizePurchase() {
           </View>
           <TouchableWithoutFeedback onPress={() => validateCupon()}>
             <View style={styles.cuponButtonContainer}>
-              <Text style={styles.cuponButtonText}>Validar</Text>
+              {cuponLoading
+                ? <ActivityIndicator size="small" color="#049434" />
+                : <Text style={styles.cuponButtonText}>Validar</Text>
+              }
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -686,15 +693,20 @@ export default function FinalizePurchase() {
         </View>
         <TouchableWithoutFeedback onPress={finalizePurchase}>
           <View style={styles.finalizePurchaseButton}>
-            <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
+            {
+              loading
+                ? <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.finalizePurchaseButtonText, {marginRight: 10}]}>Finalizar Compra</Text>
+                <ActivityIndicator size="small" color="white"/>
+                </View>
+                : <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
+            }
           </View>
         </TouchableWithoutFeedback>
 
 
       </KeyboardAwareScrollView>
-      {loading && <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000" />
-      </View>}
+
 
     </View >
 
