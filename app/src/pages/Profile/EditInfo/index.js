@@ -29,7 +29,8 @@ export default function EditInfo() {
   const [newPassword, setNewPassword] = useState('');
   const [errorText, setErrorText] = useState('');
   const [selectedInput, setSelectedInput] = useState(-1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingInfo, setLoadingInfo] = useState(true);
 
   async function getInfo() {
     try {
@@ -50,7 +51,7 @@ export default function EditInfo() {
       Alert.alert('Erro ao recuperar suas informações', 'Tente novamente mais tarde');
       navigator.goBack();
     } finally {
-      setLoading(false);
+      setLoadingInfo(false);
     }
   }
 
@@ -60,7 +61,7 @@ export default function EditInfo() {
   }, [])
 
   async function handleEditProfile() {
-    if (loading) return;
+    if (loading || loadingInfo) return;
     if (name === '') {
       setErrorText('O campo nome é obrigatório');
       return;
@@ -138,7 +139,7 @@ export default function EditInfo() {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }} 
+        contentContainerStyle={{ flexGrow: 1 }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
@@ -152,6 +153,9 @@ export default function EditInfo() {
                 </View>
               }
               <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
+                {loadingInfo && <View style={styles.loadingInfoIndicator} >
+                  <ActivityIndicator size="small" color="#8f8f8f" />
+                </View>}
                 <TextInput
                   style={styles.textInput}
                   value={name}
@@ -164,6 +168,9 @@ export default function EditInfo() {
                 />
               </View>
               <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
+                {loadingInfo && <View style={styles.loadingInfoIndicator} >
+                  <ActivityIndicator size="small" color="#8f8f8f" />
+                </View>}
                 <TextInput
                   keyboardType='email-address'
                   style={[styles.textInput, { color: 'gray' }]}
@@ -178,6 +185,9 @@ export default function EditInfo() {
                 />
               </View>
               <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
+                {loadingInfo && <View style={styles.loadingInfoIndicator} >
+                  <ActivityIndicator size="small" color="#8f8f8f" />
+                </View>}
                 <TextInputMask
                   style={styles.textInput}
                   type={'cel-phone'}
@@ -256,6 +266,9 @@ export default function EditInfo() {
                 </View>
               }
               <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
+                {loadingInfo && <View style={styles.loadingInfoIndicator} >
+                  <ActivityIndicator size="small" color="#8f8f8f" />
+                </View>}
                 <TextInput
                   style={styles.textInput}
                   value={name}
@@ -268,6 +281,9 @@ export default function EditInfo() {
                 />
               </View>
               <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
+                {loadingInfo && <View style={styles.loadingInfoIndicator} >
+                  <ActivityIndicator size="small" color="#8f8f8f" />
+                </View>}
                 <TextInput
                   keyboardType='email-address'
                   style={[styles.textInput, { color: 'gray' }]}
@@ -282,6 +298,9 @@ export default function EditInfo() {
                 />
               </View>
               <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
+                {loadingInfo && <View style={styles.loadingInfoIndicator} >
+                  <ActivityIndicator size="small" color="#8f8f8f" />
+                </View>}
                 <TextInputMask
                   style={styles.textInput}
                   type={'cel-phone'}
@@ -332,12 +351,10 @@ export default function EditInfo() {
 
             </View>
 
-            {loading && <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#000" />
-            </View>}
             <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
               <View style={styles.editProfileButton}>
                 <Text style={styles.buttonText}>Atualizar</Text>
+                {loading && <ActivityIndicator size="small" color="white"/>}
               </View>
             </TouchableWithoutFeedback>
           </View>

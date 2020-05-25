@@ -36,6 +36,7 @@ export default StyleSheet.create({
         justifyContent:'flex-end'
     },
     editProfileButton: {
+        flexDirection: 'row',
         backgroundColor: '#049434',
         borderRadius: 18,
         height: 45,
@@ -51,7 +52,8 @@ export default StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 18,
-        fontWeight: '500'
+        fontWeight: '500',
+        marginRight: 8
     },
     textInput: {
         marginHorizontal: 2,
@@ -93,5 +95,10 @@ export default StyleSheet.create({
         bottom: 0,
         top: '20%',
     },
+    loadingInfoIndicator:{
+        position: 'absolute',
+        right: 10,
+        bottom: 4
+    }
 
 });
