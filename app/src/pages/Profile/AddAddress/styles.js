@@ -29,6 +29,7 @@ export default StyleSheet.create({
         borderColor: '#049434',
     },
     addAddressButton: {
+        flexDirection: 'row',
         backgroundColor: '#049434',
         borderRadius: 18,
         height: 45,
@@ -44,7 +45,7 @@ export default StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 18,
-        fontWeight: '500'
+        fontWeight: '500',
     },
     textInput: {
         marginHorizontal: 2,
@@ -89,18 +90,10 @@ export default StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#049434',
     },
-    loadingContainer: {
-        width: 70,
-        height: 70,
-        backgroundColor: '#ccc',
-        borderRadius: 12,
-        opacity: 0.7,
+    infoActivityIndicatorContainer:{
         position: 'absolute',
-        right: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 0,
-        top: '20%',
-    },
+        bottom: 4,
+        right: 10
+    }
 
 });

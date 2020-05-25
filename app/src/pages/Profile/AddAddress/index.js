@@ -33,6 +33,7 @@ export default function AddAddress() {
     const [selectedInput, setSelectedInput] = useState(-1);
     const [geocoded, setGeocoded] = useState({});
     const [loading, setLoading] = useState(false);
+    const [loadingInfo, setLoadingInfo] = useState(false);
 
     async function handleAddAddress() {
         if (!['uberlandia', 'uberlândia', 'udi', 'araguari'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, ''))) {
@@ -43,7 +44,7 @@ export default function AddAddress() {
             Alert.alert('Preencha todos os campos obrigatórios')
             return;
         }
-        if (loading) return;
+        if (loading || loadingInfo) return;
         setLoading(true);
         if (popHowMany === 3) {
             const data = {
@@ -155,7 +156,7 @@ export default function AddAddress() {
 
     async function getAddress(coords) {
         setPopHowMany(3);
-        setLoading(true);
+        setLoadingInfo(true);
         try {
             const res = await api.get('geocoding', {
                 headers: {
@@ -183,7 +184,7 @@ export default function AddAddress() {
             Alert.alert('Erro ao recuperar endereço', 'Preencha seus dados manualmente.')
         }
         finally {
-            setLoading(false);
+            setLoadingInfo(false);
         }
     }
 
@@ -212,6 +213,9 @@ export default function AddAddress() {
                     <View style={styles.container}>
                         <View style={styles.inputGroup}>
                             <View style={selectedInput === 0 ? styles.focusedGroup1InputContainer : styles.group1InputContainer}>
+                                {loadingInfo && <View style={styles.infoActivityIndicatorContainer}>
+                                    <ActivityIndicator size='small' color='#8f8f8f' />
+                                </View>}
                                 <TextInput
                                     style={styles.textInput}
                                     value={street}
@@ -224,6 +228,9 @@ export default function AddAddress() {
                                 />
                             </View>
                             <View style={selectedInput === 1 ? styles.focusedGroup2InputContainer : styles.group2InputContainer}>
+                                {loadingInfo && <View style={styles.infoActivityIndicatorContainer}>
+                                    <ActivityIndicator size='small' color='#8f8f8f' />
+                                </View>}
                                 <TextInput
                                     style={styles.textInput}
                                     keyboardType='numeric'
@@ -249,6 +256,9 @@ export default function AddAddress() {
                             />
                         </View>
                         <View style={selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer}>
+                            {loadingInfo && <View style={styles.infoActivityIndicatorContainer}>
+                                <ActivityIndicator size='small' color='#8f8f8f' />
+                            </View>}
                             <TextInput
                                 style={styles.textInput}
                                 value={neighborhood}
@@ -301,17 +311,12 @@ export default function AddAddress() {
                     </View>
                     <TouchableWithoutFeedback onPress={handleAddAddress}>
                         <View style={styles.addAddressButton}>
-                            <Text style={styles.buttonText}>Adicionar</Text>
+                            <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Adicionar</Text>
+                            {loading && <ActivityIndicator size='small' color='white' />}
                         </View>
                     </TouchableWithoutFeedback>
 
                 </ScrollView>
-
-                {
-                    loading && <View style={styles.loadingContainer}>
-                        <ActivityIndicator size="large" color="#000" />
-                    </View>
-                }
             </View >
         );
     else
@@ -321,6 +326,9 @@ export default function AddAddress() {
                     <View style={styles.container}>
                         <View style={styles.inputGroup}>
                             <View style={selectedInput === 0 ? styles.focusedGroup1InputContainer : styles.group1InputContainer}>
+                                {loadingInfo && <View style={styles.infoActivityIndicatorContainer}>
+                                    <ActivityIndicator size='small' color='#8f8f8f' />
+                                </View>}
                                 <TextInput
                                     style={styles.textInput}
                                     value={street}
@@ -333,6 +341,9 @@ export default function AddAddress() {
                                 />
                             </View>
                             <View style={selectedInput === 1 ? styles.focusedGroup2InputContainer : styles.group2InputContainer}>
+                                {loadingInfo && <View style={styles.infoActivityIndicatorContainer}>
+                                    <ActivityIndicator size='small' color='#8f8f8f' />
+                                </View>}
                                 <TextInput
                                     style={styles.textInput}
                                     keyboardType='numeric'
@@ -358,6 +369,9 @@ export default function AddAddress() {
                             />
                         </View>
                         <View style={selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer}>
+                            {loadingInfo && <View style={styles.infoActivityIndicatorContainer}>
+                                <ActivityIndicator size='small' color='#8f8f8f' />
+                            </View>}
                             <TextInput
                                 style={styles.textInput}
                                 value={neighborhood}
@@ -410,15 +424,12 @@ export default function AddAddress() {
                     </View>
                     <TouchableWithoutFeedback onPress={handleAddAddress}>
                         <View style={styles.addAddressButton}>
-                            <Text style={styles.buttonText}>Adicionar</Text>
+                            <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Adicionar</Text>
+                            {loading && <ActivityIndicator size='small' color='white' />}
                         </View>
                     </TouchableWithoutFeedback>
 
                 </KeyboardAwareScrollView>
-
-                {loading && <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#000" />
-                </View>}
             </View>
         );
 }
