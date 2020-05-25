@@ -59,12 +59,12 @@ export default function ForgotPassword() {
         </View>
         <TouchableWithoutFeedback onPress={() => handleRecoverPassword()}>
           <View style={styles.recoverButton}>
-            <Text style={styles.buttonText}>Recuperar</Text>
+            {loading
+              ? <ActivityIndicator size="small" color="white" />
+              : <Text style={styles.buttonText}>Recuperar</Text>
+            }
           </View>
         </TouchableWithoutFeedback>
-        {loading && <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#000" />
-        </View>}
       </View>
     </KeyboardAwareScrollView>
   );

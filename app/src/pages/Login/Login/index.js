@@ -69,7 +69,9 @@ export default function Login() {
 
         <TouchableWithoutFeedback onPress={handleLogin}>
           <View style={styles.loginButton}>
-            <Text style={styles.buttonText}>Continuar</Text>
+            {loading
+              ? <ActivityIndicator size='small' color='white' />
+              : <Text style={styles.buttonText}>Continuar</Text>}
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => navigateRegister()}>
@@ -84,16 +86,7 @@ export default function Login() {
             <Text style={styles.navigateText}>Esqueci minha senha</Text>
           </View>
         </TouchableWithoutFeedback>
-        {loading && <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#000" />
-        </View>}
       </View>
     </TouchableWithoutFeedback>
   );
 }
-
-
-
-// <TouchableWithoutFeedback onPress={() => signIn()}>
-//   <View style={{ width: 50, height: 50, backgroundColor: 'black' }} />
-// </TouchableWithoutFeedback>

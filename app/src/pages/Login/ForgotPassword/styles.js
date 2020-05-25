@@ -63,17 +63,4 @@ export default StyleSheet.create({
         fontWeight: '300',
         textAlign: 'justify'
     },
-    loadingContainer: {
-        width: 70,
-        height: 70,
-        backgroundColor: '#ccc',
-        borderRadius: 12,
-        opacity: 0.7,
-        position: 'absolute',
-        right: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 0,
-        top: '45%',
-    },
 });
