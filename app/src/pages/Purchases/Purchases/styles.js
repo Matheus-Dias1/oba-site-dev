@@ -50,19 +50,6 @@ export default StyleSheet.create({
     priceValue:{
         color: 'white'
     },
-    loadingContainer:{
-        width: 70,
-        height: 70,
-        backgroundColor:'#ccc',
-        borderRadius: 12,
-        opacity: 0.7,
-        position: 'absolute',
-        right: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 0,
-        top: '20%',
-    },
     emptyListTextContainer: {
         marginBottom: 30,
         marginTop: 30,

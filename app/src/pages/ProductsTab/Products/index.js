@@ -30,6 +30,7 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [shoppingCart, setShoppingCart] = useState([]);
   const [subtotalValue, setSubtotalValue] = useState(0);
+  const [deletingItem, setDeletingItem] = useState(-1)
   const imageUrl = env.OBA_API_URL + 'image/'
 
   const [totalProducts, setTotalProducts] = useState(0);
@@ -291,6 +292,8 @@ export default function Products() {
     });
   }
   async function removeFromCart(item) {
+    if (deletingItem >= 0) return;
+    setDeletingItem(shoppingCart.indexOf(item))
     try {
       await api.delete('profile/shopping_cart', {
         headers: {
@@ -314,6 +317,7 @@ export default function Products() {
       else
         price = item.price * item.amount
       setSubtotalValue(subtotalValue - price)
+      setDeletingItem(-1)
       setShoppingCart(shoppingCart.filter(Item => {
         return JSON.stringify(item) !== JSON.stringify(Item)
       }))
@@ -393,7 +397,12 @@ export default function Products() {
                       </View>
                       <TouchableWithoutFeedback onPress={() => removeFromCart(item)}>
                         <View style={styles.removeFromCartIcon}>
-                          <Ionicons name={'md-trash'} size={25} color={'#737380'} />
+                          {
+                            deletingItem === shoppingCart.indexOf(item)
+                            ? <ActivityIndicator size="small" color="#737380" />
+                            : <Ionicons name={'md-trash'} size={25} color={'#737380'} />
+
+                          }
                         </View>
                       </TouchableWithoutFeedback>
                     </View>

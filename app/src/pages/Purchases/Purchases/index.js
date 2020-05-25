@@ -54,6 +54,8 @@ export default function Purchases({ navigation }) {
     if (totalPurchases > 0 && purchases.length == totalPurchases && needsUpdate == null) {
       return;
     }
+    if (needsUpdate)
+      setPurchases([]);
     setLoading(true);
 
     try {
@@ -93,16 +95,19 @@ export default function Purchases({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {!loading && purchases.length === 0 && 
-        <View style={styles.emptyListTextContainer}>
-        <Text style={styles.emptyListText}>{'Você ainda não fez nenhum pedido'}</Text>
-      </View>}
       <FlatList
         showsVerticalScrollIndicator={false}
         data={purchases}
         onEndReached={getPurchases}
         onEndReachedThreshold={0.2}
-        ListFooterComponent={<View style={{ height: 30 }} />}
+        ListFooterComponent={
+          <View style={styles.emptyListTextContainer}>
+            {!loading && purchases.length === 0 &&
+              <Text style={styles.emptyListText}>{'Você ainda não fez nenhum pedido'}</Text>}
+
+            {loading && <ActivityIndicator size="small" color="#000" />}
+          </View>
+        }
         keyExtractor={purchase => String(purchases.indexOf(purchase))}
         renderItem={({ item: purchase }) => {
 
@@ -147,9 +152,6 @@ export default function Purchases({ navigation }) {
           )
         }}
       />
-      {loading && <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000" />
-      </View>}
     </View>
 
   );
