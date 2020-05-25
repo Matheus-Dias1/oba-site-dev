@@ -23,22 +23,55 @@ module.exports = {
         let rCode;
         if (code === '')
             rCode = crypto.randomBytes(3).toString('HEX').toUpperCase();
-
         try {
             await connection('cupons')
-                .insert({
-                    code: code === '' ? rCode : code.toUpperCase(),
-                    amount,
-                    expiration_date: exp,
-                    discount_type,
-                    discount,
-                    min_value,
-                })
+                .where('expiration_date', '<', new Date().valueOf())
+                .orWhere('amount', '<=', 0)
+                .delete();
+        } catch (err) {
+
+        }
+        try {
+            let oldAmount;
+            if (code) {
+                oldAmount = await connection('cupons')
+                    .select('amount')
+                    .where({
+                        'code': code,
+                        'discount_type': discount_type,
+                        'discount': discount,
+                        'min_value': min_value,
+                    })
+                    .first();
+            }
+
+            if (oldAmount)
+                await connection('cupons')
+                    .where('code', code.toUpperCase())
+                    .update({
+                        amount: oldAmount ? oldAmount.amount + amount : amount,
+                        expiration_date: exp,
+                    });
+            else
+                await connection('cupons')
+                    .insert({
+                        code: code === '' ? rCode : code.toUpperCase(),
+                        amount: oldAmount ? oldAmount + amount : amount,
+                        expiration_date: exp,
+                        discount_type,
+                        discount,
+                        min_value,
+                    });
             return response.json({
+                status: 'OK',
                 code: code === '' ? rCode : code.toUpperCase()
             })
         } catch (err) {
-            console.log(err)
+            if (err.errno === 19)
+            response.json({
+                status: 'ERROR',
+                message: 'Já existe um cupom com esse código'
+            }) 
             return response.status(422).send();
         }
     },
