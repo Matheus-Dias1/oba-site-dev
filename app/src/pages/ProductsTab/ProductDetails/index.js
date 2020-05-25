@@ -212,17 +212,16 @@ export default function ProductDetails() {
               </View>
             </View>
 
-            {loading && <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#000" />
-            </View>}
-
           </View>
 
         </ScrollView>
         <TouchableWithoutFeedback onPress={() => addToCart()}>
           <View style={styles.addToCartButton}>
             <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
-            <Ionicons name={'ios-cart'} size={28} color={'white'} />
+            {loading ?
+              <ActivityIndicator size="small" color="#000" />
+              : <Ionicons name={'ios-cart'} size={28} color={'white'} />
+            }
           </View>
         </TouchableWithoutFeedback>
       </>
@@ -316,18 +315,16 @@ export default function ProductDetails() {
                 />
               </View>
             </View>
-
-            {loading && <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#000" />
-            </View>}
-
           </View>
 
         </KeyboardAwareScrollView>
         <TouchableWithoutFeedback onPress={() => addToCart()}>
           <View style={styles.addToCartButton}>
             <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
-            <Ionicons name={'ios-cart'} size={28} color={'white'} />
+            {loading ?
+              <ActivityIndicator size="small" color="#fff" />
+              : <Ionicons name={'ios-cart'} size={28} color={'white'} />
+            }
           </View>
         </TouchableWithoutFeedback>
       </>

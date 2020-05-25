@@ -156,9 +156,9 @@ export default function Products() {
 
   function calculateDealText(prod) {
     if (!prod.full_unit_price)
-      return 100 - Math.ceil(prod.price * 100 / prod.full_price) 
+      return 100 - Math.ceil(prod.price * 100 / prod.full_price)
     if (!prod.full_price)
-      return 100 - Math.ceil(prod.unit_price * 100 / prod.full_unit_price) 
+      return 100 - Math.ceil(prod.unit_price * 100 / prod.full_unit_price)
     const un = 100 - Math.ceil(prod.unit_price * 100 / prod.full_unit_price);
     const mu = 100 - Math.ceil(prod.price * 100 / prod.full_price)
 
@@ -466,7 +466,9 @@ export default function Products() {
                 {!loading && products.length === 0 &&
                   <Text style={styles.productProperty}>Nenhum produto nessa categoria</Text>
                 }
-                {loading && <ActivityIndicator size="small" color="#000" />}
+                {loading &&
+                  <ActivityIndicator size="small" color="#000" />
+                }
               </View>}
             keyExtractor={product => String(product.id)}
             onEndReachedThreshold={0.1}
