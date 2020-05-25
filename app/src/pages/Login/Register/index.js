@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -26,11 +26,6 @@ export default function Register() {
   const [errorText, setErrorText] = useState('');
   const [selectedInput, setSelectedInput] = useState(-1);
   const [loading, setLoading] = useState(false);
-
-  useEffect(()=>{
-    const abortController = new AbortController();
-    return abortController.abort();
-  },[])
 
   async function handleRegistration() {
     if (loading) return;

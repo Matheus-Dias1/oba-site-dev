@@ -122,6 +122,7 @@ export default function Products() {
 
   async function loadNewCategory(category) {
     setLoading(true);
+    setProducts([])
     setSwitchingCategory(true);
     try {
       const response = await api.get('/profile/products', {
@@ -166,6 +167,7 @@ export default function Products() {
 
   async function loadNewCity(city) {
     setLoading(true);
+    setProducts([])
     setSwitchingCategory(true);
     try {
       const response = await api.get('/profile/products', {
@@ -464,6 +466,7 @@ export default function Products() {
                 {!loading && products.length === 0 &&
                   <Text style={styles.productProperty}>Nenhum produto nessa categoria</Text>
                 }
+                {loading && <ActivityIndicator size="small" color="#000" />}
               </View>}
             keyExtractor={product => String(product.id)}
             onEndReachedThreshold={0.1}
@@ -517,10 +520,6 @@ export default function Products() {
               <Ionicons name={'ios-cart'} size={35} color={'white'} />
             </View>
           </TouchableWithoutFeedback>
-          {((loading && products.length === 0) || switchingCategory) && <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#000" />
-          </View>}
-
         </View>
       </SafeAreaView>
 

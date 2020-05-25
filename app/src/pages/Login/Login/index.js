@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -22,11 +22,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigator = useNavigation();
-
-  useEffect(()=>{
-    const abortController = new AbortController();
-    return abortController.abort();
-  },[])
 
   function navigateForgotPassword() {
     navigator.navigate('ForgotPassword');
