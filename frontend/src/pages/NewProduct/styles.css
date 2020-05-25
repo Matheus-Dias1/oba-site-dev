@@ -86,3 +86,13 @@ input[type="file"] {
     height: 18px;
     margin-right: 10px;
 }
+
+.register-container .fileInputContainer {
+    display: flex;
+    align-items: center;
+}
+
+.register-container .fileInputContainer .checkIcon{
+    padding-left: 5px;
+    margin-top: 8px;
+}

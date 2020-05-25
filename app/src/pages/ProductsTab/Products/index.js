@@ -423,6 +423,7 @@ export default function Products() {
                   keyExtractor={category => category}
                   data={[
                     '',
+                    'ofertas',
                     'frutas',
                     'verduras',
                     'folhas',

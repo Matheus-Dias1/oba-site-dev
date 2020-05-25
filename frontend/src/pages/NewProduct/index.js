@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaArrowCircleLeft, FaFileUpload } from 'react-icons/fa';
+import { FaArrowCircleLeft, FaFileUpload, FaCheckCircle } from 'react-icons/fa';
 import api from '../../services/api';
 
 
@@ -25,21 +25,21 @@ export default function NewProduct() {
     const [deliversToUberlandia, setDeliversToUberlandia] = useState(true);
     const [deliversToAraguari, setDeliversToAraguari] = useState(true);
 
-    function updateAraguari(){
+    function updateAraguari() {
         if (deliversToAraguari) setDeliversToAraguari(false);
         else setDeliversToAraguari(true)
     }
 
-    function updateUberlandia(){
+    function updateUberlandia() {
         if (deliversToUberlandia) setDeliversToUberlandia(false);
         else setDeliversToUberlandia(true)
     }
 
-    function formatDeliversTo(){
+    function formatDeliversTo() {
         const uberlandia = deliversToUberlandia ? 'uberlandia,' : '';
         const araguari = deliversToAraguari ? 'araguari,' : '';
 
-        return !(uberlandia+araguari) ? '' : (uberlandia+araguari).substring(0, (uberlandia+araguari).length - 1);
+        return !(uberlandia + araguari) ? '' : (uberlandia + araguari).substring(0, (uberlandia + araguari).length - 1);
 
     }
 
@@ -85,34 +85,34 @@ export default function NewProduct() {
     }
 
 
-        function formatCategory(ctgry) {
-            var i;
-            const list = ctgry.split(',').map(item => {
-                return item.replace(/^\s+|\s+$/g, '').toLowerCase()
-            });
-            for (i in list) {
-                if (!!list[i] && ![
-                    'verduras',
-                    'frutas',
-                    'ovos',
-                    'temperos',
-                    'queijos',
-                    'congelados',
-                    'carnes',
-                    'doces',
-                    'folhas'
-                ].includes(list[i])) {
-                    alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas');
-                    return 'FAIL'
-                }
+    function formatCategory(ctgry) {
+        var i;
+        const list = ctgry.split(',').map(item => {
+            return item.replace(/^\s+|\s+$/g, '').toLowerCase()
+        });
+        for (i in list) {
+            if (!!list[i] && ![
+                'verduras',
+                'frutas',
+                'ovos',
+                'temperos',
+                'queijos',
+                'congelados',
+                'carnes',
+                'doces',
+                'folhas'
+            ].includes(list[i])) {
+                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas');
+                return 'FAIL'
             }
-            var res = ''
-
-            for (i in list)
-                res += list[i] + ','
-
-            return res.substring(0, res.length - 1);
         }
+        var res = ''
+
+        for (i in list)
+            res += list[i] + ','
+
+        return res.substring(0, res.length - 1);
+    }
 
     return (
         <div className="register-container">
@@ -192,12 +192,17 @@ export default function NewProduct() {
                         value={unit_price}
                         onChange={e => setUnit_price(e.target.value)}
                     />
-                    
 
-                    <label htmlFor="file-upload" className="custom-file-upload">
-                        <FaFileUpload size={16} color="E30016" /> Selecione uma imagem
-                    </label>
-                    <input id="file-upload" type="file" onChange={e => setFile(e.target.files[0])} />
+
+                    <div className="fileInputContainer">
+                        <>
+                            <label htmlFor="file-upload" className="custom-file-upload">
+                                <FaFileUpload size={16} color="E30016" /> Selecione uma imagem
+                            </label>
+                            <input id="file-upload" type="file" onChange={e => setFile(e.target.files[0])} />
+                        </>
+                        {file && <FaCheckCircle className="checkIcon" size={25} color="E30016" />}
+                    </div>
 
 
                     <button className="button" type="submit">Cadastrar</button>
