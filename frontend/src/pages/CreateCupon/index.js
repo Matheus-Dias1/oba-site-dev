@@ -50,12 +50,16 @@ export default function CreateCupon() {
                     history.push('/');
                 } else throw err;
             })
-            setCupon('CÓDIGO: ' + res.data.code);
-            setCode('');
-            setAmount('');
-            setExpiration('');
-            setDiscount('');
-            setMinValue('');
+            if (res.data.status === 'OK') {
+                setCupon('CÓDIGO: ' + res.data.code);
+                setCode('');
+                setAmount('');
+                setExpiration('');
+                setDiscount('');
+                setMinValue('');
+            } else {
+                alert(res.data.message)
+            }
         } catch (err) {
             alert('Erro ao criar novo cupom.');
         }
