@@ -153,6 +153,17 @@ export default function Products() {
 
   }
 
+  function calculateDealText(prod) {
+    if (!prod.full_unit_price)
+      return 100 - Math.ceil(prod.price * 100 / prod.full_price) 
+    if (!prod.full_price)
+      return 100 - Math.ceil(prod.unit_price * 100 / prod.full_unit_price) 
+    const un = 100 - Math.ceil(prod.unit_price * 100 / prod.full_unit_price);
+    const mu = 100 - Math.ceil(prod.price * 100 / prod.full_price)
+
+    return un >= mu ? un : mu
+  }
+
   async function loadNewCity(city) {
     setLoading(true);
     setSwitchingCategory(true);
@@ -441,7 +452,7 @@ export default function Products() {
                       activeOpacity={0.8}
                     >
                       <View style={styles.categoryContainer}>
-                        <Text style={styles.categoryText}>{category === '' ? 'Todos os produtos' : category}</Text>
+                        <Text style={styles.categoryText}>{category === '' ? 'Todos os produtos' : (category === 'ofertas' ? 'Promoções' : category)}</Text>
                       </View>
                     </TouchableOpacity>
                   )}
@@ -463,11 +474,25 @@ export default function Products() {
                 <View style={styles.product}>
 
                   <View style={styles.productInfo}>
-                    <Text style={styles.productName}>{product.product_name}</Text>
-                    <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/' + product.measurement_unit + ': '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}</Text>
-                    {product.unit_price !== null && <Text style={styles.productValue}><Text style={styles.productProperty}>{'Valor/UN: '}</Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.unit_price)}</Text>}
-                  </View>
 
+                    <Text style={styles.productName}>
+                      {product.product_name}
+                    </Text>
+                    <Text style={styles.productValue}>
+                      <Text style={styles.productProperty}>{'Valor/' + product.measurement_unit + ': '}</Text>
+                      {product.full_price && <Text style={styles.dealValueText}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.full_price)}</Text>}
+                      {product.full_price && ' '}
+                      {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                    </Text>
+                    {product.unit_price !== null &&
+                      <Text style={styles.productValue}>
+                        <Text style={styles.productProperty}>{'Valor/UN: '}</Text>
+                        {product.full_unit_price && <Text style={styles.dealValueText}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.full_unit_price)}</Text>}
+                        {product.full_unit_price && ' '}
+                        {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.unit_price)}
+                      </Text>
+                    }
+                  </View>
 
                   <Image
                     style={styles.productImage}
@@ -476,6 +501,12 @@ export default function Products() {
 
                     }}
                   />
+
+                  {(product.full_price || product.full_unit_price) &&
+                    <View style={styles.dealContainer}>
+                      <Text style={styles.dealText}>{`${calculateDealText(product)}% de desconto`}</Text>
+                    </View>
+                  }
 
                 </View>
               </TouchableOpacity>

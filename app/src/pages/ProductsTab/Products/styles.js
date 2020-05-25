@@ -27,6 +27,8 @@ export default StyleSheet.create({
     },
     productInfo: {
         marginLeft: 15,
+        maxWidth: '70%',
+        flexDirection: 'column'
     },
     productValue: {
         marginTop: 2,
@@ -201,10 +203,32 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     emptyCartContainer: {
-    alignItems: 'center',
-    marginTop: 30,
-    height: 50,
-    flexDirection: 'row',
-}
+        alignItems: 'center',
+        marginTop: 30,
+        height: 50,
+        flexDirection: 'row',
+    },
+    dealContainer: {
+        backgroundColor: "#632d73",
+        opacity: 0.9,
+        borderBottomLeftRadius: 2,
+        //borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+    },
+    dealText: {
+        color: '#fff',
+        padding: 3,
+        paddingLeft: 15,
+        paddingRight: 25,
+        fontWeight: '400',
+    },
+    dealValueText:{
+        textDecorationLine: 'line-through',
+        textDecorationColor: '#737380cc',
+    }
+
 
 });
