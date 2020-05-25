@@ -33,7 +33,7 @@ export default function Help() {
   function sendEmail() {
     sendPixel('email')
     MailComposer.composeAsync({
-      recipients: ['obahortifruti20@gmail.com']
+      recipients: ['oba.delivery20@gmail.com']
     })
   }
   
@@ -60,7 +60,7 @@ export default function Help() {
       <View style={styles.content}>
         <View>
           <Text style={styles.bodyText}>Entre em contato conosco por um dos meios listados abaixo.</Text>
-          <Text style={styles.property} selectable={true}>E-mail: <Text style={styles.value}>obahortifruti20@gmail.com</Text></Text>
+          <Text style={styles.property} selectable={true}>E-mail: <Text style={styles.value}>oba.delivery20@gmail.com</Text></Text>
           <Text style={styles.property} selectable={true}>WhatsApp: <Text style={styles.value}>+55 (34) 99776-2094</Text></Text>
           <Text style={styles.property} selectable={true}>Telefone: <Text style={styles.value}>+55 (34) 99776-2094</Text></Text>
         </View>
