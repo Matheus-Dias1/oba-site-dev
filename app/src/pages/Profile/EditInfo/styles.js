@@ -53,7 +53,6 @@ export default StyleSheet.create({
         color: 'white',
         fontSize: 18,
         fontWeight: '500',
-        marginRight: 8
     },
     textInput: {
         marginHorizontal: 2,

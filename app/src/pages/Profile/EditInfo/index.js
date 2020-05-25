@@ -238,12 +238,10 @@ export default function EditInfo() {
 
             </View>
 
-            {loading && <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#000" />
-            </View>}
             <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
               <View style={styles.editProfileButton}>
-                <Text style={styles.buttonText}>Atualizar</Text>
+                <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
+                {loading && <ActivityIndicator size="small" color="white" />}
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -347,14 +345,12 @@ export default function EditInfo() {
 
 
 
-
-
             </View>
 
             <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
               <View style={styles.editProfileButton}>
-                <Text style={styles.buttonText}>Atualizar</Text>
-                {loading && <ActivityIndicator size="small" color="white"/>}
+                <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
+                {loading && <ActivityIndicator size="small" color="white" />}
               </View>
             </TouchableWithoutFeedback>
           </View>
