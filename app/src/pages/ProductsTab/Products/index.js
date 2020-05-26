@@ -154,7 +154,7 @@ export default function Products() {
       setSelectedCategory(category);
 
     } catch (err) {
-      alert('Erro ao carregar nova categoria', 'Tente novamente mais tarde')
+      Alert.alert('Erro ao carregar nova categoria', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
       setSwitchingCategory(false);
