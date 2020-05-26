@@ -58,6 +58,8 @@ export default function PrintPurchases() {
 
                     try {
                         const obsData = JSON.parse(purchase.data.observation);
+                        if (Object.keys(obsData).length < 8)
+                            throw new Error()
                         return (
                             <div className="content" key={purchases.indexOf(purchase)}>
                                 <h1>{'Pedido #' + formatId(purchase.data.id)}</h1>

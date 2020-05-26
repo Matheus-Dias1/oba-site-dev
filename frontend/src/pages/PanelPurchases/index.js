@@ -100,9 +100,10 @@ export default function PanelPurchases() {
                 <ul>
                     {
                         purchases.map(purchase => {
-
                             try {
                                 const obsData = JSON.parse(purchase.observation);
+                                if (Object.keys(obsData).length < 8)
+                                    throw new Error()
                                 return (
                                     <li key={purchase.id}>
                                         <div>

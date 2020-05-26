@@ -62,6 +62,8 @@ export default function ViewPurchase() {
 
                 try {
                     const obsData = JSON.parse(observation);
+                    if (Object.keys(obsData).length < 8)
+                        throw new Error()
                     setClient(obsData.client);
                     setStreet(obsData.street);
                     setNumber(obsData.number);
@@ -122,7 +124,7 @@ export default function ViewPurchase() {
                         <tbody>
                             <tr>
                                 <td><strong>ENDEREÇO:</strong></td>
-                                <td><p><a href={'https://www.google.com/maps/search/?api=1&query=' + street + '%20' + number + '%2C' + neighborhood +  '%20' + city} target="_blank" rel="noopener noreferrer">{street + ' ' + number + ' ' + complement + ', ' + neighborhood + ', ' + city}</a></p></td>
+                                <td><p><a href={'https://www.google.com/maps/search/?api=1&query=' + street + '%20' + number + '%2C' + neighborhood + '%20' + city} target="_blank" rel="noopener noreferrer">{street + ' ' + number + ' ' + complement + ', ' + neighborhood + ', ' + city}</a></p></td>
                             </tr>
                         </tbody>
                         <tbody>
