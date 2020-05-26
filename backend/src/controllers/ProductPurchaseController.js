@@ -84,7 +84,6 @@ module.exports = {
                     p: 'purchases',
                     u: 'users',
                     a: 'addresses',
-                    s: 'schedule'
                 })
                     .select({
                         id: 'p.id',

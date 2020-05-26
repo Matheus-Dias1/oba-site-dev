@@ -70,7 +70,9 @@ module.exports = {
 
                 }
                 if (selectedDate == null || (delivery_period === 'afternoon' && selectedDate.afternoon_deliveries === 0)) {
-
+                    throw new Error('DateTaken');
+                }
+                if (selectedDate == null || (delivery_period === 'night' && selectedDate.night_deliveries === 0)) {
                     throw new Error('DateTaken');
                 }
 
@@ -82,6 +84,10 @@ module.exports = {
                     await connection('schedule')
                         .where('date', delivery_date)
                         .update('afternoon_deliveries', selectedDate.afternoon_deliveries - 1);
+                } else if (delivery_period === 'night') {
+                    await connection('schedule')
+                        .where('date', delivery_date)
+                        .update('night_deliveries', selectedDate.night_deliveries - 1);
                 }
 
                 const [size] = await connection('shopping_carts')
