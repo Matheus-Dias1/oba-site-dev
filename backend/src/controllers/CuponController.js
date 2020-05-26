@@ -68,10 +68,11 @@ module.exports = {
             })
         } catch (err) {
             if (err.errno === 19)
-            response.json({
+            return response.json({
                 status: 'ERROR',
                 message: 'Já existe um cupom com esse código'
             }) 
+            console.log('\nUNEXPECTED ERROR ON CUPON CREATION: ', err);
             return response.status(422).send();
         }
     },
@@ -88,19 +89,20 @@ module.exports = {
                     message: 'O cupom informado não foi encontrado.'
                 })
 
-            if (res.expiration_date < (new Date).getTime())
+            if (res.expiration_date < (new Date).getTime()){
                 try {
                     await connection('cupons')
                         .where('code', code.toUpperCase())
                         .delete();
-
-                    return response.json({
-                        status: 'FAIL',
-                        message: 'O cupom informado expirou.'
-                    })
+  
                 } catch (err) {
-                    console.log(err);
+                    console.log('UNEXPECTED ERROR ON GETCUPON/DELETE EXPIRED CUPON: ', err)
                 }
+                return response.json({
+                    status: 'FAIL',
+                    message: 'O cupom informado expirou.'
+                })
+            }
 
             return response.json({
                 status: 'OK',
@@ -108,8 +110,8 @@ module.exports = {
             });
 
         } catch (err) {
-            console.log(err)
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON GETCUPON: ', err)
+            return response.sendStatus(422);
         }
     },
 }

@@ -81,7 +81,7 @@ module.exports = {
 
             return response.status(201).send();
         } catch (err) {
-            response.status(422).send();
+            return response.status(422).send();
         }
 
     },
@@ -107,7 +107,7 @@ module.exports = {
 
             return response.status(201).send();
         } catch (err) {
-            response.status(422).send();
+            return response.status(422).send();
         }
 
     },

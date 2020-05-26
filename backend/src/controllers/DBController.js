@@ -48,6 +48,7 @@ module.exports = {
                 }
             }
         } catch (err) {
+            console.log('\nUNEXPECTED ERROR ON DBQUERY: ', err)
             return response.sendStatus(422);
         }
     },

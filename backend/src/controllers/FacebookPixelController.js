@@ -58,12 +58,10 @@ module.exports = {
                 .setTestEventCode('TEST66833')
 
             const res = await eventRequest.execute();
-            console.log(res)
 
         } catch (err) {
+            console.log('\nUNEXPECTED ERROR ON PIXEL/REGISTRATION: ', err)
 
-            //LOGAR OS ERROS DE ALGUM JEITO
-            console.log(err) // LOGAR LOGAR LOGAR
         }
         return response.sendStatus(200);
 
@@ -116,14 +114,12 @@ module.exports = {
                 .setEvents(eventsData)
                 .setTestEventCode('TEST66833')
 
-            const res = await eventRequest.execute();
-            console.log(res)
-            return response.sendStatus(200);
+            await eventRequest.execute();
 
         } catch (err) {
-            console.log(err)
-            return response.sendStatus(422);
+            console.log('\nUNEXPECTED ERROR ON PIXEL/INITIATECHECKOUT: ', err)
         }
+        return response.sendStatus(200);
     },
     async Contact(request, response) {
         const {
@@ -176,12 +172,12 @@ module.exports = {
 
             const res = await eventRequest.execute();
             console.log(res)
-            return response.sendStatus(200);
 
         } catch (err) {
-            console.log(err)
-            return response.sendStatus(422);
+            console.log('\nUNEXPECTED ERROR ON PIXEL/CONTACT: ', err)
         }
+        return response.sendStatus(200);
+
     },
     async FinalizeCheckout(request, response) {
         const {
@@ -257,14 +253,13 @@ module.exports = {
                 .setEvents(eventsData)
                 .setTestEventCode('TEST66833')
 
-            const res = await eventRequest.execute();
-            console.log(res)
-            return response.sendStatus(200);
+            await eventRequest.execute();
 
         } catch (err) {
-            console.log(err)
-            return response.sendStatus(422);
+            console.log('\nUNEXPECTED ERROR ON PIXEL/FINALIZECHECKOUT: ', err)
         }
+        return response.sendStatus(200);
+
     },
 
 }

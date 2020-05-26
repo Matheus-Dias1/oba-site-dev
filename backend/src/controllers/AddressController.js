@@ -55,17 +55,17 @@ module.exports = {
                 lng,
                 delivery_fee,
             });
-            return response.status(201).send();
+            return response.sendStatus(201);
         } catch (err) {
-            //console.log(err);
-            response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON CREATE ADDRESS: ', err)
+            return response.sendStatus(422);
         }
 
     },
 
     async index(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
 
         const [count] = await connection('addresses').count();
 
@@ -80,8 +80,8 @@ module.exports = {
             response.header('X-Total-Count', count['count(*)']);
             return response.json(addresses);
         } catch (err) {
-
-            response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON INDEX ADDRESSES: ', err)
+            return response.status(422).send();
         }
 
     },

@@ -29,9 +29,9 @@ module.exports = {
                 picture_path,
                 delivers_to,
             });
-            return response.status(201).send();
+            return response.sendStatus(201);
         } catch (err) {
-            response.status(422).send();
+            return response.status(422).send();
         }
 
     },
@@ -47,7 +47,7 @@ module.exports = {
                 .orderBy('available', 'desc');
             return response.json(products);
         } catch (err) {
-            response.status(422).send();
+            return response.status(422).send();
         }
     },
 
@@ -69,7 +69,7 @@ module.exports = {
             return response.status(201).send();
         } catch (err) {
             console.log('updateAvailability:', err)
-            response.status(422).send();
+            return response.sendStatus(422);
         }
 
     },

@@ -51,7 +51,7 @@ module.exports = {
                 };
                 return response.json(res);
             } catch (err) {
-                response.status(422).send();
+                return response.status(422).send();
             }
         }
         try {
@@ -114,7 +114,7 @@ module.exports = {
             }
             return response.json(res);
         } catch (err) {
-            response.status(422).send();
+            return response.status(422).send();
         }
     }
 }

@@ -53,14 +53,11 @@ module.exports = {
         try {
             if (addressInfo.data.status !== 'OK') {
                 if (addressInfo.data.status === 'ZERO_RESULTS') {
-                    //console.log('zero_results')
                     return res.json({
                         "status": 'ZERO_RESULTS',
                         "result": {}
                     });
                 } else {
-                    //console.log('error')
-
                     return res.json({
                         "status": 'ERROR',
                         "result": {}
@@ -99,7 +96,7 @@ module.exports = {
                     data.result.country.long_name = componets_list[i].long_name;
                 }
             } catch (err) {
-                //console.log(err)
+
             }
         }
         try {
@@ -109,7 +106,6 @@ module.exports = {
         } catch (err) {
 
         }
-        //console.log(data)
         return res.json(data);
     },
     async getCoordinates(req, res) {
