@@ -155,10 +155,10 @@ export default function ViewPurchase() {
                             </tr>
                         </tbody>
                         <tbody>
-                            <tr>
+                            {payment_method === 'Dinheiro' && <tr>
                                 <td><strong>TROCO:</strong></td>
                                 <td><p>{change}</p></td>
-                            </tr>
+                            </tr>}
                         </tbody>
 
                     </table>

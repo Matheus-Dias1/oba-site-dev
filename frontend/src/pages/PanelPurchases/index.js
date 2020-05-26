@@ -113,8 +113,8 @@ export default function PanelPurchases() {
                                             <p>{purchase.payment_method}</p>
                                             <strong>VALOR:</strong>
                                             <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.value)}</p>
-                                            <strong>TROCO:</strong>
-                                            <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
+                                            {purchase.payment_method === 'Dinheiro' && <strong>TROCO:</strong>}
+                                            {purchase.payment_method === 'Dinheiro' && <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>}
                                         </div>
                                         <div>
                                             <a href={'https://www.google.com/maps/search/?api=1&query=' + obsData.street + '%20' + obsData.number + '%2C' + obsData.neighborhood + '%20' + obsData.city} target="_blank" rel="noopener noreferrer">
@@ -145,8 +145,8 @@ export default function PanelPurchases() {
                                             <p>{purchase.payment_method}</p>
                                             <strong>VALOR:</strong>
                                             <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.value)}</p>
-                                            <strong>TROCO:</strong>
-                                            <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>
+                                            {purchase.payment_method === 'Dinheiro' && <strong>TROCO:</strong>}
+                                            {purchase.payment_method === 'Dinheiro' && <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.change)}</p>}
                                         </div>
                                         <div>
                                             <a href={'https://www.google.com/maps/search/?api=1&query=' + purchase.street + '%20' + purchase.number + '%2C' + purchase.neighborhood + '%20' + purchase.city} target="_blank" rel="noopener noreferrer">

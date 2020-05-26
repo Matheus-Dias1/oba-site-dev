@@ -106,8 +106,8 @@ export default function PrintPurchases() {
                                         </tbody>
                                         <tbody>
                                             <tr>
-                                                <td><strong>TROCO:</strong></td>
-                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.change)}</p></td>
+                                                {purchase.data.payment_method === 'Dinheiro' && <td><strong>TROCO:</strong></td>}
+                                                {purchase.data.payment_method === 'Dinheiro' && <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.change)}</p></td>}
                                             </tr>
                                         </tbody>
 
@@ -197,8 +197,8 @@ export default function PrintPurchases() {
                                         </tbody>
                                         <tbody>
                                             <tr>
-                                                <td><strong>TROCO:</strong></td>
-                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.change)}</p></td>
+                                                {purchase.data.payment_method === 'Dinheiro' && <td><strong>TROCO:</strong></td>}
+                                                {purchase.data.payment_method === 'Dinheiro' && <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.change)}</p></td>}
                                             </tr>
                                         </tbody>
 
