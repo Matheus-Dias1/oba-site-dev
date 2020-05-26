@@ -32,12 +32,14 @@ export default function AddToSchedule() {
         }
 
         let year = list[2];
+        if (list[2].length === 3) {
+            return alert('Formato de ano não reconhecido')
+        }
         if (list[2].length === 2) {
             year = '20' + list[2];
         }
 
         const date2 = Date.UTC(parseInt(year), parseInt(list[1]) - 1, parseInt(list[0]), 3, 0, 0);
-        console.log(date2);
         const data = {
             "date": date2,
             "morning_deliveries": parseInt(morning_deliveries),

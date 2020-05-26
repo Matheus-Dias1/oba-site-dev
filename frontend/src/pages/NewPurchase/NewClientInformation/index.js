@@ -60,11 +60,11 @@ export default function NewClientInformation() {
         }
 
         const data = {
-            clientName,
+            clientName: clientName.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
             clientPhone,
             "selectedDate": dateTime[selectedDate].date,
             "selectedTime": dateTime[selectedDate].period,
-            observation
+            observation: observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
         };
 
         localStorage.setItem('clientInfoData', JSON.stringify(data));

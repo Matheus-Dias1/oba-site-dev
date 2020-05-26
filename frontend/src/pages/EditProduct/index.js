@@ -103,13 +103,17 @@ export default function EditProduct() {
                 setDescription(description);
                 setPrice(price
                     .toString()
-                    .replace('.', ',')
+                    .replace(/\./g, '*')
+                    .replace(/,/g, '.')
+                    .replace(/\*/g, ',')
                 );
                 setMeasurement_unit(measurement_unit);
                 try{
                     setUnit_price(unit_price
                         .toString()
-                        .replace('.', ',')
+                        .replace(/\./g, '*')
+                        .replace(/,/g, '.')
+                        .replace(/\*/g, ',')
                     );
                 }catch(err){
 
@@ -135,11 +139,11 @@ export default function EditProduct() {
         const delivers_to = formatDeliversTo();
         if (ctgry === 'FAIL') return;
         const data = {
-            "product_name": name,
-            "description": description,
-            "price": parseFloat(price.replace('.', '').replace(',', '.')),
-            "measurement_unit": measurement_unit.toUpperCase(),
-            "unit_price": parseFloat(unit_price.replace('.', '').replace(',', '.')),
+            "product_name": name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+            "description": description.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+            "price": parseFloat(price.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
+            "measurement_unit": measurement_unit.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ').toUpperCase(),
+            "unit_price": parseFloat(unit_price.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
             "category": ctgry,
             "delivers_to": delivers_to
         };

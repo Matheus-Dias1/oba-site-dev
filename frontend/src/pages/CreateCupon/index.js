@@ -33,12 +33,12 @@ export default function CreateCupon() {
             return alert('O código do cupom deve ter ao menos 5 dígitos');
         try {
             const data = {
-                code,
+                code: code.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                 amount: parseInt(amount),
                 expiration: parseInt(expiration),
                 discount_type: discountType,
-                discount: parseFloat(discount.replace(',', '*').replace('.', ',').replace('*', '.')),
-                min_value: parseFloat(minValue.replace(',', '*').replace('.', ',').replace('*', '.')),
+                discount: parseFloat(discount.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
+                min_value: parseFloat(minValue.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
             };
             const res = await api.post('cupons', data, {
                 headers: {

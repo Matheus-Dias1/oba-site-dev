@@ -53,11 +53,11 @@ export default function NewProduct() {
         const delivers_to = formatDeliversTo();
         if (ctgry === 'FAIL') return;
         const data = JSON.stringify({
-            "product_name": name,
-            "description": description,
-            "price": parseFloat(price.replace(',', '.')),
-            "measurement_unit": measurement_unit.toUpperCase(),
-            "unit_price": parseFloat(unit_price.replace(',', '.')),
+            "product_name": name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+            "description": description.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+            "price": parseFloat(price.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
+            "measurement_unit": measurement_unit.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ').toUpperCase(),
+            "unit_price": parseFloat(unit_price.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
             "available": true,
             "category": ctgry,
             delivers_to

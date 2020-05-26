@@ -76,9 +76,9 @@ export default function NewShoppingCart() {
 
         const data = {
             "id_product": parseInt(selectedId),
-            "amount": parseFloat(amount.replace(',', '.')),
+            "amount": parseFloat(amount.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
             "unit": selectedUnit,
-            "observation": observation,
+            "observation": observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
 
         };
         try {

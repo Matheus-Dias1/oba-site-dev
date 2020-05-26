@@ -54,7 +54,6 @@ export default function NewPaymentInfo() {
             "number": addData.number,
             "street": addData.street,
             "city": addData.city,
-            "zip_code": addData.zip_code,
         };
 
         const date = cliData.selectedDate;
@@ -67,7 +66,7 @@ export default function NewPaymentInfo() {
         const data = {
             value: totalValue,
             payment_method: payment_method,
-            change: ((change === '') ? 0 : parseFloat((parseFloat(change.replace(',', '.')) - totalValue).toFixed(2))),
+            change: ((change === '') ? 0 : parseFloat((parseFloat(change.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) - totalValue).toFixed(2))),
             id_address: 0,
             observation: JSON.stringify(observation),
             delivery_date: date,

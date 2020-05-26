@@ -44,11 +44,11 @@ export default function NewAddress() {
         }
         e.preventDefault();
         const data = {
-            street: street,
+            street: street.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
             number: number,
-            complement: complement,
-            neighborhood: neighborhood,
-            city
+            complement: complement.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+            neighborhood: neighborhood.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+            city: city.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
         };
         if (coordinates === '') {
             localStorage.setItem('deliveryFee', 0);

@@ -15,7 +15,10 @@ export default function Logon() {
     async function handleLogin(e) {
         e.preventDefault();
         try {
-            const response = await api.post('session', { email, password });
+            const response = await api.post('session', {
+                email: email.replace(/^\s+|\s+$/g, ''),
+                password
+            });
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('userName', response.data.name);
             if (response.data.admin){
