@@ -30,7 +30,7 @@ routes.post('/addresses', AuthTokenController.authenticateToken, AddressControll
 
 routes.get('/products', AuthTokenController.authenticateToken, ProductController.index);
 routes.post('/products', [AuthTokenController.authenticateToken, multer(multerConfig).single('file')], ProductController.create);
-routes.put('/products', AuthTokenController.authenticateToken, ProductController.updateAvailability);
+routes.put('/products/:id', AuthTokenController.authenticateToken, ProductController.updateAvailability);
 
 routes.get('/products/details/:id', AuthTokenController.authenticateToken, ProductUpdateController.getData);
 routes.put('/products/edit/:id', AuthTokenController.authenticateToken, ProductUpdateController.update);

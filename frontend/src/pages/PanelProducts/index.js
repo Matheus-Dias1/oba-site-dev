@@ -50,9 +50,8 @@ export default function PanelProducts() {
 
 
     async function handleAvailability(id, prodIndex) {
-        const data = { id: id };
         try {
-            await api.put('products', data, {
+            await api.put(`products/${id}`, {}, {
                 headers: {
                     authorization: 'Bearer ' + accessToken
                 }

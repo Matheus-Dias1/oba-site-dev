@@ -54,7 +54,7 @@ module.exports = {
     async updateAvailability(request, response) {
         const admin = request.data.admin;
         if (admin !== 1) return response.status(401).send();
-        const { id } = request.body;
+        const { id } = request.params;
         try {
             let { available } = await connection('products')
                 .select('available')
@@ -68,6 +68,7 @@ module.exports = {
 
             return response.status(201).send();
         } catch (err) {
+            console.log('updateAvailability:', err)
             response.status(422).send();
         }
 
