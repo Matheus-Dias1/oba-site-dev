@@ -151,6 +151,7 @@ export default function DBViewer() {
             setData(res.data);
 
         } catch (err) {
+            alert('Erro. Detalhes nos logs')
             console.log(err);
         }
     }

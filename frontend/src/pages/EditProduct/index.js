@@ -96,7 +96,6 @@ export default function EditProduct() {
                     category,
                     delivers_to
                 } = response.data;
-                console.log(response.data)
                 setCategory(category);
                 setId(id);
                 setName(product_name);
