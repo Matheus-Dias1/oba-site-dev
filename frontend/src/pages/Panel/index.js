@@ -32,9 +32,7 @@ export default function Panel() {
           
             </Menu>
             <div className="imgLogo">
-                
                 <img src={logoImg} className="imgLogo" alt="OBA Hortifruti" width="550px" height="260px"/>
-                
             </div>
         </div>
     );

@@ -7,7 +7,7 @@ module.exports = {
         try {
             const dates = await connection('schedule')
                 .select('*')
-                .whereRaw("(morning_deliveries > 0 or afternoon_deliveries > 0)")
+                .whereRaw("(morning_deliveries > 0 or afternoon_deliveries > 0 or night_deliveries > 0)")
                 .where('city', city)
                 .orderByRaw('date(date) asc')
 
@@ -53,6 +53,15 @@ module.exports = {
                             })
                         }
                     }
+                    cDate = new Date(dates[i].date);
+                    if (dates[i].night_deliveries > 0) {
+                        if (now.valueOf() < cDate.setHours(14, 0, 0, 0).valueOf()) {
+                            res.push({
+                                date: dates[i].date,
+                                period: 'night'
+                            })
+                        }
+                    }
                 }
             }
             return response.json(res);
@@ -68,6 +77,7 @@ module.exports = {
             date,
             afternoon_deliveries,
             morning_deliveries,
+            night_deliveries,
             city
         } = request.body;
 
@@ -75,7 +85,8 @@ module.exports = {
             await connection('schedule')
                 .where({
                     morning_deliveries: 0,
-                    afternoon_deliveries: 0
+                    afternoon_deliveries: 0,
+                    night_deliveries: 0,
                 })
                 .orWhere('date', '<', (new Date().setHours(0, 0, 0, 0)))
                 .delete();
@@ -85,6 +96,7 @@ module.exports = {
         var curSche;
         try {
             curSche = await connection('schedule')
+                .select('*')
                 .where({
                     date,
                     city
@@ -101,6 +113,7 @@ module.exports = {
                         date,
                         afternoon_deliveries,
                         morning_deliveries,
+                        night_deliveries,
                         city
                     })
                 return response.status(201).send();
@@ -113,6 +126,7 @@ module.exports = {
                     .update({
                         afternoon_deliveries: afternoon_deliveries + curSche.afternoon_deliveries,
                         morning_deliveries: morning_deliveries + curSche.morning_deliveries,
+                        night_deliveries: night_deliveries + curSche.night_deliveries,
                     })
                     .where({
                         date,

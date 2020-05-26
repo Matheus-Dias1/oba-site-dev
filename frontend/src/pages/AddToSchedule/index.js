@@ -14,6 +14,7 @@ export default function AddToSchedule() {
     const [date, setDate] = useState('');
     const [morning_deliveries, setMorning_deliveries] = useState('');
     const [afternoon_deliveries, setAfternoon_deliveries] = useState('');
+    const [night_deliveries, setNight_deliveries] = useState('');
     const [city, setCity] = useState('');
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
@@ -44,6 +45,7 @@ export default function AddToSchedule() {
             "date": date2,
             "morning_deliveries": parseInt(morning_deliveries),
             "afternoon_deliveries": parseInt(afternoon_deliveries),
+            "night_deliveries": parseInt(night_deliveries),
             "city": city
         };
         try {
@@ -59,6 +61,7 @@ export default function AddToSchedule() {
             });
             setMorning_deliveries('');
             setAfternoon_deliveries('');
+            setNight_deliveries('');
             setDate('');
             setErrorText('');
         } catch (err) {
@@ -104,24 +107,36 @@ export default function AddToSchedule() {
                             />
                             <div className="periodAmout">
                                 <input
-                                    placeholder="Quantidade de entregas na manhã"
+                                    placeholder="Quantidade de entregas de manhã"
                                     value={morning_deliveries}
                                     onChange={e => setMorning_deliveries(e.target.value)}
                                     required
                                     onInvalid={function (e) {
-                                        e.target.setCustomValidity("Digite a quantidade de entregas na manhã");
+                                        e.target.setCustomValidity("Digite a quantidade de entregas de manhã");
                                     }}
                                     onInput={function (e) {
                                         e.target.setCustomValidity("");
                                     }}
                                 />
                                 <input
-                                    placeholder="Quantidade de entregas na tarde"
+                                    placeholder="Quantidade de entregas à tarde"
                                     value={afternoon_deliveries}
                                     onChange={e => setAfternoon_deliveries(e.target.value)}
                                     required
                                     onInvalid={function (e) {
-                                        e.target.setCustomValidity("Digite a quantidade de entregas na manhã");
+                                        e.target.setCustomValidity("Digite a quantidade de entregas à tarde");
+                                    }}
+                                    onInput={function (e) {
+                                        e.target.setCustomValidity("");
+                                    }}
+                                />
+                                <input
+                                    placeholder="Quantidade de entregas à noite"
+                                    value={night_deliveries}
+                                    onChange={e => setNight_deliveries(e.target.value)}
+                                    required
+                                    onInvalid={function (e) {
+                                        e.target.setCustomValidity("Digite a quantidade de entregas à noite");
                                     }}
                                     onInput={function (e) {
                                         e.target.setCustomValidity("");
