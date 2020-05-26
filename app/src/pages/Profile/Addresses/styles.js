@@ -91,18 +91,6 @@ export default StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'center'
     },
-    loadingContainer: {
-        width: 70,
-        height: 70,
-        borderRadius: 12,
-        opacity: 0.7,
-        position: 'absolute',
-        right: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 0,
-        top: '20%',
-    },
     emptyListTextContainer: {
         marginBottom: 30,
         marginTop: 30,
