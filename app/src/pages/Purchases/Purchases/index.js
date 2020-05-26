@@ -130,7 +130,7 @@ export default function Purchases({ navigation }) {
                     </Text>
                     <Text style={styles.property}>
                       Período de entrega: <Text style={styles.value}>
-                        {purchase.delivery_period === 'morning' ? 'Manhã' : 'Tarde'}
+                        {purchase.delivery_period === 'morning' ? 'Manhã' : (purchase.delivery_period === 'afternoon' ? 'Tarde' : 'Noite')}
                       </Text>
                     </Text>
                     <Text style={styles.property}>

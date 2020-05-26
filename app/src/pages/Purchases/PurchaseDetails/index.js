@@ -70,7 +70,7 @@ export default function Purchases() {
                 <Text style={styles.value}>{formatDate(purchase.delivery_date)}</Text>
               </Text>
               <Text style={styles.property}>{'Período de entrega: '}
-                <Text style={styles.value}>{purchase.delivery_period === 'morning' ? 'Manhã' : 'Tarde'}</Text>
+                <Text style={styles.value}>{purchase.delivery_period === 'morning' ? 'Manhã' : (purchase.delivery_period === 'afternoon' ? 'Tarde' : 'Noite')}</Text>
               </Text>
               <Text style={styles.property}>{'Entregue: '}
                 <Text style={styles.value}>{purchase.delivered ? 'Sim' : 'Não'}</Text>
