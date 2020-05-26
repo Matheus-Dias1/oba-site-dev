@@ -75,7 +75,7 @@ export default function EditInfo() {
     setLoading(true);
     setErrorText('');
     const data = {
-      name: name.replace(/^\s+|\s+$/g, ''),
+      name: name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
       email: email.replace(/^\s+|\s+$/g, ''),
       phone,
     };
@@ -91,6 +91,8 @@ export default function EditInfo() {
           return signOut();
         } else throw err;
       });
+      await AsyncStorage.setItem('name', name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '))
+      await AsyncStorage.setItem('email', email.replace(/^\s+|\s+$/g, ''))
     } catch (err) {
       Alert.alert('Erro ao editar perfil', 'Tente novamente mais tarde');
     }

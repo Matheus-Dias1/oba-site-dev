@@ -148,7 +148,7 @@ export default function Addresses() {
         ListFooterComponent={
           <View style={styles.emptyListTextContainer} >
 
-            {loading && <ActivityIndicator size="small" color="#000" />}
+            {loading && addresses.length === 0 && <ActivityIndicator size="small" color="#000" />}
             {!loading && addresses.length === 0 &&
               <Text style={styles.emptyListText}>Nenhum endereço cadastrado</Text>
             }

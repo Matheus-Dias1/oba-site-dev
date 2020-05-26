@@ -36,7 +36,7 @@ export default function AddAddress() {
     const [loadingInfo, setLoadingInfo] = useState(false);
 
     async function handleAddAddress() {
-        if (!['uberlandia', 'uberlândia', 'udi', 'araguari'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, ''))) {
+        if (!['uberlandia', 'uberlândia', 'udi', 'araguari'].includes(city.toLowerCase().replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '))) {
             Alert.alert('Ainda não atendemos sua região', 'Por enquanto atendemos a cidade de Uberlândia e de Araguari');
             return;
         }
@@ -48,20 +48,19 @@ export default function AddAddress() {
         setLoading(true);
         if (popHowMany === 3) {
             const data = {
-                country: geocoded.result.country.long_name.toLowerCase() === country.toLowerCase() ? geocoded.result.country.long_name : country.replace(/^\s+|\s+$/g, ''),
-                state: geocoded.result.state.short_name.toLowerCase() === state.toLowerCase() ? geocoded.result.state.short_name : state.replace(/^\s+|\s+$/g, ''),
-                city: geocoded.result.city.long_name.toLowerCase() === city.toLowerCase() ? geocoded.result.city.long_name : city.replace(/^\s+|\s+$/g, ''),
-                neighborhood: geocoded.result.neighborhood.long_name.toLowerCase() === neighborhood.toLowerCase() ? geocoded.result.neighborhood.short_name : neighborhood.replace(/^\s+|\s+$/g, ''),
-                street: geocoded.result.street.long_name.toLowerCase() === street.toLowerCase() ? geocoded.result.street.short_name : street.replace(/^\s+|\s+$/g, ''),
+                country: geocoded.result.country.long_name.toLowerCase() === country.toLowerCase() ? geocoded.result.country.long_name : country.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                state: geocoded.result.state.short_name.toLowerCase() === state.toLowerCase() ? geocoded.result.state.short_name : state.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                city: geocoded.result.city.long_name.toLowerCase() === city.toLowerCase() ? geocoded.result.city.long_name : city.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                neighborhood: geocoded.result.neighborhood.long_name.toLowerCase() === neighborhood.toLowerCase() ? geocoded.result.neighborhood.short_name : neighborhood.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                street: geocoded.result.street.long_name.toLowerCase() === street.toLowerCase() ? geocoded.result.street.short_name : street.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                 number: number.replace(/^\s+|\s+$/g, ''),
-                complement: complement.replace(/^\s+|\s+$/g, ''),
+                complement: complement.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                 lat: geocoded.result.geometry.lat,
                 lng: geocoded.result.geometry.lng,
             }
             try {
                 await api.post('addresses', data, {
                     headers: {
-                        'Content-Type': 'application/json',
                         'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                     }
                 }).catch(err => {
@@ -91,10 +90,10 @@ export default function AddAddress() {
                         authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                     },
                     params: {
-                        state,
-                        city,
-                        neighborhood,
-                        street,
+                        state: state.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                        city: city.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                        neighborhood: neighborhood.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                        street: street.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                         number,
                     }
                 }).catch(err => {
@@ -107,25 +106,25 @@ export default function AddAddress() {
                 if (res.data.status !== 'OK')
                     throw new Error('NO_RESULTS');
                 data = {
-                    country: country.replace(/^\s+|\s+$/g, ''),
-                    state: state.replace(/^\s+|\s+$/g, ''),
-                    city: city.replace(/^\s+|\s+$/g, ''),
-                    neighborhood: neighborhood.replace(/^\s+|\s+$/g, ''),
-                    street: street.replace(/^\s+|\s+$/g, ''),
+                    country: country.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    state: state.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    city: city.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    neighborhood: neighborhood.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    street: street.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                     number: number.replace(/^\s+|\s+$/g, ''),
-                    complement: complement.replace(/^\s+|\s+$/g, ''),
+                    complement: complement.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                     lat: res.data.result.geometry.lat,
                     lng: res.data.result.geometry.lng,
                 }
             } catch (err) {
                 data = {
-                    country: country.replace(/^\s+|\s+$/g, ''),
-                    state: state.replace(/^\s+|\s+$/g, ''),
-                    city: city.replace(/^\s+|\s+$/g, ''),
-                    neighborhood: neighborhood.replace(/^\s+|\s+$/g, ''),
-                    street: street.replace(/^\s+|\s+$/g, ''),
+                    country: country.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    state: state.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    city: city.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    neighborhood: neighborhood.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                    street: street.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                     number: number.replace(/^\s+|\s+$/g, ''),
-                    complement: complement.replace(/^\s+|\s+$/g, ''),
+                    complement: complement.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                     lat: '-18.931880',
                     lng: '-48.264173',
                 }
@@ -133,7 +132,6 @@ export default function AddAddress() {
                 try {
                     await api.post('addresses', data, {
                         headers: {
-                            'Content-Type': 'application/json',
                             'authorization': 'Bearer ' + await AsyncStorage.getItem('accessToken'),
                         }
                     }).catch(err => {
