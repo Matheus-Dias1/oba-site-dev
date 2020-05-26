@@ -27,12 +27,17 @@ export default function Register() {
   const [selectedInput, setSelectedInput] = useState(-1);
   const [loading, setLoading] = useState(false);
 
+  function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
   async function handleRegistration() {
     if (loading) return;
     if (name === '') {
       setErrorText('O campo nome é obrigatório');
       return;
-    } if (!email.includes('.') || !email.includes('@')) {
+    } if (!validateEmail(email)) {
       setErrorText('Digite um e-mail válido');
       return;
     } if (phone.length < 8) {
