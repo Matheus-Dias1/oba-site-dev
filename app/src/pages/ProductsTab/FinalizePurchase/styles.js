@@ -221,8 +221,15 @@ export default StyleSheet.create({
         backgroundColor: '#f2f2f2',
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-
     },
+
+    VoucherModalContainer: {
+        flex: 0.5,
+        backgroundColor: '#f2f2f2',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+    },
+
     modal: {
         margin: 0,
         padding: 0,

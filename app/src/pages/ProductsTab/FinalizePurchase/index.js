@@ -38,6 +38,7 @@ export default function FinalizePurchase() {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [showChangeModal, setShowChangeModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
+  const [showVoucherModal, setShowVoucherModal] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [freeDelivery, setFreeDelivery] = useState(false);
   const [total, setTotal] = useState(parseFloat(route.params.subtotal));
@@ -249,7 +250,7 @@ export default function FinalizePurchase() {
     setDeliveryFee(addresses[parseInt(address)].delivery_fee);
     if (parseFloat(route.params.subtotal) < 90) {
       setTotal(total + addresses[parseInt(address)].delivery_fee - deliveryFee)
-    } else if (paymentMethod === 'Ticket') {
+    } else if (paymentMethod === 'Voucher Alimentação') {
       setTotal(total + addresses[parseInt(address)].delivery_fee - deliveryFee)
     } else {
       setFreeDelivery(true);
@@ -310,7 +311,7 @@ export default function FinalizePurchase() {
         setDeliveryFee(0)
       else {
         setDeliveryFee(res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
-        if (parseFloat(route.params.subtotal) < 90 && paymentMethod !== 'Ticket')
+        if (parseFloat(route.params.subtotal) < 90 && paymentMethod !== 'Voucher Alimentação')
           setTotal(total + res.data[await AsyncStorage.getItem('selectedAddress')].delivery_fee)
         else
           setFreeDelivery(true);
@@ -329,7 +330,7 @@ export default function FinalizePurchase() {
       setDatesLoading(false);
       return;
     };
-      setDateLock(false);
+    setDateLock(false);
     setDatesLoading(true);
     try {
       const res = await api.get('schedule', {
@@ -366,10 +367,10 @@ export default function FinalizePurchase() {
   }
 
   function handlePaymentMethod(method) {
-    if (parseFloat(route.params.subtotal) >= 90 && paymentMethod === 'Ticket' && method !== 'Ticket') {
+    if (parseFloat(route.params.subtotal) >= 90 && paymentMethod === 'Voucher Alimentação' && method !== 'Voucher Alimentação') {
       setFreeDelivery(true);
       setTotal(total - deliveryFee);
-    } else if (parseFloat(route.params.subtotal) >= 90 && paymentMethod !== 'Ticket' && method === 'Ticket') {
+    } else if (parseFloat(route.params.subtotal) >= 90 && paymentMethod !== 'Voucher Alimentação' && method === 'Voucher Alimentação') {
       setFreeDelivery(false);
       setTotal(total + deliveryFee);
     }
@@ -377,6 +378,8 @@ export default function FinalizePurchase() {
       setShowChangeModal(true);
     else if (method === 'Transferência Bancaria')
       setShowTransferModal(true);
+    else if (method === 'Voucher Alimentação')
+      setShowVoucherModal(true);
   }
 
 
@@ -388,8 +391,8 @@ export default function FinalizePurchase() {
       return <Ionicons name={'md-card'} size={30} color={'green'} />
     else if (str === 'Transferência Bancaria')
       return <MaterialCommunityIcons name={'bank-transfer'} size={33} color={'green'} />
-    else if (str === 'Ticket')
-      return <FontAwesome name={'ticket'} size={30} color={'green'} />
+    else if (str === 'Voucher Alimentação')
+      return <MaterialCommunityIcons name="ticket-confirmation" size={30} color={'green'} />
 
   }
 
@@ -467,6 +470,42 @@ export default function FinalizePurchase() {
               </TouchableWithoutFeedback>
             </View>
           </View>
+        </View>
+      </Modal>
+
+      <Modal
+        isVisible={showVoucherModal}
+        avoidKeyboard={true}
+        onBackdropPress={() => setShowVoucherModal(false)}
+        onSwipeComplete={() => setShowVoucherModal(false)}
+        swipeDirection={"down"}
+        style={styles.modal}
+      >
+        <View style={styles.VoucherModalContainer}>
+          <ScrollView>
+            <TouchableWithoutFeedback>
+              <View style={styles.modalContent}>
+                <View>
+                  <Text style={styles.transferModalTitle}>Voucher Alimentação{'\n'}</Text>
+                  <Text style={styles.transferModalBody}>
+                    {`Aceitamos os seguintes vouchers: Alelo, Sodexo, Up e Valecard.\n\n`}
+                    <Text style={{ fontWeight: '700' }}>{'Não'}</Text>
+                    {' é possível pagar a taxa de entrega ('}
+                    {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(deliveryFee))}
+                    {') com o voucher, a mesma deve ser paga com dinheiro, cartão de crédito ou cartão de débito.'}
+                  </Text>
+                  
+                </View>
+                <View style={{ alignSelf: 'stretch' }}>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+          <TouchableWithoutFeedback onPress={() => setShowVoucherModal(false)}>
+            <View style={styles.transferModalButton}>
+              <Text style={styles.transferModalButtonText}>Entendi</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       </Modal>
 
@@ -664,7 +703,7 @@ export default function FinalizePurchase() {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={method => method}
-            data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito', 'Ticket']}
+            data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito', 'Voucher Alimentação']}
             renderItem={(method) => (
 
               <TouchableWithoutFeedback onPress={() => { setPaymentMethod(method.item), handlePaymentMethod(method.item) }} activeOpacity={0.8}>
