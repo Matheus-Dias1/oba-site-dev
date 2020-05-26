@@ -5,7 +5,7 @@ module.exports = {
         const admin = request.data.admin;
         if (admin !== 1) return response.status(401).send();
         const { idP } = request.params;
-        if (idP !== '-1') {
+        if (idP !== 'all') {
             try {
                 const items = await connection({
                     pp: 'productsPurchases',

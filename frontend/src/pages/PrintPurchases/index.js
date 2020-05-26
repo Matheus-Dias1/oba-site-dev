@@ -21,7 +21,7 @@ export default function PrintPurchases() {
 
     useEffect(() => {
         try {
-            api.get('productsPurchases/-1', {
+            api.get('productsPurchases/all', {
                 headers: {
                     authorization: 'Bearer ' + accessToken,
                 }
@@ -129,7 +129,7 @@ export default function PrintPurchases() {
                                                     <tbody key={purchase.items.indexOf(item)}>
                                                         <tr>
                                                             <td><p>{item.product}</p></td>
-                                                            <td><p>{String(item.amount).replace('.', ',')}</p></td>
+                                                            <td><p>{String(item.amount).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')}</p></td>
                                                             <td><p>{item.unit}</p></td>
                                                             <td><p>{item.observation}</p></td>
                                                         </tr>
@@ -220,7 +220,7 @@ export default function PrintPurchases() {
                                                     <tbody key={purchase.items.indexOf(item)}>
                                                         <tr>
                                                             <td><p>{item.product}</p></td>
-                                                            <td><p>{String(item.amount).replace('.', ',')}</p></td>
+                                                            <td><p>{String(item.amount).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')}</p></td>
                                                             <td><p>{item.unit}</p></td>
                                                             <td><p>{item.observation}</p></td>
                                                         </tr>

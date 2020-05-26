@@ -30,9 +30,9 @@ export default function SendPushNotification() {
         try {
             const res = await api.post('/push', {
                 sendTo: 'all',
-                title,
-                body,
-                cupon
+                title: title.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                body: body.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                cupon: cupon.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
             }, {
                 headers: {
                     authorization: 'Bearer ' + accessToken
