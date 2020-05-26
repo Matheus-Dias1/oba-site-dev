@@ -203,23 +203,8 @@ export default function EditInfo() {
                   onChangeText={e => setPhone(e)}
                 />
               </View>
-              <View style={[selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer, { marginTop: 40 }]}>
+              <View style={[selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer, { marginTop: 40 }]}>
                 <TextInput
-                  keyboardType='email-address'
-                  style={styles.textInput}
-                  value={newPassword}
-                  placeholder='Nova senha'
-                  secureTextEntry={true}
-                  onFocus={() => setSelectedInput(3)}
-                  onBlur={() => setSelectedInput(-1)}
-                  onChange={(e) => setNewPassword(e.nativeEvent.text)}
-                  enablesReturnKeyAutomatically={true}
-                  clearButtonMode="while-editing"
-                />
-              </View>
-              <View style={selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer}>
-                <TextInput
-                  keyboardType='email-address'
                   style={styles.textInput}
                   value={oldPassword}
                   secureTextEntry={true}
@@ -227,6 +212,19 @@ export default function EditInfo() {
                   onFocus={() => setSelectedInput(4)}
                   onBlur={() => setSelectedInput(-1)}
                   onChange={(e) => setOldPassword(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+              <View style={selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  value={newPassword}
+                  placeholder='Nova senha'
+                  secureTextEntry={true}
+                  onFocus={() => setSelectedInput(3)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setNewPassword(e.nativeEvent.text)}
                   enablesReturnKeyAutomatically={true}
                   clearButtonMode="while-editing"
                 />
@@ -314,23 +312,8 @@ export default function EditInfo() {
                   onChangeText={e => setPhone(e)}
                 />
               </View>
-              <View style={[selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer, { marginTop: 40 }]}>
+              <View style={[selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer, { marginTop: 40 }]}>
                 <TextInput
-                  keyboardType='email-address'
-                  style={styles.textInput}
-                  value={newPassword}
-                  placeholder='Nova senha'
-                  secureTextEntry={true}
-                  onFocus={() => setSelectedInput(3)}
-                  onBlur={() => setSelectedInput(-1)}
-                  onChange={(e) => setNewPassword(e.nativeEvent.text)}
-                  enablesReturnKeyAutomatically={true}
-                  clearButtonMode="while-editing"
-                />
-              </View>
-              <View style={selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer}>
-                <TextInput
-                  keyboardType='email-address'
                   style={styles.textInput}
                   value={oldPassword}
                   secureTextEntry={true}
@@ -342,6 +325,20 @@ export default function EditInfo() {
                   clearButtonMode="while-editing"
                 />
               </View>
+              <View style={selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  value={newPassword}
+                  placeholder='Nova senha'
+                  secureTextEntry={true}
+                  onFocus={() => setSelectedInput(3)}
+                  onBlur={() => setSelectedInput(-1)}
+                  onChange={(e) => setNewPassword(e.nativeEvent.text)}
+                  enablesReturnKeyAutomatically={true}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+
 
 
 

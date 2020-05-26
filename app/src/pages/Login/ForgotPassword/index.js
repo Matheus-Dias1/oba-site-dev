@@ -26,7 +26,9 @@ export default function ForgotPassword() {
     if (!(email.includes('@') && email.includes('.'))) return;
     setLoading(true);
     try {
-      await api.post('recoverPassword', { email })
+      await api.post('recoverPassword',{ 
+       email: email.replace(/^\s+|\s+$/g, '')
+      })
       Alert.alert('Sucesso', 'O e-mail será enviado caso exista uma conta com o endereço informado')
       navigator.goBack();
     } catch (err) {
