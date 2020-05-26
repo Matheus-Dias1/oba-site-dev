@@ -215,7 +215,7 @@ module.exports = {
                     complement: 'a.complement'
                 })
                 .whereRaw('p.id_user = u.id and p.id_address = a.id and p.delivered = false')
-                .orderByRaw('p.delivery_date asc, delivery_period desc');
+                .orderByRaw('delivery_date, case delivery_period when "morning" then 1 when "afternoon" then 2 when "night" then 3 else 4 end');
 
 
             return response.json(purchases);
