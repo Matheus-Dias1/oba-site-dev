@@ -324,12 +324,12 @@ export default function FinalizePurchase() {
 
   async function getDates(paramCity) {
     const city = await AsyncStorage.getItem('selectedCity');
-    if (!city) {
+    if (!city && !paramCity) {
       setDateLock(true);
       setDatesLoading(false);
       return;
     };
-    setDateLock(false);
+      setDateLock(false);
     setDatesLoading(true);
     try {
       const res = await api.get('schedule', {
@@ -695,9 +695,9 @@ export default function FinalizePurchase() {
           <View style={styles.finalizePurchaseButton}>
             {
               loading
-                ? <View style={{flexDirection: 'row'}}>
-                <Text style={[styles.finalizePurchaseButtonText, {marginRight: 10}]}>Finalizar Compra</Text>
-                <ActivityIndicator size="small" color="white"/>
+                ? <View style={{ flexDirection: 'row' }}>
+                  <Text style={[styles.finalizePurchaseButtonText, { marginRight: 10 }]}>Finalizar Compra</Text>
+                  <ActivityIndicator size="small" color="white" />
                 </View>
                 : <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
             }
