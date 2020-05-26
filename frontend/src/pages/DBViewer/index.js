@@ -223,7 +223,9 @@ export default function DBViewer() {
                                 <tr key={data.indexOf(row)}>
                                     {columns.map(column => {
                                         function checkForJSON(row, column) {
-                                            if (column !== 'observation' || table !== 'purchases')
+                                            if (column === 'password' && table === 'users') {
+                                                return <p onClick={() => { alert(row[column])}}>[password hash]</p>
+                                            } else if (column !== 'observation' || table !== 'purchases')
                                                 return row[column]
                                             else {
                                                 try {

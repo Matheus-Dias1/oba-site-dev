@@ -29,7 +29,7 @@ export default function ForgotPassword() {
       await api.post('recoverPassword',{ 
        email: email.replace(/^\s+|\s+$/g, '')
       })
-      Alert.alert('Sucesso', 'O e-mail será enviado caso exista uma conta com o endereço informado')
+      Alert.alert('Sucesso', 'O e-mail será enviado caso exista uma conta com o endereço informado, isso pode demorar alguns minutos')
       navigator.goBack();
     } catch (err) {
       Alert.alert('Erro ao recuperar senha', 'Houve um erro ao recuperar a sua senha, tente novamente mais tarde')

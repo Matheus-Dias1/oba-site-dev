@@ -32,7 +32,7 @@ export default function SendPushNotification() {
                 sendTo: 'all',
                 title: title.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
                 body: body.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
-                cupon: cupon.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+                cupon: cupon.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ').toUpperCase(),
             }, {
                 headers: {
                     authorization: 'Bearer ' + accessToken
@@ -46,7 +46,7 @@ export default function SendPushNotification() {
 
             if (res.data.status === 'ok')
                 alert('Notificações enviadas com sucesso.')
-            else if (res.data.error === 'cuponNotFound')
+            else if (res.data.code === 'cuponNotFound')
                 alert(res.data.message)
             else{
                 alert('Notificação foram enviadas com alguns problemas, consulte um administrador')

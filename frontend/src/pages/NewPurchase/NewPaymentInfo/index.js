@@ -23,19 +23,22 @@ export default function NewPaymentInfo() {
     }
 
     useEffect(() => {
-        setDeliveryFee(getDeliveryFee());
+        const fee = getDeliveryFee();
+        setDeliveryFee(fee);
+        setTotalValue(parseFloat(fee.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) + parseFloat(localStorage.getItem('cartValue')));
+
     }, [])
 
     function getDeliveryFee() {
         try {
-            return localStorage.getItem('deliveryFee').replace(',','*').replace('.',',').replace('*','.');
+            return localStorage.getItem('deliveryFee').replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',');
         } catch{
             return 10;
         }
     }
 
     function changeFee(e){
-        const fee = e.target.value === '' ? 0 : parseFloat((e.target.value).replace(',','*').replace('.',',').replace('*','.'));
+        const fee = e.target.value === '' ? 0 : parseFloat((e.target.value).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ','));
         setDeliveryFee(e.target.value);
         setTotalValue(cartValue + fee);
     }
@@ -59,7 +62,7 @@ export default function NewPaymentInfo() {
         const date = cliData.selectedDate;
         const time = cliData.selectedTime;
 
-        if (change !== '' && totalValue > parseFloat(change.replace(',', '.'))) {
+        if (change !== '' && totalValue > parseFloat(change.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ','))) {
             alert('"Troco para" deve conter um valor maior que o valor total do pedido.')
             return;
         }
@@ -134,13 +137,14 @@ export default function NewPaymentInfo() {
                     <form onSubmit={handlePaymentInfo}>
                         <select id="payment_method" defaultValue="default" onChange={e => setPayment_method(e.target.value)}>
                             <option value="default">Método de pagamento</option>
-                            <option value="dinheiro">Dinheiro</option>
-                            <option value="cartao">Cartão</option>
-                            <option value="deposito">Depósito bancário</option>
-                            <option value="ticket">Ticket</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cartão de Crédito">Cartão de Crédito</option>
+                            <option value="Cartão de Débito">Cartão de Débito</option>
+                            <option value="Transferência Bancária">Transferência Bancária</option>
+                            <option value="Voucher Alimentação">Voucher Alimentação</option>
                         </select>
                         {
-                            payment_method === 'dinheiro' &&
+                            payment_method === 'Dinheiro' &&
                             <input
                                 placeholder="Troco para"
                                 value={change}

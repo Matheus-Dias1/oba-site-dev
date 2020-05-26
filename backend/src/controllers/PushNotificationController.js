@@ -68,7 +68,6 @@ module.exports = {
                     .select('push_token')
                     .whereNot('push_token', '')
                     .whereIn('id', sendTo);
-
             let rescpy = res;
             let groupedTokens = []
             let tempList = []

@@ -152,7 +152,7 @@ export default function AddToSchedule() {
                                             value=""
                                             onClick={() => setCity('uberlandia')}
                                         />
-                                        <label for="uberlandia">Uberlândia</label>
+                                        <label htmlFor="uberlandia">Uberlândia</label>
                                     </div>
                                     <div>
                                         <input
@@ -163,7 +163,7 @@ export default function AddToSchedule() {
                                             value=""
                                             onClick={() => setCity('araguari')}
                                         />
-                                        <label for="aragarui">Araguari</label>
+                                        <label htmlFor="aragarui">Araguari</label>
                                     </div>
                                 </div>
                             </div>
