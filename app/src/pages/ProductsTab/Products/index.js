@@ -394,7 +394,7 @@ export default function Products() {
                     <View style={styles.cartContainer}>
                       <View style={styles.cartListing}>
                         <View style={styles.cartListingNameAndAmout}>
-                          <Text style={styles.cartListingAmount}>{`${String(item.amount).replace('.', '*').replace(',', '.').replace('*', ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
+                          <Text style={styles.cartListingAmount}>{`${String(item.amount).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
                         </View>
                         {!!item.observation && <Text style={styles.cartListingObservation}>Observação: {item.observation}</Text>}
                         <Text style={styles.cartListingValue}>{formatPrice(item)}</Text>

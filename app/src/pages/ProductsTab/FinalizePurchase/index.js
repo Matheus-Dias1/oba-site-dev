@@ -107,9 +107,9 @@ export default function FinalizePurchase() {
       id_address: addresses[selectedAddress].id,
       delivery_date: dates[selectedDate].date,
       delivery_period: dates[selectedDate].period,
-      cupon: cuponValidated ? cupon : 'NO_CUPON',
-      observation,
-      change: changeFor === 'R$ ' ? 0 : (parseFloat(changeFor.replace('R$ ', '').replace(',', '*').replace('.', ',').replace('*', ',')) - total),
+      cupon: cuponValidated ? cupon.replace(/^\s+|\s+$/g, '') : 'NO_CUPON',
+      observation: observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
+      change: changeFor === 'R$ ' ? 0 : (parseFloat(changeFor.replace('R$ ', '').replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) - total),
       payment_method: paymentMethod,
       value: total
     }
@@ -180,7 +180,7 @@ export default function FinalizePurchase() {
       return;
     setCuponLoading(true);
     try {
-      const res = await api.get(`cupons/${cupon}`, {
+      const res = await api.get(`cupons/${cupon.replace(/^\s+|\s+$/g, '')}`, {
         headers: {
           authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
         }
@@ -396,7 +396,7 @@ export default function FinalizePurchase() {
 
   function verifyChange(needsChange) {
     if (needsChange) {
-      if (parseFloat(changeFor.replace('R$ ', '').replace(',', '*').replace('.', ',').replace('*', ',')) < total)
+      if (parseFloat(changeFor.replace('R$ ', '').replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) < total)
         return Alert.alert('O valor digitado deve ser maior ou igual ao total da compra.')
     } else {
       setChangeFor('R$ ');

@@ -230,7 +230,7 @@ export default function Routes() {
             'password': data.password
           })
           AsyncStorage.setItem('accessToken', res.data.accessToken)
-          AsyncStorage.setItem('name', res.data.name);
+          AsyncStorage.setItem('name', res.data.name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '));
           AsyncStorage.setItem('email', data.email.replace(/^\s+|\s+$/g, ''));
           dispatch({ type: 'SIGN_IN', token: res.data.accessToken });
         } catch (err) {

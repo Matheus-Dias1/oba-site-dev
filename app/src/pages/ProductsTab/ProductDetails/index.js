@@ -72,7 +72,7 @@ export default function ProductDetails() {
         id_product: product.id,
         amount: amount[0],
         unit: product.measurement_unit,
-        observation: observation
+        observation: observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
       }
       try {
         await api.post('shopping_carts', data, {
@@ -96,7 +96,7 @@ export default function ProductDetails() {
         id_product: product.id,
         amount: amount[1],
         unit: 'UN',
-        observation: observation
+        observation: observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
       }
 
       try {
