@@ -18,8 +18,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../../services/api'
 import env from '../../../variables';
 
-//<FontAwesome5 name={iconName} size={size} color={color} light />
-
 
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';

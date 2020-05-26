@@ -10,7 +10,6 @@ import {
   AsyncStorage,
   Alert,
   ActivityIndicator,
-  StatusBar,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { Notifications } from 'expo';

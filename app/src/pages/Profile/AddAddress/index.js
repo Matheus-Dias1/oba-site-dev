@@ -4,7 +4,6 @@ import {
     Text,
     TextInput,
     TouchableWithoutFeedback,
-    Keyboard,
     AsyncStorage,
     ActivityIndicator,
     Platform,

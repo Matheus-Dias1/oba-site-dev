@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons/'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons/'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text'
@@ -78,7 +78,7 @@ export default function FinalizePurchase() {
         }
       })
     } catch (err) {
-      console.log(err)
+
     }
   }
 
@@ -147,7 +147,7 @@ export default function FinalizePurchase() {
             }
           })
         } catch (err) {
-          console.log(err)
+
         }
         if (cuponValidated && await AsyncStorage.getItem('pushCupon') && cupon === JSON.parse(await AsyncStorage.getItem('pushCupon')).cupon)
           await AsyncStorage.removeItem('pushCupon');
