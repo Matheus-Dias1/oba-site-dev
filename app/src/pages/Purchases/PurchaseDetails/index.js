@@ -127,7 +127,7 @@ export default function Purchases() {
 
                   return (
                     <View key={productsPurchase.indexOf(item)} style={{ marginVertical: 5 }}>
-                      <Text style={{ color: '#41414b' }}>{`${String(item.amount).replace('.', '*').replace(',', '.').replace('*', ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
+                      <Text style={{ color: '#41414b' }}>{`${String(item.amount).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
                       {!!item.observation && <Text style={styles.cartListingObservation}>Observação: {item.observation}</Text>}
                     </View>
                   )
