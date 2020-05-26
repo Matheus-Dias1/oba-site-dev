@@ -114,7 +114,7 @@ export default function NewClientInformation() {
                             {
                                 dateTime.map(date => {
                                     return (
-                                        <option key={dateTime.indexOf(date)} value={dateTime.indexOf(date)}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date)) + (date.period === 'morning' ? ' - Manhã' : ' - Tarde')}</option>
+                                        <option key={dateTime.indexOf(date)} value={dateTime.indexOf(date)}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date)) + (date.period === 'morning' ? ' - Manhã' : (date.period === 'afternoon' ? ' - Tarde' : ' - Noite'))}</option>
                                     )
                                 })
                             }

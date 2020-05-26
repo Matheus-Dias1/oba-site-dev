@@ -52,7 +52,7 @@ export default function PrintPurchases() {
                     }
                     function formatDateTime(date, period) {
 
-                        return Intl.DateTimeFormat('pt-BR').format(new Date(date)) + (period === 'morning' ? ' - Manhã' : ' - Tarde')
+                        return Intl.DateTimeFormat('pt-BR').format(new Date(date)) + (period === 'morning' ? ' - Manhã' : (period === 'afternoon' ? ' - Tarde' : ' - Noite'))
 
                     }
 

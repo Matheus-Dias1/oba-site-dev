@@ -90,7 +90,7 @@ export default function ViewPurchase() {
                 setValue(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value));
                 setChange(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(change));
 
-                setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + (delivery_period === 'morning' ? ' - Manhã' : ' - Tarde'));
+                setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + (delivery_period === 'morning' ? ' - Manhã' : (delivery_period === 'afternoon' ? ' - Tarde' : ' - Noite')));
 
             }).catch(err => {
                 if (err.response.status === 401 || err.response.status === 403) {

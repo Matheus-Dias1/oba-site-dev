@@ -122,7 +122,7 @@ export default function PanelPurchases() {
                                                 <p>{obsData.street + ' ' + obsData.number + ', ' + obsData.neighborhood} </p>
                                             </a>
                                             <strong>ENTREGA:</strong>
-                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'Manhã' : 'Tarde')}</p>
+                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'Manhã' : (purchase.delivery_period === 'afternoon' ? 'Tarde' : 'Noite'))}</p>
                                             <strong>OBSERVAÇÕES:</strong>
                                             <p>{obsData.observation}</p>
                                         </div>
@@ -154,7 +154,7 @@ export default function PanelPurchases() {
                                                 <p>{purchase.street + ' ' + purchase.number + ', ' + purchase.neighborhood} </p>
                                             </a>
                                             <strong>ENTREGA:</strong>
-                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'MANHÃ' : 'TARDE')}</p>
+                                            <p>{dateFormater(purchase.delivery_date) + ' - ' + (purchase.delivery_period === 'morning' ? 'Manhã' : (purchase.delivery_period === 'afternoon' ? 'Tarde' : 'Noite'))}</p>
                                             <strong>OBSERVAÇÕES:</strong>
                                             <p>{purchase.observation}</p>
                                         </div>
