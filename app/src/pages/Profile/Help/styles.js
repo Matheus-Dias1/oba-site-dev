@@ -35,16 +35,14 @@ export default StyleSheet.create({
         height: 50
     },
     buttonContainer:{
-        width: '33%',
+        width: '20%',
         justifyContent: 'center',
         alignItems: 'center',
     },
     middleButton:{
-        borderRightColor: 'white',
         borderLeftColor: 'white',
         borderLeftWidth: 1,
-        borderRightWidth: 1
-    }
+    },
 
 
 });
