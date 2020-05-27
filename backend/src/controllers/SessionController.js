@@ -10,7 +10,7 @@ module.exports = {
         try {
             const user = await connection('users')
                 .select('password', 'name', 'id', 'admin')
-                .where('email', email)
+                .where('email', email.toLowerCase())
                 .first();
 
             if (!user) {

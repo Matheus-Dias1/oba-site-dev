@@ -11,7 +11,7 @@ module.exports = {
 
             await connection('users').insert({
                 name,
-                email,
+                email: email.toLowerCase(),
                 password: hash,
                 phone
             });
