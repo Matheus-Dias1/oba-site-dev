@@ -48,6 +48,7 @@ module.exports = {
                 .orderBy('available', 'desc');
             return response.json(products);
         } catch (err) {
+            console.log('\nUNEXPECTED ERROR ON PRODUCT INDEX: ', err)
             return response.sendStatus(422);
         }
     },

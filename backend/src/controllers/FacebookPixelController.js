@@ -57,7 +57,7 @@ module.exports = {
                 .setEvents(eventsData)
                 .setTestEventCode('TEST66833')
 
-            const res = await eventRequest.execute();
+            await eventRequest.execute();
 
         } catch (err) {
             console.log('\nUNEXPECTED ERROR ON PIXEL/REGISTRATION: ', err)
@@ -170,8 +170,7 @@ module.exports = {
                 .setEvents(eventsData)
                 .setTestEventCode('TEST66833')
 
-            const res = await eventRequest.execute();
-            console.log(res)
+            await eventRequest.execute();
 
         } catch (err) {
             console.log('\nUNEXPECTED ERROR ON PIXEL/CONTACT: ', err)
@@ -234,7 +233,6 @@ module.exports = {
             if (sendLastName)
                 userData.setLastName(sendLastName)
 
-            console.log(contentsList)
             const customData = (new CustomData())
                 .setContentType('product')
                 .setOrderId(orderID)
