@@ -196,7 +196,7 @@ export default function Products() {
       setPage(2);
 
     } catch (err) {
-      Alert.alert('Erro ao carregar nova categoria', 'Tente novamente mais tarde')
+      Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
       setSwitchingCategory(false);
@@ -325,7 +325,7 @@ export default function Products() {
         return JSON.stringify(item) !== JSON.stringify(Item)
       }))
     } catch (err) {
-      Alert.alert('Erro ao excluir item do carrinho.')
+      Alert.alert('Erro ao excluir item do carrinho', 'Tente novamente');
     }
   }
 
