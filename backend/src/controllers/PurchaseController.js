@@ -49,7 +49,8 @@ module.exports = {
                             .where('id', id_address)
                             .first();
                     } catch (err) {
-
+                        console.log('\nUNEXPECTED ERROR ON PURCHASE CREATE GETTING CITY FROM ID: ', err)
+                        throw new Error()
                     }
                 } else {
                     city = pcity
@@ -163,8 +164,8 @@ module.exports = {
                     error: 'O cupom expirou ou foi usado por outra pessoa'
                 })
             else {
-            console.log('\nUNEXPECTED ERROR ON PURCHASE CREATE: ', err)
-            return response.sendStatus(422)
+                console.log('\nUNEXPECTED ERROR ON PURCHASE CREATE: ', error)
+                return response.sendStatus(422)
             }
 
         }

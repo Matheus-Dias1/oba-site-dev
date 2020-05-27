@@ -91,7 +91,7 @@ module.exports = {
                 .orWhere('date', '<', (new Date().setHours(0, 0, 0, 0)))
                 .delete();
         } catch (err) {
-
+            console.log('\nUNEXPECTED ERROR ON SCHEDULE CREATE DELETE OLD DATES: ', err)
         }
         var curSche;
         try {
@@ -104,7 +104,8 @@ module.exports = {
                 .first();
 
         } catch (err) {
-
+            console.log('\nUNEXPECTED ERROR ON SCHEDULE CREATE GET CURSHE: ', err)
+            return response.sendStatus(422);
         }
         if (curSche == null) {
             try {

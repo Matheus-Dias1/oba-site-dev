@@ -51,6 +51,7 @@ module.exports = {
                 }
                 cuponObj = res;
             } catch (err) {
+                console.log('\nUNEXPECTED ERROR ON PUSH SEND FETCH CUPON: ', err)
                 return response.json({
                     status: 'error',
                     code: 'cuponNotFound',
@@ -94,7 +95,7 @@ module.exports = {
                             body,
                             sound: 'default',
                         }
-                        : 
+                        :
                         {
                             to: groupedTokens[i],
                             title,
@@ -167,10 +168,10 @@ module.exports = {
             const resdata = {
                 status: errors.length > 0 ? 'error' : 'ok',
             }
-            if (errors.length > 0){
+            if (errors.length > 0) {
                 console.log('\nPUSH RECEIPTS ERRORS ON PUSHCONTROLLER SENDPUSH: ', errors)
-                resdata.error= 'pushReceipts',
-                resdata.details= errors
+                resdata.error = 'pushReceipts',
+                    resdata.details = errors
             }
             return response.json(resdata);
         } catch (err) {

@@ -26,7 +26,7 @@ module.exports = {
                 });
             }
             else {
-                console.log('\nUNEXPECTED ERROR ON USER CREATE: ', err)
+                console.log('\nUNEXPECTED ERROR ON USER CREATE: ', e)
                 return response.sendStatus(422);
             }
         }

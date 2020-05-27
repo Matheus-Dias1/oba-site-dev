@@ -21,7 +21,8 @@ module.exports = {
                 })
                 .first();
         } catch (err) {
-
+            console.log('\nUNEXPECTED ERROR ON SHOPPINGCART CREATE FETCHING CURCART: ', err)
+            return response.sendStatus(422);
         }
         try {
             if (curCart == null) {
@@ -106,7 +107,7 @@ module.exports = {
                     products: []
                 })
             var resProds = [];
-            for (i in products){
+            for (i in products) {
                 resProds.push(products[i].name);
             }
             return response.json({

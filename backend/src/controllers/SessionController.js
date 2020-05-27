@@ -36,7 +36,7 @@ module.exports = {
                     } catch (err) {
                         throw err;
                     }
-                    
+
                 } else {
                     return response.status(400).json({
                         error: 'E-mail não cadastradado ou senha incorreta'

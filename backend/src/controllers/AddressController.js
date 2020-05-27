@@ -3,25 +3,25 @@ const connection = require('../database/connection');
 module.exports = {
     async create(request, response) {
 
-        function haversineDistance (coords){
+        function haversineDistance(coords) {
             const lat1 = -18.903228;
             const lon1 = -48.285291;
             const lat2 = coords[0];
             const lon2 = coords[1];
             const R = 6371e3;
-            const φ1 = lat1 * Math.PI/180;
-            const φ2 = lat2 * Math.PI/180;
-            const Δφ = (lat2-lat1) * Math.PI/180;
-            const Δλ = (lon2-lon1) * Math.PI/180;
-            
-            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                      Math.cos(φ1) * Math.cos(φ2) *
-                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            
+            const φ1 = lat1 * Math.PI / 180;
+            const φ2 = lat2 * Math.PI / 180;
+            const Δφ = (lat2 - lat1) * Math.PI / 180;
+            const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
             const d = R * c;
-            return d/1000;
-            }
+            return d / 1000;
+        }
 
         const {
             country,
@@ -35,10 +35,10 @@ module.exports = {
             lng,
         } = request.body;
 
-        const distance = haversineDistance([lat,lng]);
-        const delivery_fee = 
+        const distance = haversineDistance([lat, lng]);
+        const delivery_fee =
             city.toLowerCase() === 'araguari' ? 9
-            : (distance <= 1 ? 5 : parseFloat(((distance-1)+5).toFixed(2)))
+                : (distance <= 1 ? 5 : parseFloat(((distance - 1) + 5).toFixed(2)))
 
         const id_user = request.data.id;
         try {

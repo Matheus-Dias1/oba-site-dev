@@ -2,7 +2,7 @@ const connection = require('../database/connection');
 
 module.exports = {
     async indexAddresses(request, response) {
-        
+
         const id_user = request.data.id;
         try {
             const addresses = await connection('addresses')
@@ -98,14 +98,14 @@ module.exports = {
 
             var sum = 0;
 
-            for (i in cartItems){
+            for (i in cartItems) {
 
                 if (cartItems[i].unit === 'UN' && cartItems[i].unit_price !== null)
                     sum = sum + cartItems[i].unit_price * cartItems[i].amount;
                 else
                     sum = sum + cartItems[i].price * cartItems[i].amount;
             }
-            return response.json({cartValue: sum});
+            return response.json({ cartValue: sum });
         } catch (err) {
             console.log('\nUNEXPECTED ERROR ON PROFILE GETCARTTOTAL: ', err)
             return response.sendStatus(422);
@@ -115,22 +115,22 @@ module.exports = {
 
     async indexProducts(request, response) {
         const {
-                page = 1,
-                category = '',
-                city
-            } = request.query;
+            page = 1,
+            category = '',
+            city
+        } = request.query;
         try {
             const [count] = await connection('products')
-            .where('available', true)
-            .where('category', 'like', `%${category}%`)
-            .where('delivers_to', 'like', `%${city}%` )
-            .count();
+                .where('available', true)
+                .where('category', 'like', `%${category}%`)
+                .where('delivers_to', 'like', `%${city}%`)
+                .count();
             const addresses = await connection('products')
                 .limit(10)
                 .offset((page - 1) * 10)
                 .select('*')
                 .where('available', true)
-                .where('delivers_to', 'like', `%${city}%` )
+                .where('delivers_to', 'like', `%${city}%`)
                 .where('category', 'like', `%${category}%`)
 
             response.header('X-Total-Count', count['count(*)']);

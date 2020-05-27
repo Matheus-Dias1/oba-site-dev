@@ -3,7 +3,7 @@ const bizSdk = require('facebook-nodejs-business-sdk');
 
 module.exports = {
     async CompleteRegistration(request, response) {
-    const {
+        const {
             platform,
             name,
             phone,
