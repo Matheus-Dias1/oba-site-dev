@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, Alert } from 'react-native'
+import { AsyncStorage, Alert, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,6 +22,7 @@ import AddAddress from './pages/Profile/AddAddress';
 import Login from './pages/Login/Login'
 import Register from './pages/Login/Register'
 import ForgotPassword from './pages/Login/ForgotPassword'
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -78,7 +79,7 @@ function ProfileTab() {
         headerBackTitleVisible: false,
       }}
     >
-      
+
       <Stack.Screen
         name="Profile"
         component={Profile}
@@ -265,64 +266,68 @@ export default function Routes() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {state.userToken == null ? (
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false
-            }}>
-            <Stack.Screen
-              name="Login"
-              component={Login}
-            />
-            <Stack.Screen
-              name="ForgotPassword"
-              component={ForgotPassword}
-            />
-            <Stack.Screen
-              name="Register"
-              component={Register}
-            />
+        {state.isLoading ? <View style={{ flex: 1, backgroundColor: '#049434' }} /> :
+          state.userToken == null ? (
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false
+              }}>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen
+                name="ForgotPassword"
+                component={ForgotPassword}
+              />
+              <Stack.Screen
+                name="Register"
+                component={Register}
+              />
 
-          </Stack.Navigator>
-        ) : (
-            <Tab.Navigator
-              initialRouteName="Produtos"
-              backBehavior="history"
-              screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
-                  let style;
+            </Stack.Navigator>
+          ) : (
+              <Tab.Navigator
+                initialRouteName="Produtos"
+                backBehavior="history"
+                screenOptions={({ route }) => ({
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    let style;
 
-                  if (route.name === 'Produtos') {
-                    iconName = 'store-alt';
-                    style = 'light'
-                  } else if (route.name === 'Pedidos') {
-                    iconName = 'clipboard';
-                    style = focused ? 'solid' : 'light'
-                  } else if (route.name === 'Perfil') {
-                    iconName = 'user';
-                    style = focused ? 'solid' : 'light'
+                    if (route.name === 'Produtos') {
+                      iconName = 'store-alt';
+                      style = 'light'
+                    } else if (route.name === 'Pedidos') {
+                      iconName = 'clipboard';
+                      style = focused ? 'solid' : 'light'
+                    } else if (route.name === 'Perfil') {
+                      iconName = 'user';
+                      style = focused ? 'solid' : 'light'
 
 
-                  }
-                  if (style === 'solid')
-                    return <FontAwesome5 name={iconName} size={size} color={color} solid />;
-                  else
-                    return <FontAwesome5 name={iconName} size={size} color={color} light />;
+                    }
+                    if (style === 'solid')
+                      return <FontAwesome5 name={iconName} size={size} color={color} solid />;
+                    else
+                      return <FontAwesome5 name={iconName} size={size} color={color} light />;
 
-                },
-              })}
-              tabBarOptions={{
-                activeTintColor: '#049434',
-                inactiveTintColor: 'gray',
-                keyboardHidesTabBar: true
-              }}
-            >
-              <Tab.Screen name="Produtos" component={ProductsTab} />
-              <Tab.Screen name="Pedidos" component={PurchaseTab} />
-              <Tab.Screen name="Perfil"component={ProfileTab} />
-            </Tab.Navigator>
-          )}
+                  },
+                })}
+                tabBarOptions={{
+                  activeTintColor: '#049434',
+                  inactiveTintColor: 'gray',
+                  keyboardHidesTabBar: true
+                }}
+              >
+                <Tab.Screen name="Produtos" component={ProductsTab} />
+                <Tab.Screen name="Pedidos" component={PurchaseTab} />
+                <Tab.Screen name="Perfil" component={ProfileTab} />
+              </Tab.Navigator>
+            )}
       </NavigationContainer>
     </AuthContext.Provider>
   );
