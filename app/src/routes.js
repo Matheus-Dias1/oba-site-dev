@@ -251,8 +251,10 @@ export default function Routes() {
         } catch (err) {
           if (err.response.status === 400)
             Alert.alert(err.response.data.error)
-          else
+          else{
             Alert.alert('Falha no login', 'Erro ao fazer login, tente novamente mais tarde.');
+            console.log(err)
+          }
         }
       },
       signOut: async () => {

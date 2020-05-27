@@ -119,6 +119,8 @@ export default function Products() {
       setTotalProducts(response.headers['x-total-count']);
       setPage(page + 1);
     } catch (err) {
+      console.log(err)
+
       Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
