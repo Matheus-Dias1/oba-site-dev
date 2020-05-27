@@ -73,7 +73,7 @@ module.exports = {
                 message: 'Já existe um cupom com esse código'
             }) 
             console.log('\nUNEXPECTED ERROR ON CUPON CREATION: ', err);
-            return response.status(422).send();
+            return response.sendStatus(422);
         }
     },
     async getCupon(request, response) {

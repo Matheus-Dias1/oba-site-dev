@@ -3,7 +3,7 @@ const connection = require('../database/connection');
 module.exports = {
     async create(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         const {
             product_name,
             available,
@@ -31,7 +31,8 @@ module.exports = {
             });
             return response.sendStatus(201);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON CREATE PRODUCT: ', err)
+            return response.sendStatus(422);
         }
 
     },
@@ -40,20 +41,20 @@ module.exports = {
 
     async index(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         try {
             const products = await connection('products')
                 .select('*')
                 .orderBy('available', 'desc');
             return response.json(products);
         } catch (err) {
-            return response.status(422).send();
+            return response.sendStatus(422);
         }
     },
 
     async updateAvailability(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         const { id } = request.params;
         try {
             let { available } = await connection('products')
@@ -66,9 +67,9 @@ module.exports = {
                 .where('id', id)
                 .update({ available: available });
 
-            return response.status(201).send();
+            return response.sendStatus(201);
         } catch (err) {
-            console.log('updateAvailability:', err)
+            console.log('\nUNEXPECTED ERROR ON UPDATEAVAILABILITY: ', err)
             return response.sendStatus(422);
         }
 

@@ -3,7 +3,7 @@ const connection = require('../database/connection');
 module.exports = {
     async index(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         const { idP } = request.params;
         if (idP !== 'all') {
             try {
@@ -51,7 +51,8 @@ module.exports = {
                 };
                 return response.json(res);
             } catch (err) {
-                return response.status(422).send();
+                console.log('\nUNEXPECTED ERROR ON INDEX PRODUCTSPURCHASES IDP="all": ', err)
+                return response.sendStatus(422);
             }
         }
         try {
@@ -59,7 +60,7 @@ module.exports = {
                 .select('id')
                 .where('delivered', 0)
                 .orderByRaw('date(delivery_date) asc, delivery_period asc');
-            
+
             let arrID = []
             for (id in idsND) {
                 arrID.push(idsND[id].id);
@@ -114,7 +115,8 @@ module.exports = {
             }
             return response.json(res);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON INDEX PRODUCTSPURCHASES idP="number": ', err)
+            return response.sendStatus(422);
         }
     }
 }

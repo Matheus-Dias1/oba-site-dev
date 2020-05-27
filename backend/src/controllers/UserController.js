@@ -26,19 +26,21 @@ module.exports = {
                 });
             }
             else {
-                return response.status(422).send();
+                console.log('\nUNEXPECTED ERROR ON USER CREATE: ', err)
+                return response.sendStatus(422);
             }
         }
     },
 
     async index(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         try {
             const users = await connection('users').select('*');
             return response.json(users);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON SHOPPINGCART INDEX: ', err)
+            return response.sendStatus(422);
         }
     }
 };

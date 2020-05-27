@@ -18,6 +18,7 @@ module.exports = {
                 .where('id', id);
             return response.sendStatus(201);
         } catch (err) {
+            console.log('\nUNEXPECTED ERROR ON PROFILEUPDATE UPDATE: ', err)
             return response.sendStatus(422);
         }
     },
@@ -57,6 +58,7 @@ module.exports = {
                 }
             });
         } catch (err) {
+            console.log('\nUNEXPECTED ERROR ON PROFILEUPDATE UPDATEPASSWORD: ', err)
             return response.sendStatus(422);
         }
     },
@@ -70,7 +72,8 @@ module.exports = {
                 .first();
             return response.json(res);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILEUPDATE GETDATA: ', err)
+            return response.sendStatus(422);
         }
     }
 };

@@ -3,7 +3,7 @@ const connection = require('../database/connection');
 module.exports = {
     async update(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
 
         const { id } = request.params;
         const {
@@ -29,9 +29,10 @@ module.exports = {
                     "delivers_to": delivers_to
                 })
 
-            return response.status(201).send();
+            return response.sendStatus(200);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PRODUCTUPDATE UPDATE: ', err)
+            return response.sendStatus(422);
         }
     },
 
@@ -53,12 +54,13 @@ module.exports = {
                 .first();
             return response.json(products);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PRODUCTUPDATE GETDATA: ', err)
+            return response.sendStatus(422);
         }
     },
     async createDeal(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         const {
             dealUnitPrice,
             unitPrice,
@@ -79,15 +81,16 @@ module.exports = {
                 })
                 .where('id', id);
 
-            return response.status(201).send();
+            return response.sendStatus(200);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PRODUCTUPDATE CREATEDEAL: ', err)
+            return response.sendStatus(422);
         }
 
     },
     async removeDeal(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         const {
             unitPrice,
             price,
@@ -105,9 +108,10 @@ module.exports = {
                 })
                 .where('id', id);
 
-            return response.status(201).send();
+            return response.sendStatus(200);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PRODUCTUPDATE REMOVEDEAL: ', err)
+            return response.sendStatus(422);
         }
 
     },

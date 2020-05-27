@@ -66,13 +66,13 @@ module.exports = {
             }
             return response.json(res);
         } catch (err) {
-            console.log(err)
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON SCHEDULE INDEXING: ', err)
+            return response.sendStatus(422);
         }
     },
     async create(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         const {
             date,
             afternoon_deliveries,
@@ -116,9 +116,10 @@ module.exports = {
                         night_deliveries,
                         city
                     })
-                return response.status(201).send();
+                return response.sendStatus(201);
             } catch (err) {
-                return response.status(422).send();
+                console.log('\nUNEXPECTED ERROR ON SCHEDULE CREATE CURSHE=null: ', err)
+                return response.sendStatus(422);
             }
         } else {
             try {
@@ -132,13 +133,11 @@ module.exports = {
                         date,
                         city
                     });
-                return response.status(201).send();
+                return response.sendStatus(200);
             } catch (err) {
-                return response.status(422).send();
+                console.log('\nUNEXPECTED ERROR ON SCHEDULE CREATE CURSHE!=null: ', err)
+                return response.sendStatus(422);
             }
         }
-
     }
-
-
 };

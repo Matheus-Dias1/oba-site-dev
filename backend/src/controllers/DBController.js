@@ -12,10 +12,9 @@ module.exports = {
             page
         } = request.body;
         const dbKey = request.headers['dbkey'];
-        if (dbKey !== process.env.DB_PASSWORD) {
+        if (dbKey !== process.env.DB_PASSWORD) 
             return response.sendStatus(403);
-
-        }
+        
         const admin = request.data.admin;
         if (!admin)
             return response.sendStatus(403);

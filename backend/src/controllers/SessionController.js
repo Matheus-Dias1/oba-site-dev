@@ -15,7 +15,7 @@ module.exports = {
 
             if (!user) {
                 return response.status(400).json({
-                    error: 'E-mail não cadastrado'
+                    error: 'E-mail não cadastradado ou senha incorreta'
                 });
             }
 
@@ -39,12 +39,13 @@ module.exports = {
                     
                 } else {
                     return response.status(400).json({
-                        error: 'Senha incorreta'
+                        error: 'E-mail não cadastradado ou senha incorreta'
                     });
                 }
             });
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON SESSION: ', err)
+            return response.sendStatus(422);
         }
     }
 }

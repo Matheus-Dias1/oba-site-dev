@@ -163,34 +163,36 @@ module.exports = {
                     error: 'O cupom expirou ou foi usado por outra pessoa'
                 })
             else {
-                return response.sendStatus(422)
+            console.log('\nUNEXPECTED ERROR ON PURCHASE CREATE: ', err)
+            return response.sendStatus(422)
             }
 
         }
 
-        return response.status(201).send();
+        return response.sendStatus(201);
 
     },
 
     async updateDelivery(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         const { id } = request.params;
         try {
             await connection('purchases')
                 .where('id', id)
                 .update({ delivered: true }); // Só mostra delivered: false no painel
 
-            return response.status(201).send();
+            return response.sendStatus(200);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PURCHASE UPDATEDELIVERY: ', err)
+            return response.sendStatus(422);
         }
 
     },
 
     async index(request, response) {
         const admin = request.data.admin;
-        if (admin !== 1) return response.status(401).send();
+        if (admin !== 1) return response.sendStatus(403);
         try {
             const purchases = await connection({
                 p: 'purchases',
@@ -220,7 +222,8 @@ module.exports = {
 
             return response.json(purchases);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PURCHASE INDEX: ', err)
+            return response.sendStatus(422);
         }
     }
 };

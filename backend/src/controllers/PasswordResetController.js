@@ -15,7 +15,6 @@ module.exports = {
                 .first();
 
             if (check == null) {
-                console.log(check)
                 return response.sendStatus(200);
             }
 
@@ -78,7 +77,7 @@ module.exports = {
 
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                    console.log(error)
+                    console.log('\nUNEXPECTED ERROR ON PASSWORD RESET MAIL TRANSPONDER.SENDMAIL: ', error)
                     return response.sendStatus(422);
                 } else {
                     return response.sendStatus(200);
@@ -86,7 +85,7 @@ module.exports = {
             });
 
         } catch (err) {
-            console.log(err);
+            console.log('\nUNEXPECTED ERROR ON PASSWORD RESET: ', err)
             return response.sendStatus(422);
         }
 

@@ -54,7 +54,8 @@ module.exports = {
             else value = amount * data.price;
             return response.json({ value: value });
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON SHOPPINGCART CREATE: ', err)
+            return response.sendStatus(422);
         }
     },
 
@@ -79,7 +80,8 @@ module.exports = {
 
             return response.json(shopping_carts);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON SHOPPINGCART INDEX: ', err)
+            return response.sendStatus(422);
         }
     },
 
@@ -112,7 +114,8 @@ module.exports = {
                 products: resProds
             });
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON SHOPPINGCART CHECKFORCITY: ', err)
+            return response.sendStatus(422);
         }
     },
 
@@ -123,9 +126,10 @@ module.exports = {
                 .where('id_user', id_user)
                 .delete();
 
-            response.status(200).send();
+            response.sendStatus(200);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON SHOPPINGCART DELETE: ', err)
+            return response.sendStatus(422);
         }
     },
 

@@ -13,6 +13,7 @@ module.exports = {
                 .where('id', id);
             return response.sendStatus(200);
         } catch (err) {
+            console.log('\nUNEXPECTED ERROR ON PUSHCONTROLLER UPDATEEXPOTOKEN: ', err)
             return response.sendStatus(422);
         }
     },
@@ -167,12 +168,14 @@ module.exports = {
                 status: errors.length > 0 ? 'error' : 'ok',
             }
             if (errors.length > 0){
+                console.log('\nPUSH RECEIPTS ERRORS ON PUSHCONTROLLER SENDPUSH: ', errors)
                 resdata.error= 'pushReceipts',
                 resdata.details= errors
             }
             return response.json(resdata);
         } catch (err) {
-            return response.status(422).json(err);
+            console.log('\nUNEXPECTED ERROR ON PUSHCONTROLLER SENDPUSH: ', err)
+            return response.sendStatus(422);
         }
     },
 }

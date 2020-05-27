@@ -12,7 +12,11 @@ module.exports = {
         try {
             addressInfo = (await geocode.get(`json?language=pt-BR&latlng=${coords.latitude},${coords.longitude}&key=${process.env.GEOCODE_API_KEY}`))
         } catch (err) {
-            //console.log(err)
+            console.log('\nUNEXPECTED ERROR ON GEOCODE GETADDRESS API FETCH: ', err)
+            return res.json({
+                "status": 'ERROR',
+                "result": {}
+            });
         }
 
         var componets_list = [];
@@ -63,8 +67,6 @@ module.exports = {
                         "result": {}
                     });
                 }
-
-
             }
         } catch (err) {
             return res.json({
@@ -96,7 +98,7 @@ module.exports = {
                     data.result.country.long_name = componets_list[i].long_name;
                 }
             } catch (err) {
-
+                console.log('\nUNEXPECTED ERROR ON GEOCODE GETADDRESS DATA PARSING: ', err)
             }
         }
         try {
@@ -104,7 +106,7 @@ module.exports = {
             data.result.geometry.lng = addressInfo.data.results[0].geometry.location.lng;
             data.result.geometry.location_type = addressInfo.data.results[0].geometry.location_type;
         } catch (err) {
-
+            console.log('\nUNEXPECTED ERROR ON GEOCODE GETADDRESS LATLNG PARSING: ', err)
         }
         return res.json(data);
     },
@@ -136,7 +138,11 @@ module.exports = {
         try {
             addressInfo = await geocode.get(parsed)
         } catch (err) {
-
+            console.log('\nUNEXPECTED ERROR ON GEOCODE GETCOORDINATES API FETCH: ', err)
+            return res.json({
+                "status": 'ERROR',
+                "result": {}
+            });
         }
 
         var componets_list = [];
@@ -186,8 +192,6 @@ module.exports = {
                     "result": {}
                 });
             }
-
-
         }
         for (i in addressInfo.data.results[0].address_components)
             componets_list.push(addressInfo.data.results[0].address_components[i])
@@ -213,7 +217,7 @@ module.exports = {
                     data.result.country.long_name = componets_list[i].long_name;
                 }
             } catch (err) {
-                //console.log(err)
+                console.log('\nUNEXPECTED ERROR ON GEOCODE GETCOORDINATES DATA PARSING: ', err)
             }
         }
         try {
@@ -221,9 +225,8 @@ module.exports = {
             data.result.geometry.lng = addressInfo.data.results[0].geometry.location.lng;
             data.result.geometry.location_type = addressInfo.data.results[0].geometry.location_type;
         } catch (err) {
-
+            console.log('\nUNEXPECTED ERROR ON GEOCODE GETCOORDINATES LATLNG PARSING: ', err)
         }
-        //console.log(data)
-        return res.json(data)
+        return res.json(data);
     }
 };

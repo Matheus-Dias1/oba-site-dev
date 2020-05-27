@@ -14,7 +14,8 @@ module.exports = {
 
             return response.json(addresses);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE INDEXADDRESSES: ', err)
+            return response.sendStatus(422);
         }
 
     },
@@ -38,7 +39,8 @@ module.exports = {
 
             return response.json(shopping_carts);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE INDEXSHOPPINGCART: ', err)
+            return response.sendStatus(422);
         }
     },
     async deleteItemFromCart(request, response) {
@@ -61,7 +63,8 @@ module.exports = {
                 .delete()
             return response.sendStatus(200);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE DELETEFROMCART: ', err)
+            return response.sendStatus(422);
         }
     },
     async hideAddress(request, response) {
@@ -73,7 +76,8 @@ module.exports = {
 
             return response.sendStatus(200);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE HIDEADDRESS: ', err)
+            return response.sendStatus(422);
         }
 
     },
@@ -103,7 +107,8 @@ module.exports = {
             }
             return response.json({cartValue: sum});
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE GETCARTTOTAL: ', err)
+            return response.sendStatus(422);
         }
 
     },
@@ -131,7 +136,8 @@ module.exports = {
             response.header('X-Total-Count', count['count(*)']);
             return response.json(addresses);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE INDEXPRODUCTS: ', err)
+            return response.sendStatus(422);
         }
 
     },
@@ -172,7 +178,8 @@ module.exports = {
             response.header('X-Total-Count', count['count(*)']);
             return response.json(purchases);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE INDEXPURCHASES: ', err)
+            return response.sendStatus(422);
         }
 
     },
@@ -196,7 +203,8 @@ module.exports = {
 
             return response.json(items);
         } catch (err) {
-            return response.status(422).send();
+            console.log('\nUNEXPECTED ERROR ON PROFILE INDEXPRODUCTSPURCHASES: ', err)
+            return response.sendStatus(422);
         }
 
     },

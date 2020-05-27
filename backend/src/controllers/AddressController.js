@@ -81,7 +81,7 @@ module.exports = {
             return response.json(addresses);
         } catch (err) {
             console.log('\nUNEXPECTED ERROR ON INDEX ADDRESSES: ', err)
-            return response.status(422).send();
+            return response.sendStatus(422);
         }
 
     },
