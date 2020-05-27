@@ -11,6 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as WebBrowser from 'expo-web-browser';
 import { useNavigation } from '@react-navigation/native';
 import logo from '../../../assets/logo_green_nobg.png';
 import api from '../../../services/api';
@@ -27,10 +28,18 @@ export default function Register() {
   const [selectedInput, setSelectedInput] = useState(-1);
   const [loading, setLoading] = useState(false);
 
+  async function openPrivacyPolicy(){
+    await WebBrowser.openBrowserAsync('https://obapolicies.htmlsave.net/privacy.html');
+  }
+
+  async function openToS(){
+    await WebBrowser.openBrowserAsync('https://obapolicies.htmlsave.net/');
+  }
+
   function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
-}
+  }
 
   async function handleRegistration() {
     if (loading) return;
@@ -75,12 +84,12 @@ export default function Register() {
       } catch (err) {
 
       }
-      
+
     } catch (err) {
       Alert.alert('Erro ao realizar cadastro, tente novamente mais tarde');
       setLoading(false);
     } finally {
-      
+
     }
 
   }
@@ -248,7 +257,19 @@ export default function Register() {
                   onBlur={() => setSelectedInput(-1)}
                 />
               </View>
-
+              <View style={styles.tosAndPolicyContainer}>
+                <Text style={styles.tosAndPolicyText}>
+                  {'Ao concluir seu cadastro, estará concordando com nossos '}
+                  <TouchableWithoutFeedback onPress={openToS}>
+                    <Text style={styles.tosAndPolicyLink}>termos de serviço</Text>
+                  </TouchableWithoutFeedback>
+                  {' e nossa '}
+                  <TouchableWithoutFeedback onPress={openPrivacyPolicy}>
+                    <Text style={styles.tosAndPolicyLink}>política de privacidade</Text>
+                  </TouchableWithoutFeedback>
+                  .
+                </Text>
+              </View>
               <TouchableWithoutFeedback onPress={() => handleRegistration()}>
                 <View style={styles.registerButton}>
                   <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Cadastrar</Text>

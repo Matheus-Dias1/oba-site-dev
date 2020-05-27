@@ -5,7 +5,7 @@ export default StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 0.9,
+        flex: 1,
     },
     logo: {
         width: 200,
@@ -23,7 +23,7 @@ export default StyleSheet.create({
     },
     inputContainer: {
         height: 45,
-        width: 260,
+        width: '100%',
         marginHorizontal: 0,
         marginTop: 10,
         borderBottomWidth: 1,
@@ -32,7 +32,7 @@ export default StyleSheet.create({
     },
     focusedInputContainer: {
         height: 45,
-        width: 260,
+        width: '100%',
         marginHorizontal: 0,
         marginTop: 10,
         borderBottomWidth: 2,
@@ -44,7 +44,7 @@ export default StyleSheet.create({
         backgroundColor: '#049434',
         borderRadius: 18,
         height: 45,
-        width: 260,
+        width: '100%',
         marginHorizontal: 0,
         marginTop: 40,
         borderWidth: 1,
@@ -75,4 +75,18 @@ export default StyleSheet.create({
         fontWeight: '400',
         textAlign:'center'
     },
+    content:{
+        width: '80%'
+    },
+    tosAndPolicyContainer:{
+        marginTop: 40
+    },
+    tosAndPolicyText:{
+        fontSize: 12,
+        color: '#737380',
+        textAlign: 'justify'
+    },
+    tosAndPolicyLink:{
+        color: '#049434',
+    }
 });

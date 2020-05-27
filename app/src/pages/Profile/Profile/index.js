@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import AuthContext from '../../../authcontext';
-import { Ionicons } from '@expo/vector-icons/'
+import { Ionicons,FontAwesome5 } from '@expo/vector-icons/'
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 
@@ -42,7 +42,7 @@ export default function Profile() {
         </View>
         <ScrollView>
           <View>
-            <TouchableWithoutFeedback onPress={()=>navigateTo('EditInfo')}>
+            <TouchableWithoutFeedback onPress={() => navigateTo('EditInfo')}>
               <View style={styles.optionContainer}>
                 <View style={styles.textIconView}>
                   <Ionicons style={{ marginBottom: -4 }} name={'md-person'} size={30} color={'#049434'} />
@@ -52,7 +52,7 @@ export default function Profile() {
 
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={()=>navigateTo('Addresses')}>
+            <TouchableWithoutFeedback onPress={() => navigateTo('Addresses')}>
               <View style={styles.optionContainer}>
                 <View style={styles.textIconView}>
                   <Ionicons style={{ marginBottom: -4 }} name={'md-home'} size={30} color={'#049434'} />
@@ -62,11 +62,21 @@ export default function Profile() {
 
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={()=>navigateTo('Help')}>
+            <TouchableWithoutFeedback onPress={() => navigateTo('Help')}>
               <View style={styles.optionContainer}>
                 <View style={styles.textIconView}>
                   <Ionicons style={{ marginBottom: -4 }} name={'md-help-circle-outline'} size={30} color={'#049434'} />
                   <Text style={styles.optionText}>Ajuda</Text>
+                </View>
+                <Ionicons style={styles.arrowButton} name={'ios-arrow-forward'} size={30} color={'#049434'} />
+
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => navigateTo('ToSAndPolicy')}>
+              <View style={styles.optionContainer}>
+                <View style={styles.textIconView}>
+                  <FontAwesome5 style={{ marginBottom: -4, marginLeft: 3, marginRight: -3 }} name="file-signature" size={24} color="#049434" />
+                  <Text style={styles.optionText}>Políticas e termos</Text>
                 </View>
                 <Ionicons style={styles.arrowButton} name={'ios-arrow-forward'} size={30} color={'#049434'} />
 
@@ -79,7 +89,7 @@ export default function Profile() {
 
         </ScrollView>
         <TouchableWithoutFeedback onPress={signOut}>
-          <View style={[styles.optionContainer, {marginBottom: 20}]}>
+          <View style={[styles.optionContainer, { marginBottom: 20 }]}>
             <View style={styles.textIconView}>
               <Ionicons style={{ marginBottom: -4 }} name={'md-log-out'} size={30} color={'#B22222'} />
               <Text style={styles.logoutText}>Sair</Text>

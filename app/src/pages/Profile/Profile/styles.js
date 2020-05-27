@@ -6,9 +6,11 @@ export default StyleSheet.create({
         flex: 1,
     },
     helloContainer:{
-        marginHorizontal: 20,
+        paddingHorizontal: 20,
         marginTop: 15,
-        marginBottom: 15,
+        paddingBottom: 15,
+        borderBottomColor: '#ededed',
+        borderBottomWidth: 2
     },
     helloText:{
         fontSize: 30,
@@ -21,6 +23,7 @@ export default StyleSheet.create({
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'space-between',
+
     },
     optionText:{
         marginLeft: 15,

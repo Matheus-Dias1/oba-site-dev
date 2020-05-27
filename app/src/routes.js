@@ -15,6 +15,7 @@ import PurchaseDetails from './pages/Purchases/PurchaseDetails';
 import Profile from './pages/Profile/Profile';
 import EditInfo from './pages/Profile/EditInfo';
 import Help from './pages/Profile/Help';
+import ToSAndPolicy from './pages/Profile/ToSAndPolicy';
 import Addresses from './pages/Profile/Addresses';
 import GetLocationFromMap from './pages/Profile/GetLocationFromMap';
 import AddAddress from './pages/Profile/AddAddress';
@@ -77,12 +78,25 @@ function ProfileTab() {
         headerBackTitleVisible: false,
       }}
     >
+      
       <Stack.Screen
         name="Profile"
         component={Profile}
         options={{
           headerShown: false,
-          title: "Perfil"
+          title: "Perfil",
+        }}
+      />
+      <Stack.Screen
+        name="ToSAndPolicy"
+        component={ToSAndPolicy}
+        options={{
+          title: "Políticas e termos",
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+            borderEndWidth: 0
+          },
         }}
       />
       <Stack.Screen
