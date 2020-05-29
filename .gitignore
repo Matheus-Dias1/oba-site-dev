@@ -54,3 +54,15 @@ app/.expo/packager-info.json
 app/.expo/settings.json
 app/src/variables.js
 app/.expo/packager-info.json
+backend/src/certificado/eace8c61d26fe0ee.crt
+backend/src/certificado/eace8c61d26fe0ee.pem
+backend/src/certificado/gd_bundle-g2-g1.crt
+backend/src/certificado/gd_bundle01.crt
+backend/src/certificado/gd_bundle02.crt
+backend/src/certificado/gd_bundle03.crt
+backend/src/certificado/key.key
+backend/src/certificado/a.crt
+backend/src/certificado/generated-csr.txt
+backend/src/certificado/hash.txt
+backend/src/certificado/private.txt
+backend/src/certificado/server.key

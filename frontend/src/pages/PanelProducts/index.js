@@ -24,7 +24,7 @@ export default function PanelProducts() {
 
 
     const [products, setProducts] = useState([]);
-    const url = 'http://localhost:3333/image/';
+    const url = 'https://deliveryoba.com.br/image/';
 
 
     useEffect(() => {

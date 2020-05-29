@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 6787,
-  "expoServerNgrokUrl": "https://hx-qu3.repta.app.exp.direct",
-  "packagerNgrokUrl": "https://packager.hx-qu3.repta.app.exp.direct",
-  "ngrokPid": 6951,
+  "packagerPid": 11599,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

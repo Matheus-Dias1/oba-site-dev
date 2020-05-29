@@ -217,7 +217,7 @@ export default function ProductDetails() {
           <View style={styles.addToCartButton}>
             <Text style={styles.addToCartText}>Adicionar ao Carrinho</Text>
             {loading ?
-              <ActivityIndicator size="small" color="#000" />
+              <ActivityIndicator size="small" color="#fff" />
               : <Ionicons name={'ios-cart'} size={28} color={'white'} />
             }
           </View>

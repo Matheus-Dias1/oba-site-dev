@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Delivery Oba",
+    "description": "E-commerce app for Delivery Oba",
     "slug": "deliveryoba",
     "platforms": [
       "ios",
@@ -8,6 +9,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
+    "primaryColor": "#049434",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -21,12 +23,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.deliveryoba.deliveryoba"
+      "bundleIdentifier": "com.deliveryoba.deliveryoba",
+      "buildNumber": "1.0.0",
+      "usesIcloudStorage": false,
+      "usesAppleSignIn": false,
+      "accessesContactNotes": false
     },
     "android": {
       "package": "com.deliveryoba.deliveryoba",
-      "versionCode": 1
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive_fg.png",
+        "backgroundColor": "#049434"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ] 
     }
   }
 }
