@@ -15,14 +15,14 @@ export default StyleSheet.create({
         marginBottom: 10
     },
     inputContainer: {
-        marginHorizontal: 40,
+        marginHorizontal: 20,
         marginTop: 35,
         alignSelf: 'stretch',
         borderBottomWidth: 1,
         borderColor: 'lightgray',
     },
     focusedInputContainer: {
-        marginHorizontal: 40,
+        marginHorizontal: 20,
         marginTop: 35,
         alignSelf: 'stretch',
         borderBottomWidth: 2,
@@ -57,7 +57,7 @@ export default StyleSheet.create({
         justifyContent: 'space-between'
     },
     group1InputContainer: {
-        marginLeft: 40,
+        marginLeft: 20,
         marginTop: 35,
         flex: 1,
         alignSelf: 'stretch',
@@ -65,7 +65,7 @@ export default StyleSheet.create({
         borderColor: 'lightgray',
     },
     focusedGroup1InputContainer: {
-        marginLeft: 40,
+        marginLeft: 20,
         marginTop: 35,
         flex: 1,
         alignSelf: 'stretch',
@@ -73,7 +73,7 @@ export default StyleSheet.create({
         borderColor: '#049434',
     },
     group2InputContainer: {
-        marginRight: 40,
+        marginRight: 20,
         marginLeft: 10,
         marginTop: 35,
         width: 65,
@@ -82,7 +82,7 @@ export default StyleSheet.create({
         borderColor: 'lightgray',
     },
     focusedGroup2InputContainer: {
-        marginRight: 40,
+        marginRight: 20,
         marginLeft: 10,
         marginTop: 35,
         width: 65,
