@@ -10,6 +10,7 @@ import {
   AsyncStorage,
   Alert,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { Notifications } from 'expo';
@@ -445,6 +446,7 @@ export default function Products() {
               <View style={styles.categoryList}>
                 <FlatList
                   horizontal
+                  initialScrollIndex = {Dimensions.get('screen').width >= 640 ? 0 : 1}
                   showsHorizontalScrollIndicator={false}
                   ListFooterComponent={<View style={{ marginLeft: 15 }} />}
                   keyExtractor={category => category}

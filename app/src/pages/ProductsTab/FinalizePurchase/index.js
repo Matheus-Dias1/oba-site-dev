@@ -399,7 +399,7 @@ export default function FinalizePurchase() {
 
   function verifyChange(needsChange) {
     if (needsChange) {
-      if (parseFloat(changeFor.replace('R$ ', '').replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) < total)
+      if (parseFloat(changeFor.replace('R$ ', '').replace(/\./g, '').replace(/,/g, '.')) < total)
         return Alert.alert('O valor digitado deve ser maior ou igual ao total da compra.')
     } else {
       setChangeFor('R$ ');
