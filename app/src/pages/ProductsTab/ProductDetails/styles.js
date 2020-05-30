@@ -1,18 +1,18 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
+const wid = Dimensions.get('screen').width;
 
 export default StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 10,
-        alignItems: "center",
-        justifyContent: 'space-between'
+        marginHorizontal: Math.floor(wid * 0.1)/2
     },
     imageContainer: {
         backgroundColor: 'white',
         alignItems: 'center',
         borderRadius: 8,
-        width: '90%',
+        width: Math.ceil(wid * 0.9),
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.1,
@@ -28,7 +28,7 @@ export default StyleSheet.create({
     },  
     image: {
         resizeMode: 'stretch',
-        width: '100%',
+        width: 0.9 * wid,
         aspectRatio: 13/7,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8
@@ -37,13 +37,11 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         marginTop: 10,
-        marginHorizontal: 5,
     },
     productDescription: {
         color: '#737380',
         marginTop: 5,
         marginBottom: 15,
-        marginHorizontal: 5,
     },
     amountContainer: {
         marginTop: 15,
@@ -76,6 +74,7 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 8,
         marginTop: 15,
+        marginBottom: 15,
         minHeight: 180,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},

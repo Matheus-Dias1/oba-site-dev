@@ -498,14 +498,14 @@ export default function Products() {
                       {product.product_name}
                     </Text>
                     <Text style={styles.productValue}>
-                      <Text style={styles.productProperty}>{'Valor/' + product.measurement_unit + ': '}</Text>
+                      <Text style={styles.productProperty}>{product.measurement_unit + ': '}</Text>
                       {product.full_price && <Text style={styles.dealValueText}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.full_price)}</Text>}
                       {product.full_price && ' '}
                       {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                     </Text>
                     {product.unit_price !== null &&
                       <Text style={styles.productValue}>
-                        <Text style={styles.productProperty}>{'Valor/UN: '}</Text>
+                        <Text style={styles.productProperty}>{'UN: '}</Text>
                         {product.full_unit_price && <Text style={styles.dealValueText}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.full_unit_price)}</Text>}
                         {product.full_unit_price && ' '}
                         {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.unit_price)}

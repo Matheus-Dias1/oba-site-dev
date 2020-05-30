@@ -27,7 +27,7 @@ export default StyleSheet.create({
     },
     productInfo: {
         marginLeft: 15,
-        maxWidth: '70%',
+        maxWidth: '50%',
         flexDirection: 'column'
     },
     productValue: {
@@ -44,7 +44,7 @@ export default StyleSheet.create({
     productName: {
         fontSize: 16,
         color: "#41414b",
-        fontWeight: "800",
+        fontWeight: Platform.OS === 'android' ? '700' : '800',
         marginBottom: 5,
     },
     productImage: {
