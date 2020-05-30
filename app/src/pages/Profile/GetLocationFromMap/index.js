@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import MapView from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import styles from './styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -62,6 +62,7 @@ export default function AddAddress() {
 
     <>
       <MapView
+        provider={PROVIDER_GOOGLE}
         region={{
           latitude: initialLocation.latitude,
           longitude: initialLocation.longitude,
