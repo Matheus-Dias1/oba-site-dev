@@ -232,18 +232,17 @@ export default function EditInfo() {
                 />
               </View>
 
-
-
+              <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
+                <View style={styles.editProfileButton}>
+                  <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
+                  {loading && <ActivityIndicator size="small" color="white" />}
+                </View>
+              </TouchableWithoutFeedback>
 
 
             </View>
 
-            <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
-              <View style={styles.editProfileButton}>
-                <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
-                {loading && <ActivityIndicator size="small" color="white" />}
-              </View>
-            </TouchableWithoutFeedback>
+
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
@@ -341,17 +340,17 @@ export default function EditInfo() {
                 />
               </View>
 
-
+              <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
+                <View style={styles.editProfileButton}>
+                  <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
+                  {loading && <ActivityIndicator size="small" color="white" />}
+                </View>
+              </TouchableWithoutFeedback>
 
 
             </View>
 
-            <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
-              <View style={styles.editProfileButton}>
-                <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
-                {loading && <ActivityIndicator size="small" color="white" />}
-              </View>
-            </TouchableWithoutFeedback>
+
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAwareScrollView>

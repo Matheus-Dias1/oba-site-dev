@@ -42,7 +42,7 @@ export default StyleSheet.create({
         height: 45,
         width: 260,
         marginHorizontal: 0,
-        marginTop: 40,
+        marginTop: 60,
         borderWidth: 1,
         borderColor: '#049434',
         alignItems: 'center',
