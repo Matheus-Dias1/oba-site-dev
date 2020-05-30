@@ -27,6 +27,7 @@ export default function ProductDetails() {
   const { signOut } = React.useContext(AuthContext);
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState([0, 0]);
+  const [cut, setCut] = useState('');
   const [price, setPrice] = useState([0, 0]);
   const [value, setValue] = useState([0, 0]);
   const [observation, setObservation] = useState('');
@@ -53,6 +54,14 @@ export default function ProductDetails() {
     }
 
   }
+
+  function needsCutInput() {
+    if (route.params && route.params.product)
+      if (route.params.product.category.includes('carnes'))
+        return true
+    return false
+  }
+
   function updateFloatValue(val) {
     let newValue;
     if (val == "") newValue = 0;
@@ -64,13 +73,25 @@ export default function ProductDetails() {
     if (loading) return;
     var data;
     setLoading(true);
+    let obs
+    if (route.params.product.category.includes('carnes')) {
+      if (!cut) {
+        Alert.alert('Erro ao adicionar ao carrinho', 'Informe o corte da carne')
+        setLoading(false);
+        return;
+      }
+      obs = observation
+      ? observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ') + '\nCorte: ' + cut.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
+      : 'Corte: ' + cut.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
+    } else
+      obs =  observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
     if (amount[0] > 0) {
 
       data = {
         id_product: product.id,
         amount: amount[0],
         unit: product.measurement_unit,
-        observation: observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ')
+        observation: obs
       }
       try {
         await api.post('shopping_carts', data, {
@@ -196,6 +217,18 @@ export default function ProductDetails() {
                 </View>}
 
               </View>
+              {needsCutInput() &&
+                <View style={styles.cutContainer}>
+                  <TextInput
+                    placeholder="Corte da carne"
+                    maxLength={30}
+                    textAlignVertical={'top'}
+                    style={styles.cutInput}
+                    onChangeText={(text) => setCut(text)}
+                    value={cut}
+                  />
+                </View>
+              }
               <View style={styles.obsContainer}>
                 <TextInput
                   placeholder="Observações sobre o produto"
@@ -257,7 +290,7 @@ export default function ProductDetails() {
                   <Text>{product.measurement_unit}</Text>
                   <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
                 </View>}
-                {['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G'].includes(product.measurement_unit)  && <View style={styles.measurementUnit}>
+                {['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
                   <View style={styles.intValueCounterContainer}>
                     {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
                       <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
@@ -300,6 +333,18 @@ export default function ProductDetails() {
                 </View>}
 
               </View>
+              {needsCutInput() &&
+                <View style={styles.cutContainer}>
+                  <TextInput
+                    placeholder="Corte da carne"
+                    maxLength={30}
+                    textAlignVertical={'top'}
+                    style={styles.cutInput}
+                    onChangeText={(text) => setCut(text)}
+                    value={cut}
+                  />
+                </View>
+              }
               <View style={styles.obsContainer}>
                 <TextInput
                   placeholder="Observações sobre o produto"

@@ -6,7 +6,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 10,
-        marginHorizontal: Math.floor(wid * 0.07)/2
+        marginHorizontal: Math.floor(wid * 0.07) / 2
     },
     imageContainer: {
         backgroundColor: 'white',
@@ -14,22 +14,21 @@ export default StyleSheet.create({
         borderRadius: 8,
         width: wid * 0.93,
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 1,
-
     },
-    textArea:{
+    textArea: {
         width: '88%',
         height: 160,
         marginHorizontal: 20,
         marginVertical: 10,
-    },  
+    },
     image: {
         resizeMode: 'stretch',
         width: 0.93 * wid,
-        aspectRatio: 13/7,
+        aspectRatio: 13 / 7,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8
     },
@@ -48,7 +47,7 @@ export default StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 8,
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         elevation: 1,
         shadowRadius: 2,
@@ -70,28 +69,43 @@ export default StyleSheet.create({
         height: 25,
         textAlign: 'center'
     },
-    obsContainer:{
+    obsContainer: {
         backgroundColor: 'white',
         borderRadius: 8,
         marginTop: 15,
         marginBottom: 15,
         minHeight: 180,
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 1,
     },
-    addToCartButton:{
+    addToCartButton: {
         height: 55,
         flexDirection: "row",
         justifyContent: "space-around",
         backgroundColor: '#049434',
         alignItems: "center",
     },
-    addToCartText:{
+    addToCartText: {
         color: 'white',
         fontSize: 17,
         fontWeight: '600'
     },
+    cutContainer: {
+        marginTop: 15,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        width: wid * 0.93,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 1,
+    },
+    cutInput:{
+        padding: 15,
+        marginHorizontal: 5,
+    }
 });
