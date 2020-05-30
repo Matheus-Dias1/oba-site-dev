@@ -174,7 +174,7 @@ export default function ProductDetails() {
                     borderBottomColor: 'lightgray',
                     borderBottomWidth: 1,
                     opacity: 0.4,
-                    width: 325,
+                    width: '100%',
 
                   }}
                 />}
@@ -278,7 +278,7 @@ export default function ProductDetails() {
                     borderBottomColor: 'lightgray',
                     borderBottomWidth: 1,
                     opacity: 0.4,
-                    width: 325,
+                    width: '100%',
 
                   }}
                 />}

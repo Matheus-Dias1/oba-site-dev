@@ -6,13 +6,13 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 10,
-        marginHorizontal: Math.floor(wid * 0.1)/2
+        marginHorizontal: Math.floor(wid * 0.07)/2
     },
     imageContainer: {
         backgroundColor: 'white',
         alignItems: 'center',
         borderRadius: 8,
-        width: Math.ceil(wid * 0.9),
+        width: wid * 0.93,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.1,
@@ -28,7 +28,7 @@ export default StyleSheet.create({
     },  
     image: {
         resizeMode: 'stretch',
-        width: 0.9 * wid,
+        width: 0.93 * wid,
         aspectRatio: 13/7,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8
