@@ -31,13 +31,13 @@ export default StyleSheet.create({
     addAddressButton: {
         flexDirection: 'row',
         backgroundColor: '#049434',
-        borderRadius: 18,
+        borderRadius: 8,
         height: 45,
         marginHorizontal: 65,
         alignSelf: 'stretch',
         marginTop: 40,
         borderWidth: 1,
-        borderColor: 'lightgray',
+        borderColor: '#049434',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 30

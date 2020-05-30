@@ -43,13 +43,13 @@ export default StyleSheet.create({
     registerButton: {
         flexDirection: 'row',
         backgroundColor: '#049434',
-        borderRadius: 18,
+        borderRadius: 8,
         height: 45,
         width: '100%',
         marginHorizontal: 0,
         marginTop: 40,
         borderWidth: 1,
-        borderColor: 'lightgray',
+        borderColor: '#049434',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 30
