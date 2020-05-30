@@ -398,7 +398,7 @@ export default function Products() {
                         <View style={styles.cartListingNameAndAmout}>
                           <Text style={styles.cartListingAmount}>{`${String(item.amount).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')} `}<Text style={styles.cartListingObservation}>x</Text> <Text style={styles.cartListingProductName}>{item.name}</Text> ({item.unit})</Text>
                         </View>
-                        {!!item.observation && <Text style={styles.cartListingObservation}>Observação: {item.observation}</Text>}
+                        {!!item.observation && <Text style={styles.cartListingObservation}>{item.observation}</Text>}
                         <Text style={styles.cartListingValue}>{formatPrice(item)}</Text>
                       </View>
                       <TouchableWithoutFeedback onPress={() => removeFromCart(item)}>
