@@ -12,7 +12,7 @@ export default StyleSheet.create({
     logo: {
         width: 200,
         height: 75,
-        resizeMode: 'center',
+        resizeMode: 'contain',
         alignSelf: 'center'
     },
     loginText: {

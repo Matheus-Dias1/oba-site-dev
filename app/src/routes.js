@@ -251,7 +251,7 @@ export default function Routes() {
         } catch (err) {
           if (err.response.status === 400)
             Alert.alert(err.response.data.error)
-          else{
+          else {
             Alert.alert('Falha no login', 'Erro ao fazer login, tente novamente mais tarde.');
             console.log(err)
           }
@@ -270,24 +270,41 @@ export default function Routes() {
       <NavigationContainer>
         {state.isLoading ? <View style={{ flex: 1, backgroundColor: '#049434' }} /> :
           state.userToken == null ? (
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false
-              }}>
+            <Stack.Navigator>
               <Stack.Screen
                 name="Login"
                 component={Login}
                 options={{
                   animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                  headerShown: false,
+                  headerTitle: ''
                 }}
               />
               <Stack.Screen
                 name="ForgotPassword"
                 component={ForgotPassword}
+                options={{
+                  headerTintColor: 'black',
+                  headerBackTitle: 'Voltar',
+                  headerTitle: '',
+                  headerStyle: {
+                    backgroundColor: '#f2f2f2',
+                    borderEndWidth: 0
+                  },
+                }}
               />
               <Stack.Screen
                 name="Register"
                 component={Register}
+                options={{
+                  headerTintColor: 'black',
+                  headerBackTitle: 'Voltar',
+                  headerTitle: '',
+                  headerStyle: {
+                    backgroundColor: '#f2f2f2',
+                    borderEndWidth: 0
+                  },
+                }}
               />
 
             </Stack.Navigator>
