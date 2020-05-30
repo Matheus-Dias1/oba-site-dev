@@ -133,7 +133,7 @@ export default function PrintPurchases() {
                                                             <td><p>{item.product}</p></td>
                                                             <td><p>{String(item.amount).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')}</p></td>
                                                             <td><p>{item.unit}</p></td>
-                                                            <td><p>{item.observation}</p></td>
+                                                            <td><p>{item.observation.replace('\n', ' / ')}</p></td>
                                                         </tr>
                                                     </tbody>
                                                 )
@@ -224,7 +224,7 @@ export default function PrintPurchases() {
                                                             <td><p>{item.product}</p></td>
                                                             <td><p>{String(item.amount).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')}</p></td>
                                                             <td><p>{item.unit}</p></td>
-                                                            <td><p>{item.observation}</p></td>
+                                                            <td><p>{item.observation.replace('\n', ' / ')}</p></td>
                                                         </tr>
                                                     </tbody>
                                                 )
