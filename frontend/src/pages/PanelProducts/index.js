@@ -84,8 +84,8 @@ export default function PanelProducts() {
 
     async function handleDealCreate(index) {
         try {
-            const dealPrice = parseFloat(prompt(`Digite o preço do(a) ${products[index].measurement_unit} com desconto`).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ','));
-            const dealUnitPrice = products[index].unit_price ? parseFloat(prompt('Digite o valor da UN com desconto').replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) : null;
+            const dealPrice = parseFloat(prompt(`Digite o preço do(a) ${products[index].measurement_unit} com desconto`).replace(/\./g, '').replace(/,/g, '.'));
+            const dealUnitPrice = products[index].unit_price ? parseFloat(prompt('Digite o valor da UN com desconto').replace(/\./g, '').replace(/,/g, '.')) : null;
             if (!dealPrice && !dealUnitPrice) return;
             await api.put(`products/deal/create/${products[index].id}`, {
                 dealUnitPrice: dealUnitPrice ? dealUnitPrice : null,

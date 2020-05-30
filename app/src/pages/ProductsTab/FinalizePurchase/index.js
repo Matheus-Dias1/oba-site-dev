@@ -110,7 +110,7 @@ export default function FinalizePurchase() {
       delivery_period: dates[selectedDate].period,
       cupon: cuponValidated ? cupon.replace(/^\s+|\s+$/g, '') : 'NO_CUPON',
       observation: observation.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
-      change: changeFor === 'R$ ' ? 0 : (parseFloat(changeFor.replace('R$ ', '').replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) - total),
+      change: changeFor === 'R$ ' ? 0 : (parseFloat(changeFor.replace('R$ ', '').replace(/\./g, '').replace(/,/g, '.')) - total),
       payment_method: paymentMethod,
       value: total
     }

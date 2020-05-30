@@ -140,9 +140,9 @@ export default function EditProduct() {
         const data = {
             "product_name": name.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
             "description": description.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' '),
-            "price": parseFloat(price.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
+            "price": parseFloat(price.replace(/\./g, '').replace(/,/g, '.')),
             "measurement_unit": measurement_unit.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ').toUpperCase(),
-            "unit_price": parseFloat(unit_price.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
+            "unit_price": parseFloat(unit_price.replace(/\./g, '').replace(/,/g, '.')),
             "category": ctgry,
             "delivers_to": delivers_to
         };

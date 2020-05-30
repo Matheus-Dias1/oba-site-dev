@@ -25,7 +25,7 @@ export default function NewPaymentInfo() {
     useEffect(() => {
         const fee = getDeliveryFee();
         setDeliveryFee(fee);
-        setTotalValue(parseFloat(fee.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) + parseFloat(localStorage.getItem('cartValue')));
+        setTotalValue(parseFloat(fee.replace(/\./g, '').replace(/,/g, '.')) + parseFloat(localStorage.getItem('cartValue')));
 
     }, [])
 
@@ -38,7 +38,7 @@ export default function NewPaymentInfo() {
     }
 
     function changeFee(e){
-        const fee = e.target.value === '' ? 0 : parseFloat((e.target.value).replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ','));
+        const fee = e.target.value === '' ? 0 : parseFloat((e.target.value).replace(/\./g, '').replace(/,/g, '.'));
         setDeliveryFee(e.target.value);
         setTotalValue(cartValue + fee);
     }
@@ -62,14 +62,14 @@ export default function NewPaymentInfo() {
         const date = cliData.selectedDate;
         const time = cliData.selectedTime;
 
-        if (change !== '' && totalValue > parseFloat(change.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ','))) {
+        if (change !== '' && totalValue > parseFloat(change.replace(/\./g, '').replace(/,/g, '.'))) {
             alert('"Troco para" deve conter um valor maior que o valor total do pedido.')
             return;
         }
         const data = {
             value: totalValue,
             payment_method: payment_method,
-            change: ((change === '') ? 0 : parseFloat((parseFloat(change.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')) - totalValue).toFixed(2))),
+            change: ((change === '') ? 0 : parseFloat((parseFloat(change.replace(/\./g, '').replace(/,/g, '.')) - totalValue).toFixed(2))),
             id_address: 0,
             observation: JSON.stringify(observation),
             delivery_date: date,

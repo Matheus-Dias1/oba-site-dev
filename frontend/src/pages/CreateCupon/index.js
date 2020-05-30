@@ -37,8 +37,8 @@ export default function CreateCupon() {
                 amount: parseInt(amount),
                 expiration: parseInt(expiration),
                 discount_type: discountType,
-                discount: parseFloat(discount.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
-                min_value: parseFloat(minValue.replace(/\./g, '*').replace(/,/g, '.').replace(/\*/g, ',')),
+                discount: parseFloat(discount.replace(/\./g, '').replace(/,/g, '.')),
+                min_value: parseFloat(minValue.replace(/\./g, '').replace(/,/g, '.')),
             };
             const res = await api.post('cupons', data, {
                 headers: {
