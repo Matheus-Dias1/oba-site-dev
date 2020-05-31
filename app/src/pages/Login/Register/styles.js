@@ -77,7 +77,9 @@ export default StyleSheet.create({
         textAlign:'center'
     },
     content:{
-        width: '80%'
+        width: '80%',
+        flex: 1,
+        justifyContent: 'space-around'
     },
     tosAndPolicyContainer:{
         marginTop: 40

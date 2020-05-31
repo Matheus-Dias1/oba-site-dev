@@ -161,7 +161,7 @@ module.exports = {
                     .update('push_token', '')
                     .whereIn('push_token', notRegisteredList);
             } catch (err) {
-                errors.push('OnNotRegisteredDevicesUpdate');
+                errors.push(['OnNotRegisteredDevicesUpdate', err]);
             }
             errors = [...errors, ...errorList]
 
