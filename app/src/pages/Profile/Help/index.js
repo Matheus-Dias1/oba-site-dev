@@ -39,13 +39,13 @@ export default function Help() {
 
   function openFacebook(){
     sendPixel('facebook')
-    const fburl = Platform.OS === 'ios' ? 'fb://profile/105519261090296' : 'fb://page/105519261090296/';
+    const fburl = Platform.OS === 'ios' ? 'fb://profile/913003928772075' : 'fb://page/913003928772075/';
     Linking.openURL(fburl);
   }
 
   function openInstagram(){
     sendPixel('instagram')
-    Linking.openURL('instagram://user?username=oba___hortifruti')
+    Linking.openURL('instagram://user?username=oba_comercio')
   }
 
   async function sendPixel(method) {
@@ -74,8 +74,8 @@ export default function Help() {
           <Text style={styles.property} selectable={true}>E-mail: <Text style={styles.value}>oba.delivery20@gmail.com</Text></Text>
           <Text style={styles.property} selectable={true}>WhatsApp: <Text style={styles.value}>+55 (34) 99776-2094</Text></Text>
           <Text style={styles.property} selectable={true}>Telefone: <Text style={styles.value}>+55 (34) 99776-2094</Text></Text>
-          <Text style={styles.property} selectable={true}>Instagram: <Text style={styles.value}>oba___hortifruti</Text></Text>
-          <Text style={styles.property} selectable={true}>Facebook: <Text style={styles.value}>deliveryoba</Text></Text>
+          <Text style={styles.property} selectable={true}>Instagram: <Text style={styles.value}>oba_comercio</Text></Text>
+          <Text style={styles.property} selectable={true}>Facebook: <Text style={styles.value}>deliveryobacomercio</Text></Text>
         </View>
 
       </View>

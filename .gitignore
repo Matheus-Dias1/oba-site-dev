@@ -68,3 +68,4 @@ backend/src/certificado/private.txt
 backend/src/certificado/server.key
 app/google-services.json
 app/app.json
+BACKUP_PRODUTOS_CADASTRADOS.sqlite
