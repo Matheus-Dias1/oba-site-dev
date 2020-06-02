@@ -21,17 +21,20 @@ module.exports = {
 
         const {
             query,
-            page = 1
+            page = 1,
+            city
         } = request.query;
         try {
             const [count] = await connection('products')
                 .select('*')
                 .where('available', 1)
                 .where('slug', 'like', `%${slugify(query)}%`)
+                .where('delivers_to', 'like', `%${city}%`)
                 .count();
             const products = await connection('products')
                 .select('*')
                 .where('slug', 'like', `%${slugify(query)}%`)
+                .where('delivers_to', 'like', `%${city}%`)
                 .where('available', 1)
                 .limit(8)
                 .offset((page - 1) * 8)

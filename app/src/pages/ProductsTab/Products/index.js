@@ -32,6 +32,7 @@ export default function Products() {
   const [shoppingCart, setShoppingCart] = useState([]);
   const [subtotalValue, setSubtotalValue] = useState(0);
   const [deletingItem, setDeletingItem] = useState(-1)
+  const [searching, setSearching] = useState(false)
   const [query, setQuery] = useState('');
   const imageUrl = env.OBA_API_URL + 'image/'
 
@@ -122,8 +123,6 @@ export default function Products() {
       setTotalProducts(response.headers['x-total-count']);
       setPage(page + 1);
     } catch (err) {
-      console.log(err)
-
       Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
     } finally {
       setLoading(false);
@@ -131,11 +130,63 @@ export default function Products() {
 
   }
 
+  async function searchProducts(paramQuery) {
+    if (loading) return;
+    if (!paramQuery && totalProducts > 0 && products.length == totalProducts) return;
+    setSelectedCategory('')
+    setLoading(true);
+    setSearching(true);
+    let city = null;
+    if (!selectedCity) {
+      city = await AsyncStorage.getItem('selectedCity')
+      if (city) {
+        setSelectedCity(city)
+      }
+    }
+    if (paramQuery) {
+      setProducts([])
+      try {
+        const response = await api.get('/products/search', {
+          headers: {
+            authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+          },
+          params: {
+            page: paramQuery ? 1 : page,
+            query: paramQuery ? paramQuery : query,
+            city: city ? city : selectedCity
+          }
+        }).catch(err => {
+          if (err.response.status === 401 || err.response.status === 403) {
+            Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+            return signOut();
+          } else throw err;
+        });
+        setTotalProducts(response.headers['x-total-count']);
+        if (paramQuery) {
+          setPage(2)
+          setProducts(response.data)
+        }
+        else {
+          setProducts([...products, ...response.data]);
+          setPage(page + 1);
+        }
+
+      } catch (err) {
+        Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
+      } finally {
+        setLoading(false);
+      }
+
+    }
+  }
+
 
   async function loadNewCategory(category) {
     setLoading(true);
+    setSearching(false);
     setProducts([])
     setSwitchingCategory(true);
+    setQuery('')
     try {
       const response = await api.get('/profile/products', {
         headers: {
@@ -179,6 +230,7 @@ export default function Products() {
 
   async function loadNewCity(city) {
     setLoading(true);
+    setSearching(false);
     setProducts([])
     setSwitchingCategory(true);
     try {
@@ -487,10 +539,10 @@ export default function Products() {
                     placeholder={'Busca'}
                     maxLength={30}
                     returnKeyType={'search'}
-                    onEndEditing={() => { alert(query) }}
+                    onEndEditing={() => { searchProducts(query) }}
                     onChange={e => setQuery(e.nativeEvent.text)}
                   />
-                  <TouchableWithoutFeedback onPress={() => { alert(query) }}>
+                  <TouchableWithoutFeedback onPress={() => { searchProducts(query) }}>
                     <View style={styles.searchIcon}>
                       <Ionicons name="md-search" size={20} color="#cdcdcd" />
                     </View>
@@ -501,7 +553,7 @@ export default function Products() {
             ListFooterComponent={
               <View style={styles.emptyListText} >
                 {!loading && products.length === 0 &&
-                  <Text style={styles.productProperty}>Nenhum produto nessa categoria</Text>
+                  <Text style={styles.productProperty}>Nenhum produto</Text>
                 }
                 {loading &&
                   <ActivityIndicator size="small" color="#000" />
@@ -509,7 +561,7 @@ export default function Products() {
               </View>}
             keyExtractor={product => String(product.id)}
             onEndReachedThreshold={0.1}
-            onEndReached={() => loadProducts()}
+            onEndReached={() => { searching ? searchProducts() : loadProducts() }}
             data={products}
             renderItem={({ item: product }) => (
               <TouchableOpacity activeOpacity={0.8} onPress={() => navigateToDetails(product)}>
