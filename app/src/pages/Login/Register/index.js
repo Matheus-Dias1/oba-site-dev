@@ -107,7 +107,7 @@ export default function Register() {
           contentContainerStyle={{ flexGrow: 1 }}
         >
 
-<View style={styles.container}>
+          <View style={styles.container}>
             <View style={styles.content}>
               <View>
                 <Image
@@ -224,120 +224,122 @@ export default function Register() {
   else
     return (
       <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-          <View style={styles.container}>
-            <View style={styles.content}>
-              <View>
-                <Image
-                  style={styles.logo}
-                  source={logo}
-                />
-                <Text style={styles.title}>Novo cadastro</Text>
-                {errorText !== '' &&
-                  <View style={styles.errorTextContainer}>
-                    <Text style={styles.errorText}>{errorText}</Text>
+            <View style={styles.container}>
+              <View style={styles.content}>
+                <View>
+                  <Image
+                    style={styles.logo}
+                    source={logo}
+                  />
+                  <Text style={styles.title}>Novo cadastro</Text>
+                  {errorText !== '' &&
+                    <View style={styles.errorTextContainer}>
+                      <Text style={styles.errorText}>{errorText}</Text>
+                    </View>
+                  }
+                  <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
+                    <TextInput
+                      style={styles.textInput}
+                      value={name}
+                      placeholder={'Nome'}
+                      autoCompleteType='name'
+                      onChange={(e) => setName(e.nativeEvent.text)}
+                      onFocus={() => setSelectedInput(0)}
+                      onBlur={() => setSelectedInput(-1)}
+                      clearButtonMode="while-editing"
+                      enablesReturnKeyAutomatically={true}
+                    />
                   </View>
-                }
-                <View style={selectedInput === 0 ? styles.focusedInputContainer : styles.inputContainer}>
-                  <TextInput
-                    style={styles.textInput}
-                    value={name}
-                    placeholder={'Nome'}
-                    autoCompleteType='name'
-                    onChange={(e) => setName(e.nativeEvent.text)}
-                    onFocus={() => setSelectedInput(0)}
-                    onBlur={() => setSelectedInput(-1)}
-                    clearButtonMode="while-editing"
-                    enablesReturnKeyAutomatically={true}
-                  />
-                </View>
-                <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
-                  <TextInputMask
-                    style={styles.textInput}
-                    type={'cel-phone'}
-                    autoCompleteType='tel'
-                    placeholder="Telefone"
-                    onFocus={() => setSelectedInput(2)}
-                    onBlur={() => setSelectedInput(-1)}
-                    options={{
-                      maskType: 'BRL',
-                      withDDD: true,
-                      dddMask: '(99) '
-                    }}
-                    value={phone}
-                    onChangeText={e => setPhone(e)}
-                  />
-                </View>
-                <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
-                  <TextInput
-                    keyboardType='email-address'
-                    style={styles.textInput}
-                    value={email}
-                    autoCompleteType='email'
-                    textContentType={'emailAddress'}
-                    placeholder='E-mail'
-                    onFocus={() => setSelectedInput(1)}
-                    onBlur={() => setSelectedInput(-1)}
-                    onChange={(e) => setEmail(e.nativeEvent.text)}
-                    enablesReturnKeyAutomatically={true}
-                    clearButtonMode="while-editing"
-                  />
-                </View>
-
-
-                <View style={selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer}>
-                  <TextInput
-                    textContentType={'newPassword'}
-                    style={styles.textInput}
-                    value={password}
-                    secureTextEntry={true}
-                    placeholder='Senha'
-                    onChange={(e) => setPassword(e.nativeEvent.text)}
-                    enablesReturnKeyAutomatically={true}
-                    onFocus={() => setSelectedInput(3)}
-                    onBlur={() => setSelectedInput(-1)}
-                  />
-                </View>
-
-                <View style={selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer}>
-                  <TextInput
-                    textContentType={'newPassword'}
-                    style={styles.textInput}
-                    value={confirmPassword}
-                    secureTextEntry={true}
-                    placeholder='Confirmar senha'
-                    onChange={(e) => setConfirmPassword(e.nativeEvent.text)}
-                    enablesReturnKeyAutomatically={true}
-                    onFocus={() => setSelectedInput(4)}
-                    onBlur={() => setSelectedInput(-1)}
-                  />
-                </View>
-              </View>
-              <View>
-                <View style={styles.tosAndPolicyContainer}>
-                  <Text style={styles.tosAndPolicyText}>
-                    {'Ao concluir seu cadastro, estará concordando com nossos '}
-                    <TouchableWithoutFeedback onPress={openToS}>
-                      <Text style={styles.tosAndPolicyLink}>termos de serviço</Text>
-                    </TouchableWithoutFeedback>
-                    {' e nossa '}
-                    <TouchableWithoutFeedback onPress={openPrivacyPolicy}>
-                      <Text style={styles.tosAndPolicyLink}>política de privacidade</Text>
-                    </TouchableWithoutFeedback>
-                  .
-                </Text>
-                </View>
-                <TouchableWithoutFeedback onPress={() => handleRegistration()}>
-                  <View style={styles.registerButton}>
-                    <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Cadastrar</Text>
-                    {loading && <ActivityIndicator size="small" color="white" />}
+                  <View style={selectedInput === 2 ? styles.focusedInputContainer : styles.inputContainer}>
+                    <TextInputMask
+                      style={styles.textInput}
+                      type={'cel-phone'}
+                      autoCompleteType='tel'
+                      placeholder="Telefone"
+                      onFocus={() => setSelectedInput(2)}
+                      onBlur={() => setSelectedInput(-1)}
+                      options={{
+                        maskType: 'BRL',
+                        withDDD: true,
+                        dddMask: '(99) '
+                      }}
+                      value={phone}
+                      onChangeText={e => setPhone(e)}
+                    />
                   </View>
-                </TouchableWithoutFeedback>
+                  <View style={selectedInput === 1 ? styles.focusedInputContainer : styles.inputContainer}>
+                    <TextInput
+                      keyboardType='email-address'
+                      style={styles.textInput}
+                      value={email}
+                      autoCompleteType='email'
+                      textContentType={'emailAddress'}
+                      placeholder='E-mail'
+                      onFocus={() => setSelectedInput(1)}
+                      onBlur={() => setSelectedInput(-1)}
+                      onChange={(e) => setEmail(e.nativeEvent.text)}
+                      enablesReturnKeyAutomatically={true}
+                      clearButtonMode="while-editing"
+                    />
+                  </View>
+
+
+                  <View style={selectedInput === 3 ? styles.focusedInputContainer : styles.inputContainer}>
+                    <TextInput
+                      textContentType={'newPassword'}
+                      style={styles.textInput}
+                      value={password}
+                      secureTextEntry={true}
+                      placeholder='Senha'
+                      onChange={(e) => setPassword(e.nativeEvent.text)}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={() => setSelectedInput(3)}
+                      onBlur={() => setSelectedInput(-1)}
+                    />
+                  </View>
+
+                  <View style={selectedInput === 4 ? styles.focusedInputContainer : styles.inputContainer}>
+                    <TextInput
+                      textContentType={'newPassword'}
+                      style={styles.textInput}
+                      value={confirmPassword}
+                      secureTextEntry={true}
+                      placeholder='Confirmar senha'
+                      onChange={(e) => setConfirmPassword(e.nativeEvent.text)}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={() => setSelectedInput(4)}
+                      onBlur={() => setSelectedInput(-1)}
+                    />
+                  </View>
+                </View>
+                <View>
+                  <View style={styles.tosAndPolicyContainer}>
+                    <Text style={styles.tosAndPolicyText}>
+                      {'Ao concluir seu cadastro, estará concordando com nossos '}
+                      <TouchableWithoutFeedback onPress={openToS}>
+                        <Text style={styles.tosAndPolicyLink}>termos de serviço</Text>
+                      </TouchableWithoutFeedback>
+                      {' e nossa '}
+                      <TouchableWithoutFeedback onPress={openPrivacyPolicy}>
+                        <Text style={styles.tosAndPolicyLink}>política de privacidade</Text>
+                      </TouchableWithoutFeedback>
+                      .
+                      </Text>
+                  </View>
+                  <TouchableWithoutFeedback onPress={() => handleRegistration()}>
+                    <View style={styles.registerButton}>
+                      <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Cadastrar</Text>
+                      {loading && <ActivityIndicator size="small" color="white" />}
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
               </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </ScrollView>
       </KeyboardAwareScrollView>
     );
 }

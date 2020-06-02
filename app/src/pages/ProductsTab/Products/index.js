@@ -143,42 +143,42 @@ export default function Products() {
         setSelectedCity(city)
       }
     }
-    if (paramQuery) {
+    if (paramQuery)
       setProducts([])
-      try {
-        const response = await api.get('/products/search', {
-          headers: {
-            authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
-          },
-          params: {
-            page: paramQuery ? 1 : page,
-            query: paramQuery ? paramQuery : query,
-            city: city ? city : selectedCity
-          }
-        }).catch(err => {
-          if (err.response.status === 401 || err.response.status === 403) {
-            Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
-            return signOut();
-          } else throw err;
-        });
-        setTotalProducts(response.headers['x-total-count']);
-        if (paramQuery) {
-          setPage(2)
-          setProducts(response.data)
+    try {
+      const response = await api.get('/products/search', {
+        headers: {
+          authorization: 'Bearer ' + await AsyncStorage.getItem('accessToken')
+        },
+        params: {
+          page: paramQuery ? 1 : page,
+          query: paramQuery ? paramQuery : query,
+          city: city ? city : selectedCity
         }
-        else {
-          setProducts([...products, ...response.data]);
-          setPage(page + 1);
-        }
-
-      } catch (err) {
-        Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
-      } finally {
-        setLoading(false);
+      }).catch(err => {
+        if (err.response.status === 401 || err.response.status === 403) {
+          Alert.alert('Sessão expirada', 'Faça login novamente para continuar');
+          return signOut();
+        } else throw err;
+      });
+      setTotalProducts(response.headers['x-total-count']);
+      if (paramQuery) {
+        setPage(2)
+        setProducts(response.data)
+      }
+      else {
+        setProducts([...products, ...response.data]);
+        setPage(page + 1);
       }
 
+    } catch (err) {
+      Alert.alert('Erro ao carregar produtos', 'Tente novamente mais tarde')
+    } finally {
+      setLoading(false);
     }
+
   }
+
 
 
   async function loadNewCategory(category) {

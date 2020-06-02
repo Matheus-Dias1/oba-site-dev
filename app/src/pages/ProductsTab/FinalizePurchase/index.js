@@ -494,7 +494,7 @@ export default function FinalizePurchase() {
                     {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(deliveryFee))}
                     {') com o voucher, a mesma deve ser paga com dinheiro, cartão de crédito ou cartão de débito.'}
                   </Text>
-                  
+
                 </View>
                 <View style={{ alignSelf: 'stretch' }}>
                 </View>
@@ -566,184 +566,184 @@ export default function FinalizePurchase() {
         </View>
       </Modal>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.subtitle}>Endereço de entrega</Text>
-        <View style={styles.addressContainer}>
-          {
-            addressesLoading ?
-              <View>
-                <ActivityIndicator size="small" color="#000" />
-              </View>
-              : <FlatList
-                ListFooterComponent={listFooter}
-                contentContainerStyle={styles.addressesList}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={address => String(addresses.indexOf(address))}
-                data={addresses}
-                renderItem={({ item: address }) => (
-
-                  <TouchableWithoutFeedback onPress={() => selectAddress(addresses.indexOf(address))} activeOpacity={0.8}>
-                    <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddress : styles.address}>
-                      <View style={styles.addressInfo}>
-                        <Text style={styles.addressInfoStreet}>{`${address.street}, ${address.number}`}</Text>
-                        <View>
-                          <Text style={styles.addressInfoNeighborhood}>{address.neighborhood}</Text>
-                          <Text style={styles.addressInfoNeighborhood}>{address.city}</Text>
-                        </View>
-                      </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                )}
-              />
-          }
-        </View>
-        <Text style={styles.subtitle}>Data e período de entrega</Text>
-        <View style={styles.dateContainer}>
-          {
-            datesLoading ?
-              <View>
-                <ActivityIndicator size="small" color="#000" />
-              </View>
-              : (dateLock ?
-                <>
-                  {dateLock && <View style={{ alignItems: 'center' }}>
-                    <Text style={{ fontSize: 15, color: '#41414b' }}>{'Selecione um endereço para continuar'}</Text>
-                  </View>}
-                </>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.subtitle}>Endereço de entrega</Text>
+          <View style={styles.addressContainer}>
+            {
+              addressesLoading ?
+                <View>
+                  <ActivityIndicator size="small" color="#000" />
+                </View>
                 : <FlatList
-                  ListFooterComponent={<View style={{ marginRight: 10 }} />}
-                  contentContainerStyle={styles.datesList}
+                  ListFooterComponent={listFooter}
+                  contentContainerStyle={styles.addressesList}
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  keyExtractor={date => String(dates.indexOf(date))}
-                  data={dates}
-                  renderItem={({ item: date }) => (
+                  keyExtractor={address => String(addresses.indexOf(address))}
+                  data={addresses}
+                  renderItem={({ item: address }) => (
 
-                    <TouchableWithoutFeedback onPress={() => { setSelectedDate(dates.indexOf(date)) }} activeOpacity={0.8}>
-                      <View style={dates.indexOf(date) === selectedDate ? styles.selectedDate : styles.date}>
-                        <View style={styles.dateInfoContainer}>
-                          <Text style={styles.dateInfo}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</Text>
-                          <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : (date.period === 'afternoon' ? 'Tarde' : 'Noite')}</Text>
-
-                          {
-                            addresses[selectedAddress] &&
-                            ['uberlandia', 'uberlândia', 'udi'].includes(addresses[selectedAddress].city.toLowerCase()) &&
-                            [1, 4].includes(new Date(date.date).getUTCDay()) &&
-                            <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h30 - 13h00' : (date.period === 'afternoon' ? '15h00 - 19h30' : 'A partir das 18h00')}</Text>
-                          }
-                          {
-                            addresses[selectedAddress] &&
-                            ['araguari'].includes(addresses[selectedAddress].city.toLowerCase()) &&
-                            [1, 4].includes(new Date(date.date).getUTCDay()) &&
-                            <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : (date.period === 'afternoon' ? '15h00 - 19h30' : 'A partir das 18h00')}</Text>
-                          }
-                          {[2, 3, 5].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : (date.period === 'afternoon' ? '15h00 - 19h30' : 'A partir das 18h00')}</Text>}
-                          {new Date(date.date).getUTCDay() === 6 && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h30 - 13h30' : (date.period === 'afternoon' ? '14h00 - 19h00' : 'A partir das 18h00')}</Text>}
-
+                    <TouchableWithoutFeedback onPress={() => selectAddress(addresses.indexOf(address))} activeOpacity={0.8}>
+                      <View style={selectedAddress == addresses.indexOf(address) ? styles.selectedAddress : styles.address}>
+                        <View style={styles.addressInfo}>
+                          <Text style={styles.addressInfoStreet}>{`${address.street}, ${address.number}`}</Text>
+                          <View>
+                            <Text style={styles.addressInfoNeighborhood}>{address.neighborhood}</Text>
+                            <Text style={styles.addressInfoNeighborhood}>{address.city}</Text>
+                          </View>
                         </View>
                       </View>
                     </TouchableWithoutFeedback>
                   )}
-                />)
-          }
+                />
+            }
+          </View>
+          <Text style={styles.subtitle}>Data e período de entrega</Text>
+          <View style={styles.dateContainer}>
+            {
+              datesLoading ?
+                <View>
+                  <ActivityIndicator size="small" color="#000" />
+                </View>
+                : (dateLock ?
+                  <>
+                    {dateLock && <View style={{ alignItems: 'center' }}>
+                      <Text style={{ fontSize: 15, color: '#41414b' }}>{'Selecione um endereço para continuar'}</Text>
+                    </View>}
+                  </>
+                  : <FlatList
+                    ListFooterComponent={<View style={{ marginRight: 10 }} />}
+                    contentContainerStyle={styles.datesList}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={date => String(dates.indexOf(date))}
+                    data={dates}
+                    renderItem={({ item: date }) => (
+
+                      <TouchableWithoutFeedback onPress={() => { setSelectedDate(dates.indexOf(date)) }} activeOpacity={0.8}>
+                        <View style={dates.indexOf(date) === selectedDate ? styles.selectedDate : styles.date}>
+                          <View style={styles.dateInfoContainer}>
+                            <Text style={styles.dateInfo}>{Intl.DateTimeFormat('pt-BR').format(new Date(date.date))}</Text>
+                            <Text style={styles.periodInfo}>{date.period === 'morning' ? 'Manhã' : (date.period === 'afternoon' ? 'Tarde' : 'Noite')}</Text>
+
+                            {
+                              addresses[selectedAddress] &&
+                              ['uberlandia', 'uberlândia', 'udi'].includes(addresses[selectedAddress].city.toLowerCase()) &&
+                              [1, 4].includes(new Date(date.date).getUTCDay()) &&
+                              <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h30 - 13h00' : (date.period === 'afternoon' ? '15h00 - 19h30' : 'A partir das 18h00')}</Text>
+                            }
+                            {
+                              addresses[selectedAddress] &&
+                              ['araguari'].includes(addresses[selectedAddress].city.toLowerCase()) &&
+                              [1, 4].includes(new Date(date.date).getUTCDay()) &&
+                              <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : (date.period === 'afternoon' ? '15h00 - 19h30' : 'A partir das 18h00')}</Text>
+                            }
+                            {[2, 3, 5].includes(new Date(date.date).getUTCDay()) && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '10h00 - 13h00' : (date.period === 'afternoon' ? '15h00 - 19h30' : 'A partir das 18h00')}</Text>}
+                            {new Date(date.date).getUTCDay() === 6 && <Text style={styles.periodTimeSpan}>{date.period === 'morning' ? '09h30 - 13h30' : (date.period === 'afternoon' ? '14h00 - 19h00' : 'A partir das 18h00')}</Text>}
+
+                          </View>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    )}
+                  />)
+            }
 
 
-        </View>
-        <Text style={styles.subtitle}>Cupom</Text>
-        <View style={styles.cuponContainer}>
-          <View style={styles.cuponInputContainer}>
-            <TextInput
-              style={styles.cuponTextInput}
-              placeholder="Ex: 9E4BC4"
-              autoCorrect={false}
-              maxLength={8}
-              value={cupon}
-              onChange={e => setCupon(e.nativeEvent.text)}
+          </View>
+          <Text style={styles.subtitle}>Cupom</Text>
+          <View style={styles.cuponContainer}>
+            <View style={styles.cuponInputContainer}>
+              <TextInput
+                style={styles.cuponTextInput}
+                placeholder="Ex: 9E4BC4"
+                autoCorrect={false}
+                maxLength={8}
+                value={cupon}
+                onChange={e => setCupon(e.nativeEvent.text)}
+              />
+            </View>
+            <TouchableWithoutFeedback onPress={() => validateCupon()}>
+              <View style={styles.cuponButtonContainer}>
+                {cuponLoading
+                  ? <ActivityIndicator size="small" color="#049434" />
+                  : <Text style={styles.cuponButtonText}>Validar</Text>
+                }
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+
+
+
+          <Text style={styles.subtitle}>Pagamento</Text>
+          <View style={styles.paymentContainer}>
+            <View style={styles.paymentContent}>
+              <View style={styles.paymentPropertyValue} >
+                <Text style={styles.paymentTextSubtotal}>Subtotal</Text>
+                <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(route.params.subtotal))}</Text>
+              </View>
+              <View style={styles.paymentPropertyValue} >
+                <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
+                {!freeDelivery && <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
+                {freeDelivery && <Text style={[styles.paymentTextSubtotal, { textDecorationLine: 'line-through' }]}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
+              </View>
+
+              {!!cuponDiscount && <View style={styles.paymentPropertyValue}>
+                <Text style={styles.paymentTextSubtotal}>Cupom de desconto</Text>
+                <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(-cuponDiscount)}</Text>
+              </View>}
+              <View style={styles.paymentPropertyValue} >
+                <Text style={styles.paymentTextTotal}>Total</Text>
+                <Text style={styles.paymentTextTotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(total))}</Text>
+              </View>
+            </View>
+            <View style={styles.paymentInfoSeparator} />
+            <Text style={styles.paymentMethodText}>Método de pagamento</Text>
+            <FlatList
+              ListFooterComponent={<View style={{ marginRight: 10 }} />}
+              contentContainerStyle={styles.paymentMethodList}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={method => method}
+              data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito', 'Voucher Alimentação']}
+              renderItem={(method) => (
+
+                <TouchableWithoutFeedback onPress={() => { setPaymentMethod(method.item), handlePaymentMethod(method.item) }} activeOpacity={0.8}>
+                  <View style={method.item === paymentMethod ? styles.selectedPaymentMethod : styles.paymentMethod}>
+                    <View style={styles.PaymentMethodContainer}>
+                      {getIcon(method.item)}
+                      <Text style={styles.listPaymentMethodText}>{method.item}</Text>
+
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              )}
             />
           </View>
-          <TouchableWithoutFeedback onPress={() => validateCupon()}>
-            <View style={styles.cuponButtonContainer}>
-              {cuponLoading
-                ? <ActivityIndicator size="small" color="#049434" />
-                : <Text style={styles.cuponButtonText}>Validar</Text>
+          <Text style={styles.subtitle}>Observação sobre entrega</Text>
+          <View style={styles.obsContainer}>
+            <TextInput
+              placeholder="Ex: Interfone não funciona, casa em reforma, casa sem número"
+              style={styles.textArea}
+              multiline={true}
+              textAlignVertical={'top'}
+              numberOfLines={4}
+              onChangeText={(text) => setObservation(text)}
+              value={observation}
+            />
+          </View>
+          <TouchableWithoutFeedback onPress={finalizePurchase}>
+            <View style={styles.finalizePurchaseButton}>
+              {
+                loading
+                  ? <View style={{ flexDirection: 'row' }}>
+                    <Text style={[styles.finalizePurchaseButtonText, { marginRight: 10 }]}>Finalizar Compra</Text>
+                    <ActivityIndicator size="small" color="white" />
+                  </View>
+                  : <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
               }
             </View>
           </TouchableWithoutFeedback>
-        </View>
-
-
-
-        <Text style={styles.subtitle}>Pagamento</Text>
-        <View style={styles.paymentContainer}>
-          <View style={styles.paymentContent}>
-            <View style={styles.paymentPropertyValue} >
-              <Text style={styles.paymentTextSubtotal}>Subtotal</Text>
-              <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(route.params.subtotal))}</Text>
-            </View>
-            <View style={styles.paymentPropertyValue} >
-              <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
-              {!freeDelivery && <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
-              {freeDelivery && <Text style={[styles.paymentTextSubtotal, { textDecorationLine: 'line-through' }]}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
-            </View>
-
-            {!!cuponDiscount && <View style={styles.paymentPropertyValue}>
-              <Text style={styles.paymentTextSubtotal}>Cupom de desconto</Text>
-              <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(-cuponDiscount)}</Text>
-            </View>}
-            <View style={styles.paymentPropertyValue} >
-              <Text style={styles.paymentTextTotal}>Total</Text>
-              <Text style={styles.paymentTextTotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(total))}</Text>
-            </View>
-          </View>
-          <View style={styles.paymentInfoSeparator} />
-          <Text style={styles.paymentMethodText}>Método de pagamento</Text>
-          <FlatList
-            ListFooterComponent={<View style={{ marginRight: 10 }} />}
-            contentContainerStyle={styles.paymentMethodList}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={method => method}
-            data={['Dinheiro', 'Transferência Bancaria', 'Cartão de Crédito', 'Cartão de Débito', 'Voucher Alimentação']}
-            renderItem={(method) => (
-
-              <TouchableWithoutFeedback onPress={() => { setPaymentMethod(method.item), handlePaymentMethod(method.item) }} activeOpacity={0.8}>
-                <View style={method.item === paymentMethod ? styles.selectedPaymentMethod : styles.paymentMethod}>
-                  <View style={styles.PaymentMethodContainer}>
-                    {getIcon(method.item)}
-                    <Text style={styles.listPaymentMethodText}>{method.item}</Text>
-
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            )}
-          />
-        </View>
-        <Text style={styles.subtitle}>Observação sobre entrega</Text>
-        <View style={styles.obsContainer}>
-          <TextInput
-            placeholder="Ex: Interfone não funciona, casa em reforma, casa sem número"
-            style={styles.textArea}
-            multiline={true}
-            textAlignVertical={'top'}
-            numberOfLines={4}
-            onChangeText={(text) => setObservation(text)}
-            value={observation}
-          />
-        </View>
-        <TouchableWithoutFeedback onPress={finalizePurchase}>
-          <View style={styles.finalizePurchaseButton}>
-            {
-              loading
-                ? <View style={{ flexDirection: 'row' }}>
-                  <Text style={[styles.finalizePurchaseButtonText, { marginRight: 10 }]}>Finalizar Compra</Text>
-                  <ActivityIndicator size="small" color="white" />
-                </View>
-                : <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
-            }
-          </View>
-        </TouchableWithoutFeedback>
-
-
+        </ScrollView>
       </KeyboardAwareScrollView>
 
 

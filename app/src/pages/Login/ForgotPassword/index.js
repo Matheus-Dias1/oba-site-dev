@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
 import api from '../../../services/api';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default function ForgotPassword() {
@@ -26,8 +27,8 @@ export default function ForgotPassword() {
     if (!(email.includes('@') && email.includes('.'))) return;
     setLoading(true);
     try {
-      await api.post('recoverPassword',{ 
-       email: email.replace(/^\s+|\s+$/g, '')
+      await api.post('recoverPassword', {
+        email: email.replace(/^\s+|\s+$/g, '')
       })
       Alert.alert('Sucesso', 'O e-mail será enviado caso exista uma conta com o endereço informado, isso pode demorar alguns minutos')
       navigator.goBack();
@@ -41,33 +42,35 @@ export default function ForgotPassword() {
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.title}>Recuperar senha</Text>
-          <Text style={styles.bodyText}>Enviaremos um e-mail com uma nova senha gerada aleatóriamente para o e-mail que usou no cadastro da sua conta.</Text>
-          <View style={inputSelected ? styles.focusedInputContainer : styles.inputContainer}>
-            <TextInput
-              style={styles.textInput}
-              value={email}
-              placeholder='E-mail'
-              keyboardType='email-address'
-              onChange={(e) => setEmail(e.nativeEvent.text)}
-              enablesReturnKeyAutomatically={true}
-              textContentType="password"
-              onFocus={() => setInputSelected(true)}
-              onBlur={() => setInputSelected(false)}
-            />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.content}>
+            <Text style={styles.title}>Recuperar senha</Text>
+            <Text style={styles.bodyText}>Enviaremos um e-mail com uma nova senha gerada aleatóriamente para o e-mail que usou no cadastro da sua conta.</Text>
+            <View style={inputSelected ? styles.focusedInputContainer : styles.inputContainer}>
+              <TextInput
+                style={styles.textInput}
+                value={email}
+                placeholder='E-mail'
+                keyboardType='email-address'
+                onChange={(e) => setEmail(e.nativeEvent.text)}
+                enablesReturnKeyAutomatically={true}
+                textContentType="password"
+                onFocus={() => setInputSelected(true)}
+                onBlur={() => setInputSelected(false)}
+              />
+            </View>
           </View>
+          <TouchableWithoutFeedback onPress={() => handleRecoverPassword()}>
+            <View style={styles.recoverButton}>
+              {loading
+                ? <ActivityIndicator size="small" color="white" />
+                : <Text style={styles.buttonText}>Recuperar</Text>
+              }
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-        <TouchableWithoutFeedback onPress={() => handleRecoverPassword()}>
-          <View style={styles.recoverButton}>
-            {loading
-              ? <ActivityIndicator size="small" color="white" />
-              : <Text style={styles.buttonText}>Recuperar</Text>
-            }
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      </ScrollView>
     </KeyboardAwareScrollView>
   );
 }
