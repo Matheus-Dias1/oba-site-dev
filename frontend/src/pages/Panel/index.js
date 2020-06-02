@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaTags, FaClipboardCheck, FaBoxOpen, FaBell, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
+import { FaHome, FaTags, FaClipboardCheck, FaBoxOpen, FaBell, FaChartLine, FaCalendarAlt} from 'react-icons/fa';
 import logoImg from '../../assets/OBA_logo.svg'
 
 
@@ -10,18 +10,18 @@ import './styles.css';
 import '../../global.css';
 
 
-export default function Panel() {
+export default function Panel() { 
     const history = useHistory();
     const accessToken = localStorage.getItem('accessToken');
-    if (accessToken === null) {
+    if (accessToken === null){
         localStorage.clear();
         history.push('/');
-    }
+    } 
     return (
         <div>
-            <Menu isOpen={true}>
+            <Menu isOpen={ true }>
                 <h1 className="menu-text">OBA Hortifruti</h1>
-
+                
                 <Link className='menu-link' to="/panel" ><FaHome size={16} color="FFFFFF" />Início</Link>
                 <Link className='menu-link' to="/panel/purchases"><FaClipboardCheck size={16} color="FFFFFF" />Pedidos</Link>
                 <Link className='menu-link' to="/panel/products"><FaBoxOpen size={16} color="FFFFFF" />Produtos</Link>
@@ -29,12 +29,12 @@ export default function Panel() {
                 <Link className='menu-link' to="/panel/schedule"><FaCalendarAlt size={16} color="FFFFFF" />Adicionar Horários</Link>
                 <Link className='menu-link' to="/panel/cupon"><FaTags size={16} color="FFFFFF" />Criar cupom</Link>
                 <Link className='menu-link' to="/panel/push"><FaBell size={16} color="FFFFFF" />Enviar notificações</Link>
-
+          
             </Menu>
             <Link to='/panel/db'>
-                <div className="imgLogo">
-                    <img src={logoImg} className="imgLogo" alt="OBA Hortifruti" width="550px" height="260px" />
-                </div>
+            <div className="imgLogo">
+                <img src={logoImg} className="imgLogo" alt="OBA Hortifruti" width="550px" height="260px"/>
+            </div>
             </Link>
         </div>
     );

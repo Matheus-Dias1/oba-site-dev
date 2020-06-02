@@ -41,6 +41,8 @@ export default StyleSheet.create({
         color: '#737380',
         marginTop: 5,
         marginBottom: 15,
+        marginHorizontal: 15,
+        textAlign: 'justify'
     },
     amountContainer: {
         marginTop: 15,

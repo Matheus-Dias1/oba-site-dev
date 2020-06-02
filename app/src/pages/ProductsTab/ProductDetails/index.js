@@ -275,7 +275,11 @@ export default function ProductDetails() {
 
                 />
                 <Text style={styles.productName}>{product.product_name}</Text>
-                <Text style={styles.productDescription}>{product.description}</Text>
+                {
+                  product.description
+                  ? <Text style={styles.productDescription}>{product.description}</Text>
+                  : <View style={{marginBottom: 10}}/>
+                }
               </View>
               <View style={styles.amountContainer}>
                 {!['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
