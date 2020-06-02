@@ -7,7 +7,8 @@ export default StyleSheet.create({
         fontSize: 25,
         fontWeight: '500',
         color: '#737380',
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop: 20
     },
     inputContainer: {
         height: 45,
@@ -36,7 +37,7 @@ export default StyleSheet.create({
         borderColor: '#049434',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 30
+        marginBottom: 50
     },
     textInput: {
         marginHorizontal: 2,
@@ -51,7 +52,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-between'
     },
     content: {
         marginHorizontal: 25

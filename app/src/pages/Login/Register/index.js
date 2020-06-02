@@ -224,7 +224,10 @@ export default function Register() {
   else
     return (
       <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
             <View style={styles.container}>

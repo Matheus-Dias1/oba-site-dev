@@ -42,7 +42,10 @@ export default function ForgotPassword() {
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <View style={styles.container}>
           <View style={styles.content}>
             <Text style={styles.title}>Recuperar senha</Text>

@@ -272,12 +272,15 @@ export default function EditInfo() {
   else
     return (
       <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
 
-            <View style={styles.container}>
-              <View style={styles.content}>
+          <View style={styles.container}>
+            <View style={styles.content}>
 
+              <View>
                 <Text style={styles.title}>Editar perfil</Text>
                 {errorText !== '' &&
                   <View style={styles.errorTextContainer}>
@@ -381,20 +384,17 @@ export default function EditInfo() {
                     autoCompleteType="password"
                   />
                 </View>
-
-                <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
-                  <View style={styles.editProfileButton}>
-                    <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
-                    {loading && <ActivityIndicator size="small" color="white" />}
-                  </View>
-                </TouchableWithoutFeedback>
-
-
               </View>
 
-
+              <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
+                <View style={styles.editProfileButton}>
+                  <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
+                  {loading && <ActivityIndicator size="small" color="white" />}
+                </View>
+              </TouchableWithoutFeedback>
             </View>
-          </TouchableWithoutFeedback>
+          </View>
+
         </ScrollView>
       </KeyboardAwareScrollView>
 

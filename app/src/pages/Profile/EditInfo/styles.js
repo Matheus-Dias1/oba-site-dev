@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
-
+const width = Dimensions.get('screen').width;
 export default StyleSheet.create({
     container: {
         alignItems: 'center',
@@ -8,10 +8,11 @@ export default StyleSheet.create({
     },
     content:{
         flex: 1,
+        justifyContent: 'space-between'
     },
     title: {
         alignSelf: 'center',
-        marginTop: 40,
+        marginTop: 20,
         fontSize: 25,
         fontWeight: '500',
         color: '#737380',
@@ -19,7 +20,7 @@ export default StyleSheet.create({
     },
     inputContainer: {
         height: 45,
-        width: 260,
+        width: width * 0.80,
         marginHorizontal: 0,
         marginTop: 10,
         borderBottomWidth: 1,
@@ -28,7 +29,7 @@ export default StyleSheet.create({
     },
     focusedInputContainer: {
         height: 45,
-        width: 260,
+        width: width * 0.80,
         marginHorizontal: 0,
         marginTop: 10,
         borderBottomWidth: 2,
@@ -36,18 +37,18 @@ export default StyleSheet.create({
         justifyContent:'flex-end'
     },
     editProfileButton: {
+        alignSelf: 'center',
         flexDirection: 'row',
         backgroundColor: '#049434',
         borderRadius: 8,
         height: 45,
         width: 260,
         marginHorizontal: 0,
-        marginTop: 60,
         borderWidth: 1,
         borderColor: '#049434',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 30
+        marginBottom: 20
     },
     buttonText: {
         color: 'white',

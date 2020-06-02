@@ -1,18 +1,13 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
+const width = Dimensions.get('screen').width
 
 export default StyleSheet.create({
     container: {
         alignItems: 'center',
-        flexGrow: 1,
-    },
-    title: {
-        alignSelf: 'center',
-        marginTop: 40,
-        fontSize: 25,
-        fontWeight: '500',
-        color: '#737380',
-        marginBottom: 10
+        flex: 1,
+        justifyContent: 'space-between',
+
     },
     inputContainer: {
         marginHorizontal: 20,
@@ -20,6 +15,7 @@ export default StyleSheet.create({
         alignSelf: 'stretch',
         borderBottomWidth: 1,
         borderColor: 'lightgray',
+        width: width * 0.90
     },
     focusedInputContainer: {
         marginHorizontal: 20,
