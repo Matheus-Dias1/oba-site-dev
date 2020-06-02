@@ -17,6 +17,7 @@ const CuponController = require('./controllers/CuponController');
 const ProfileUpdateController = require('./controllers/ProfileUpdateController');
 const PasswordResetController = require('./controllers/PasswordResetController');
 const DBController = require('./controllers/DBController');
+const SearchProductController = require('./controllers/SearchProductController');
 const PushNotificationController = require('./controllers/PushNotificationController');
 const FacebookPixelController = require('./controllers/FacebookPixelController');
 
@@ -36,6 +37,9 @@ routes.get('/products/details/:id', AuthTokenController.authenticateToken, Produ
 routes.put('/products/edit/:id', AuthTokenController.authenticateToken, ProductUpdateController.update);
 routes.put('/products/deal/create/:id', AuthTokenController.authenticateToken, ProductUpdateController.createDeal);
 routes.put('/products/deal/remove/:id', AuthTokenController.authenticateToken, ProductUpdateController.removeDeal);
+
+routes.get('/products/search', AuthTokenController.authenticateToken, SearchProductController.search);
+
 
 routes.get('/purchases', AuthTokenController.authenticateToken, PurchaseController.index);
 routes.post('/purchases', AuthTokenController.authenticateToken, PurchaseController.create);

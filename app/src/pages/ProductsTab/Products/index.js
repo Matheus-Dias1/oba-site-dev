@@ -23,6 +23,7 @@ import api from './../../../services/api'
 import AuthContext from '../../../authcontext';
 
 import styles from './styles';
+import { TextInput } from 'react-native-gesture-handler';
 export default function Products() {
   const { signOut } = React.useContext(AuthContext);
   const navigation = useNavigation();
@@ -31,6 +32,7 @@ export default function Products() {
   const [shoppingCart, setShoppingCart] = useState([]);
   const [subtotalValue, setSubtotalValue] = useState(0);
   const [deletingItem, setDeletingItem] = useState(-1)
+  const [query, setQuery] = useState('');
   const imageUrl = env.OBA_API_URL + 'image/'
 
   const [totalProducts, setTotalProducts] = useState(0);
@@ -96,7 +98,7 @@ export default function Products() {
     let city = null;
     if (!selectedCity) {
       city = await AsyncStorage.getItem('selectedCity')
-      if (city){
+      if (city) {
         setSelectedCity(city)
       }
     }
@@ -443,39 +445,58 @@ export default function Products() {
             style={styles.productsList}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={
-              <View style={styles.categoryList}>
-                <FlatList
-                  horizontal
-                  initialScrollIndex = {Dimensions.get('screen').width >= 640 ? 0 : 1}
-                  showsHorizontalScrollIndicator={false}
-                  ListFooterComponent={<View style={{ marginLeft: 15 }} />}
-                  keyExtractor={category => category}
-                  data={[
-                    '',
-                    'ofertas',
-                    'frutas',
-                    'verduras',
-                    'folhas',
-                    'ovos',
-                    'temperos',
-                    'queijos',
-                    'congelados',
-                    'carnes',
-                    'doces',
-                  ]}
-                  renderItem={({ item: category }) => (
-                    <TouchableOpacity onPress={() => {
-                      handleCategoryClick(category);
-                    }}
-                      activeOpacity={0.8}
-                    >
-                      <View style={styles.categoryContainer}>
-                        <Text style={styles.categoryText}>{category === '' ? 'Todos os produtos' : (category === 'ofertas' ? 'Promoções' : category)}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
+              <>
+
+                <View style={styles.categoryList}>
+                  <FlatList
+                    horizontal
+                    initialScrollIndex={Dimensions.get('screen').width >= 640 ? 0 : 1}
+                    showsHorizontalScrollIndicator={false}
+                    ListFooterComponent={<View style={{ marginLeft: 15 }} />}
+                    keyExtractor={category => category}
+                    data={[
+                      '',
+                      'ofertas',
+                      'frutas',
+                      'verduras',
+                      'folhas',
+                      'ovos',
+                      'temperos',
+                      'queijos',
+                      'congelados',
+                      'carnes',
+                      'doces',
+                    ]}
+                    renderItem={({ item: category }) => (
+                      <TouchableOpacity onPress={() => {
+                        handleCategoryClick(category);
+                      }}
+                        activeOpacity={0.8}
+                      >
+                        <View style={styles.categoryContainer}>
+                          <Text style={styles.categoryText}>{category === '' ? 'Todos os produtos' : (category === 'ofertas' ? 'Promoções' : category)}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+                <View style={styles.searchContainer}>
+                  <TextInput
+                    style={styles.searchInput}
+                    value={query}
+                    placeholder={'Busca'}
+                    maxLength={30}
+                    returnKeyType={'search'}
+                    onEndEditing={() => { alert(query) }}
+                    onChange={e => setQuery(e.nativeEvent.text)}
+                  />
+                  <TouchableWithoutFeedback onPress={() => { alert(query) }}>
+                    <View style={styles.searchIcon}>
+                      <Ionicons name="md-search" size={20} color="#cdcdcd" />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+              </>
             }
             ListFooterComponent={
               <View style={styles.emptyListText} >

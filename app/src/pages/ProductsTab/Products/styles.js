@@ -206,7 +206,33 @@ export default StyleSheet.create({
     dealValueText:{
         textDecorationLine: 'line-through',
         textDecorationColor: '#737380',
+    },
+    searchContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        marginHorizontal: 12,
+        marginBottom: 10,
+        borderRadius: 5,
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 1
+    },
+    searchInput:{
+        fontSize: 14,
+        padding: 10,
+        width: '90%'
+    },
+    searchIcon:{
+        width: '10%',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
+
 
 
 });

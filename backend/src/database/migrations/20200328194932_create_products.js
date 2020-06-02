@@ -3,6 +3,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('products', function (table){
       table.increments('id').primary().notNullable();
       table.string('product_name').notNullable();
+      table.string('slug').notNullable();
       table.string('category');
       table.string('delivers_to').notNullable();
       table.string('description');
@@ -20,7 +21,4 @@ exports.up = function(knex) {
   exports.down = function(knex) {
     return knex.schema.dropTable('products');
   };
-  
-
-    
      
