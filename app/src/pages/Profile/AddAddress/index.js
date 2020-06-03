@@ -310,8 +310,10 @@ export default function AddAddress() {
                         </View>
                         <TouchableWithoutFeedback onPress={handleAddAddress}>
                             <View style={styles.addAddressButton}>
-                                <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Adicionar</Text>
-                                {loading && <ActivityIndicator size='small' color='white' />}
+                                {loading
+                                    ? <ActivityIndicator size='small' color='white' />
+                                    : <Text style={styles.buttonText}>Adicionar</Text>
+                                }
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -430,8 +432,10 @@ export default function AddAddress() {
                             </View>
                             <TouchableWithoutFeedback onPress={handleAddAddress}>
                                 <View style={styles.addAddressButton}>
-                                    <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Adicionar</Text>
-                                    {loading && <ActivityIndicator size='small' color='white' />}
+                                    {loading
+                                        ? <ActivityIndicator size='small' color='white' />
+                                        : <Text style={styles.buttonText}>Adicionar</Text>
+                                    }
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>

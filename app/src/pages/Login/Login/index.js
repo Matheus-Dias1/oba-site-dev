@@ -71,7 +71,8 @@ export default function Login() {
           <View style={styles.loginButton}>
             {loading
               ? <ActivityIndicator size='small' color='white' />
-              : <Text style={styles.buttonText}>Continuar</Text>}
+              : <Text style={styles.buttonText}>Continuar</Text>
+            }
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => navigateRegister()}>

@@ -735,10 +735,7 @@ export default function FinalizePurchase() {
             <View style={styles.finalizePurchaseButton}>
               {
                 loading
-                  ? <View style={{ flexDirection: 'row' }}>
-                    <Text style={[styles.finalizePurchaseButtonText, { marginRight: 10 }]}>Finalizar Compra</Text>
-                    <ActivityIndicator size="small" color="white" />
-                  </View>
+                  ? <ActivityIndicator size="small" color="white" />
                   : <Text style={styles.finalizePurchaseButtonText}>Finalizar Compra</Text>
               }
             </View>

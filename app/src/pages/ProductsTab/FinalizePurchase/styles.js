@@ -320,7 +320,7 @@ export default StyleSheet.create({
         marginHorizontal: 15,
         marginVertical: 20,
         borderRadius: 8,
-        height: 65,
+        height: 55,
         backgroundColor: '#049434',
         alignItems: 'center',
         justifyContent: 'center'

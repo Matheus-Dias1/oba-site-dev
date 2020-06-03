@@ -461,7 +461,6 @@ export default function Products() {
                             deletingItem === shoppingCart.indexOf(item)
                               ? <ActivityIndicator size="small" color="#737380" />
                               : <Ionicons name={'md-trash'} size={25} color={'#737380'} />
-
                           }
                         </View>
                       </TouchableWithoutFeedback>

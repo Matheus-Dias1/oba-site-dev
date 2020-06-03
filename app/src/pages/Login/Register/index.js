@@ -211,8 +211,10 @@ export default function Register() {
                 </View>
                 <TouchableWithoutFeedback onPress={() => handleRegistration()}>
                   <View style={styles.registerButton}>
-                    <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Cadastrar</Text>
-                    {loading && <ActivityIndicator size="small" color="white" />}
+                    {loading
+                      ? <ActivityIndicator size="small" color="white" />
+                      : <Text style={styles.buttonText}>Cadastrar</Text>
+                    }
                   </View>
                 </TouchableWithoutFeedback>
               </View>
@@ -334,8 +336,10 @@ export default function Register() {
                   </View>
                   <TouchableWithoutFeedback onPress={() => handleRegistration()}>
                     <View style={styles.registerButton}>
-                      <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Cadastrar</Text>
-                      {loading && <ActivityIndicator size="small" color="white" />}
+                      {loading
+                        ? <ActivityIndicator size="small" color="white" />
+                        : <Text style={styles.buttonText}>Cadastrar</Text>
+                      }
                     </View>
                   </TouchableWithoutFeedback>
                 </View>

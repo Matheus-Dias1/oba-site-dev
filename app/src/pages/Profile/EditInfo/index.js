@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
   ActivityIndicator,
   Alert,
   AsyncStorage,
@@ -256,8 +255,10 @@ export default function EditInfo() {
 
             <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
               <View style={styles.editProfileButton}>
-                <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
-                {loading && <ActivityIndicator size="small" color="white" />}
+                {loading
+                  ? <ActivityIndicator size="small" color="white" />
+                  : <Text style={styles.buttonText}>Atualizar</Text>
+                }
               </View>
             </TouchableWithoutFeedback>
 
@@ -388,8 +389,10 @@ export default function EditInfo() {
 
               <TouchableWithoutFeedback onPress={() => handleEditProfile()}>
                 <View style={styles.editProfileButton}>
-                  <Text style={[styles.buttonText, loading ? { marginRight: 8 } : {}]}>Atualizar</Text>
-                  {loading && <ActivityIndicator size="small" color="white" />}
+                  {loading
+                    ? <ActivityIndicator size="small" color="white" />
+                    : <Text style={styles.buttonText}>Atualizar</Text>
+                  }
                 </View>
               </TouchableWithoutFeedback>
             </View>
