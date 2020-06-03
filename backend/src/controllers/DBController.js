@@ -21,8 +21,31 @@ module.exports = {
 
         try {
             if (!!rawQuery) {
-                const res = await connection.raw(rawQuery);
-                return response.json(res);
+                if (rawQuery.toLowerCase().includes('delete')) {
+                    const res = await connection.raw(rawQuery.toLowerCase().replace('delete', 'select *'));
+                    await connection.raw(rawQuery);
+                    return response.json(res);
+
+                } else if (rawQuery.toLowerCase().includes('update')) {
+                    const list = rawQuery.replace(/^\s+|\s+$/g, '').replace(/  +/g, ' ').split(' ')
+                    await connection.raw(rawQuery);
+                    let whereRaw = '';
+                    for (let i in list)
+                        if (i > list.indexOf('where'))
+                            whereRaw += (list[i] + ' ')
+
+                    const res = await connection(list[1])
+                        .select('*')
+                        .whereRaw(whereRaw)
+                    
+                    return response.json(res)
+
+
+                } else {
+                    const res = await connection.raw(rawQuery);
+                    return response.json(res);
+                }
+
             } else {
                 const [count] = await connection(table)
                     .count();

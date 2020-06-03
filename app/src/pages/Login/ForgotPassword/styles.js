@@ -30,14 +30,14 @@ export default StyleSheet.create({
         backgroundColor: '#049434',
         borderRadius: 8,
         height: 45,
-        width: 260,
-        marginHorizontal: 0,
+        marginHorizontal: 25,
         marginTop: 40,
         borderWidth: 1,
         borderColor: '#049434',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 50
+        marginBottom: 50,
+        width: '100%'
     },
     textInput: {
         marginHorizontal: 2,
@@ -52,9 +52,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    content: {
+        justifyContent: 'space-between',
         marginHorizontal: 25
     },
     bodyText: {

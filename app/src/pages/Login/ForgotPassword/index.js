@@ -47,7 +47,7 @@ export default function ForgotPassword() {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View style={styles.container}>
-          <View style={styles.content}>
+          <View>
             <Text style={styles.title}>Recuperar senha</Text>
             <Text style={styles.bodyText}>Enviaremos um e-mail com uma nova senha gerada aleatóriamente para o e-mail que usou no cadastro da sua conta.</Text>
             <View style={inputSelected ? styles.focusedInputContainer : styles.inputContainer}>

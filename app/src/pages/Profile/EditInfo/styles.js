@@ -42,7 +42,7 @@ export default StyleSheet.create({
         backgroundColor: '#049434',
         borderRadius: 8,
         height: 45,
-        width: 260,
+        width: width * 0.80,
         marginHorizontal: 0,
         borderWidth: 1,
         borderColor: '#049434',

@@ -29,7 +29,7 @@ export default StyleSheet.create({
         backgroundColor: '#049434',
         borderRadius: 8,
         height: 45,
-        marginHorizontal: 65,
+        marginHorizontal: 20,
         alignSelf: 'stretch',
         marginTop: 40,
         borderWidth: 1,
