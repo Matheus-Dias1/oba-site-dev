@@ -162,7 +162,7 @@ export default function ProductDetails() {
                 <Text style={styles.productDescription}>{product.description}</Text>
               </View>
               <View style={styles.amountContainer}>
-                {!['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                {!['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G', 'MÇ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
                   <TextInput
                     maxLength={10}
                     autoCompleteType="off"
@@ -174,7 +174,7 @@ export default function ProductDetails() {
                   <Text>{product.measurement_unit}</Text>
                   <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
                 </View>}
-                {['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                {['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G', 'MÇ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
                   <View style={styles.intValueCounterContainer}>
                     {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
                       <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
@@ -282,7 +282,7 @@ export default function ProductDetails() {
                   }
                 </View>
                 <View style={styles.amountContainer}>
-                  {!['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                  {!['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G', 'MÇ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
                     <TextInput
                       maxLength={10}
                       autoCompleteType="off"
@@ -294,7 +294,7 @@ export default function ProductDetails() {
                     <Text>{product.measurement_unit}</Text>
                     <Text>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price[0])}</Text>
                   </View>}
-                  {['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
+                  {['UN', 'BDJ', 'CX', 'PCT', 'DZ', 'G', 'MÇ'].includes(product.measurement_unit) && <View style={styles.measurementUnit}>
                     <View style={styles.intValueCounterContainer}>
                       {amount[0] > 0 && <TouchableOpacity onPress={() => updateIntValue(0, -1)} activeOpacity={0.5}>
                         <Ionicons name={'md-remove-circle-outline'} size={25} color={'#049434'} />
