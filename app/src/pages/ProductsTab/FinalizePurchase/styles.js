@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 
+
 export default StyleSheet.create({
     addressInfo: {
         margin: 10,
@@ -309,9 +310,9 @@ export default StyleSheet.create({
         borderRadius: 3,
         backgroundColor: '#049434',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     transferModalButtonText: {
-        marginTop: 20,
         color: 'white',
         fontSize: 17,
         fontWeight: '500'
@@ -370,6 +371,10 @@ export default StyleSheet.create({
     dateContainer:{
         minHeight: 110,
         justifyContent: 'center',
+    },
+    deliveryFeeTextAndIcon:{
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 
 });

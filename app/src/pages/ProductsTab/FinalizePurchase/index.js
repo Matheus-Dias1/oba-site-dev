@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text'
 import * as MailComposer from 'expo-mail-composer';
+import Tooltip from 'rn-tooltip';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AuthContext from '../../../authcontext';
 import api from '../../../services/api'
@@ -39,6 +40,7 @@ export default function FinalizePurchase() {
   const [showChangeModal, setShowChangeModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showVoucherModal, setShowVoucherModal] = useState(false);
+  const [showDeliveryFeeModal, setShowDeliveryFeeModal] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [freeDelivery, setFreeDelivery] = useState(false);
   const [total, setTotal] = useState(parseFloat(route.params.subtotal));
@@ -494,14 +496,43 @@ export default function FinalizePurchase() {
                     {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(deliveryFee))}
                     {') com o voucher, a mesma deve ser paga com dinheiro, cartão de crédito ou cartão de débito.'}
                   </Text>
-
-                </View>
-                <View style={{ alignSelf: 'stretch' }}>
                 </View>
               </View>
             </TouchableWithoutFeedback>
           </ScrollView>
           <TouchableWithoutFeedback onPress={() => setShowVoucherModal(false)}>
+            <View style={styles.transferModalButton}>
+              <Text style={styles.transferModalButtonText}>Entendi</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </Modal>
+
+      <Modal
+        isVisible={showDeliveryFeeModal}
+        avoidKeyboard={true}
+        onBackdropPress={() => setShowDeliveryFeeModal(false)}
+        onSwipeComplete={() => setShowDeliveryFeeModal(false)}
+        swipeDirection={"down"}
+        style={styles.modal}
+      >
+        <View style={styles.VoucherModalContainer}>
+          <ScrollView>
+            <View style={styles.modalContent}>
+              <View>
+                <Text style={styles.transferModalTitle}>Taxa de entrega{'\n'}</Text>
+                <Text style={styles.transferModalBody}>
+                  A taxa de entrega é calculada de acordo com a distância
+                    do endereço selecionado até nossa localização.{'\n\n'}
+                    Em compras acima de R$ 90,00 a taxa não é cobrada
+                    (não aplicável para compras feitas com vocher alimentação).
+
+                  </Text>
+
+              </View>
+            </View>
+          </ScrollView>
+          <TouchableWithoutFeedback onPress={() => setShowDeliveryFeeModal(false)}>
             <View style={styles.transferModalButton}>
               <Text style={styles.transferModalButtonText}>Entendi</Text>
             </View>
@@ -681,11 +712,16 @@ export default function FinalizePurchase() {
                 <Text style={styles.paymentTextSubtotal}>Subtotal</Text>
                 <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(parseFloat(route.params.subtotal))}</Text>
               </View>
-              <View style={styles.paymentPropertyValue} >
-                <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
-                {!freeDelivery && <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
-                {freeDelivery && <Text style={[styles.paymentTextSubtotal, { textDecorationLine: 'line-through' }]}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
-              </View>
+              <TouchableWithoutFeedback onPress={() => setShowDeliveryFeeModal(true)} >
+                <View style={styles.paymentPropertyValue} >
+                  <View style={styles.deliveryFeeTextAndIcon}>
+                    <Text style={styles.paymentTextSubtotal}>Taxa de entrega</Text>
+                    <Ionicons style={{marginLeft: 8}}name="md-information-circle-outline" size={20} color="#41414b" />
+                  </View>
+                  {!freeDelivery && <Text style={styles.paymentTextSubtotal}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
+                  {freeDelivery && <Text style={[styles.paymentTextSubtotal, { textDecorationLine: 'line-through' }]}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deliveryFee)}</Text>}
+                </View>
+              </TouchableWithoutFeedback>
 
               {!!cuponDiscount && <View style={styles.paymentPropertyValue}>
                 <Text style={styles.paymentTextSubtotal}>Cupom de desconto</Text>
