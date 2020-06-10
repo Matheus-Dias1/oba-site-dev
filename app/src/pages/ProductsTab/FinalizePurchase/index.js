@@ -4,7 +4,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text'
 import * as MailComposer from 'expo-mail-composer';
-import Tooltip from 'rn-tooltip';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AuthContext from '../../../authcontext';
 import api from '../../../services/api'
