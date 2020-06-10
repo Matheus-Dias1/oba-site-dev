@@ -8,12 +8,15 @@ import vegiesImg from '../../assets/fruits.svg';
 import logoImg from '../../assets/OBA_logo.svg'
 
 export default function Logon() {
+    const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
 
     async function handleLogin(e) {
         e.preventDefault();
+        if (!email || !password || loading) return;
+        setLoading(true);
         try {
             const response = await api.post('session', {
                 email: email.replace(/^\s+|\s+$/g, ''),
@@ -21,13 +24,15 @@ export default function Logon() {
             });
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('userName', response.data.name);
+            setLoading(false)
             if (response.data.admin){
                 history.push('panel');
             }else{
-                history.push('home');
+                alert('Você não tem permissão para acessar o painel')
             }
             
         } catch (err) {
+            setLoading(false)
             if (err.response.status === 400)
                 alert(err.response.data.error);
             else
@@ -52,7 +57,7 @@ export default function Logon() {
                         defaultValue={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button className="button" type="submit">Entrar</button>
+                    <button className="button" disabled={loading} type="submit">Entrar</button>
 
 
                 </form>
