@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FaHome, FaClipboardCheck, FaBoxOpen, FaTags, FaSignOutAlt, FaTruck, FaCalendarAlt, FaChartLine, FaClipboardList, FaBell } from 'react-icons/fa';
+import { FaHome, FaClipboardCheck, FaBoxOpen, FaTags, FaSignOutAlt, FaCalendarAlt, FaChartLine, FaBell } from 'react-icons/fa';
+import { FiPrinter, FiTruck, FiClipboard } from 'react-icons/fi';
 import { slide as Menu } from 'react-burger-menu';
 
 import api from '../../services/api';
@@ -44,6 +45,10 @@ export default function PanelPurchases() {
         }
 
     }, [name, history, accessToken]);
+
+    function handlePrint(id) {
+        history.push('/panel/purchases/print/'+ id)
+    }
 
     function handleDelivered(id) {
         if (window.confirm('Deseja marcar pedido como entregue?\nPedidos marcados como entregues não poderão ser acessados pelo painel.')) {
@@ -90,7 +95,6 @@ export default function PanelPurchases() {
             <div className="purchase-container">
                 <header>
                     <span>Bem-vindo(a), {name}.</span>
-                    <Link className="button" to="/panel/purchases/print">Imprimir pedidos</Link>
                     <Link className="button" to="/panel/purchases/new/products">Cadastrar novo pedido</Link>
                     <button type="button" onClick={() => handleLogout()}>
                         <FaSignOutAlt size={18} color="B30011" />
@@ -106,7 +110,7 @@ export default function PanelPurchases() {
                                     throw new Error()
                                 return (
                                     <li key={purchase.id}>
-                                        <div>
+                                        <div className="firstHalf">
                                             <strong>COMPRADOR:</strong>
                                             <p>{obsData.client}</p>
                                             <strong>PAGAMENTO:</strong>
@@ -127,12 +131,17 @@ export default function PanelPurchases() {
                                             <p>{obsData.observation}</p>
                                         </div>
 
-                                        <button type="button" onClick={() => handleDelivered(purchase.id)}>
-                                            <FaTruck size={20} color="a8a8b3" />
-                                        </button>
-                                        <button type="button" className="listButton" onClick={() => handleClipboard(purchase.id)}>
-                                            <FaClipboardList size={20} color="a8a8b3" />
-                                        </button>
+                                        <div className="purchaseButtons">
+                                            <button type="button" onClick={() => handleDelivered(purchase.id)}>
+                                                <FiTruck size={20} color="a8a8b3" />
+                                            </button>
+                                            <button type="button" className="listButton" onClick={() => handleClipboard(purchase.id)}>
+                                                <FiClipboard size={20} color="a8a8b3" />
+                                            </button>
+                                            <button type="button" className="printButton" onClick={() => handlePrint(purchase.id)}>
+                                                <FiPrinter size={20} color="a8a8b3" />
+                                            </button>
+                                        </div>
                                     </li>
                                 )
                             } catch (err) {
@@ -160,10 +169,13 @@ export default function PanelPurchases() {
                                         </div>
 
                                         <button type="button" onClick={() => handleDelivered(purchase.id)}>
-                                            <FaTruck size={20} color="a8a8b3" />
+                                            <FiTruck size={20} color="a8a8b3" />
                                         </button>
                                         <button type="button" className="listButton" onClick={() => handleClipboard(purchase.id)}>
-                                            <FaClipboardList size={20} color="a8a8b3" />
+                                            <FiClipboard size={20} color="a8a8b3" />
+                                        </button>
+                                        <button type="button" className="printButton" onClick={() => handlePrint(purchase.id)}>
+                                            <FiPrinter size={20} color="a8a8b3" />
                                         </button>
                                     </li>
                                 )

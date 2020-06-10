@@ -57,6 +57,7 @@ export default function NewPaymentInfo() {
             "number": addData.number,
             "street": addData.street,
             "city": addData.city,
+            "deliveryFee": parseFloat(deliveryFee.replace(/\./g, '').replace(/,/g, '.'))
         };
 
         const date = cliData.selectedDate;

@@ -39,7 +39,8 @@ module.exports = {
                         city: 'a.city',
                         street: 'a.street',
                         number: 'a.number',
-                        complement: 'a.complement'
+                        complement: 'a.complement',
+                        deliveryFee: 'a.delivery_fee'
                     })
                     .where('p.id', idP)
                     .whereRaw('p.id_user = u.id and p.id_address = a.id')
@@ -100,7 +101,8 @@ module.exports = {
                         city: 'a.city',
                         street: 'a.street',
                         number: 'a.number',
-                        complement: 'a.complement'
+                        complement: 'a.complement',
+                        deliveryFee: 'a.delivery_fee'
                     })
                     .where('p.id', arrID[idI])
                     .whereRaw('p.id_user = u.id and p.id_address = a.id')

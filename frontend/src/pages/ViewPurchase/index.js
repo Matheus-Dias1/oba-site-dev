@@ -26,6 +26,7 @@ export default function ViewPurchase() {
     const [client_phone, setClient_phone] = useState('');
     const [value, setValue] = useState('');
     const [payment_method, setPayment_method] = useState('');
+    const [delivery_fee, setDelivery_fee] = useState('');
     const [change, setChange] = useState('');
     const [observation, setObservation] = useState('');
     const [dateTime, setDateTime] = useState('');
@@ -57,13 +58,15 @@ export default function ViewPurchase() {
                     value,
                     payment_method,
                     change,
-                    observation
+                    observation,
+                    deliveryFee
                 } = data;
 
                 try {
                     const obsData = JSON.parse(observation);
                     if (Object.keys(obsData).length < 8)
                         throw new Error()
+                    setDelivery_fee(obsData.deliveryFee);
                     setClient(obsData.client);
                     setStreet(obsData.street);
                     setNumber(obsData.number);
@@ -81,13 +84,14 @@ export default function ViewPurchase() {
                     setCity(city);
                     setClient_phone(client_phone);
                     setObservation(observation);
+                    setDelivery_fee(deliveryFee)
                 }
                 setPayment_method(payment_method);
                 setItems(items);
                 var fId = String(id) + "", needed = 5 - fId.length;
                 if (needed > 0) fId = (Math.pow(10, needed) + "").slice(1) + fId;
                 setId(fId);
-                setValue(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value));
+                setValue(value);
                 setChange(Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(change));
 
                 setDateTime(Intl.DateTimeFormat('pt-BR').format(new Date(delivery_date)) + (delivery_period === 'morning' ? ' - Manhã' : (delivery_period === 'afternoon' ? ' - Tarde' : ' - Noite')));
@@ -142,12 +146,22 @@ export default function ViewPurchase() {
                     </table>
 
                     <table>
-                        <tbody>
+                        {payment_method === 'Voucher Alimentação' && <tbody>
+                            <tr>
+                                <td><strong>PRODUTOS:</strong></td>
+                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value-delivery_fee)}</p></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ENTREGA:</strong></td>
+                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(delivery_fee)}</p></td>
+                            </tr>
+                        </tbody>}
+                        {payment_method !== 'Voucher Alimentação' && <tbody>
                             <tr>
                                 <td><strong>VALOR:</strong></td>
-                                <td><p>{value}</p></td>
+                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)}</p></td>
                             </tr>
-                        </tbody>
+                        </tbody>}
                         <tbody>
                             <tr>
                                 <td><strong>PAGAMENTO:</strong></td>

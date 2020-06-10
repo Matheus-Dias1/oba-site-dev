@@ -103,6 +103,11 @@
   top: 22px;
   right: 55px;
 }
+.purchase-container ul li button.printButton {
+  position: absolute;
+  top: 23px;
+  right: 84px;
+}
 
 
 .purchase-container ul li a p{
@@ -141,4 +146,7 @@
     
 }
 
+.purchase-container .firstHalf{
+  min-width: 50%;
+}
 

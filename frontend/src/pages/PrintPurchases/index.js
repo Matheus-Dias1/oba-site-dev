@@ -21,12 +21,12 @@ export default function PrintPurchases() {
 
     useEffect(() => {
         try {
-            api.get('productsPurchases/all', {
+            api.get('productsPurchases/' + window.location.pathname.split("/").pop(), {
                 headers: {
                     authorization: 'Bearer ' + accessToken,
                 }
             }).then(response => {
-                setPurchases(response.data);
+                setPurchases([response.data]);
                 window.print();
                 history.push('/panel/purchases');
             }).catch(err => {
@@ -92,12 +92,26 @@ export default function PrintPurchases() {
                                     </table>
 
                                     <table>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>VALOR:</strong></td>
-                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value)}</p></td>
-                                            </tr>
-                                        </tbody>
+                                    {purchase.data.payment_method !== 'Voucher Alimentação' &&
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>VALOR:</strong></td>
+                                                    <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value)}</p></td>
+                                                </tr>
+                                            </tbody>
+                                        }
+                                        {purchase.data.payment_method === 'Voucher Alimentação' &&
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>PRODUTOS:</strong></td>
+                                                    <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value-purchase.data.deliveryFee)}</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>ENTREGA:</strong></td>
+                                                    <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.deliveryFee)}</p></td>
+                                                </tr>
+                                            </tbody>
+                                        }
                                         <tbody>
                                             <tr>
                                                 <td><strong>PAGAMENTO:</strong></td>
@@ -183,12 +197,26 @@ export default function PrintPurchases() {
                                     </table>
 
                                     <table>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>VALOR:</strong></td>
-                                                <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value)}</p></td>
-                                            </tr>
-                                        </tbody>
+                                        {purchase.data.payment_method !== 'Voucher Alimentação' &&
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>VALOR:</strong></td>
+                                                    <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value)}</p></td>
+                                                </tr>
+                                            </tbody>
+                                        }
+                                        {purchase.data.payment_method === 'Voucher Alimentação' &&
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>PRODUTOS:</strong></td>
+                                                    <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.value-purchase.data.deliveryFee)}</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>ENTREGA:</strong></td>
+                                                    <td><p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(purchase.data.deliveryFee)}</p></td>
+                                                </tr>
+                                            </tbody>
+                                        }
                                         <tbody>
                                             <tr>
                                                 <td><strong>PAGAMENTO:</strong></td>
