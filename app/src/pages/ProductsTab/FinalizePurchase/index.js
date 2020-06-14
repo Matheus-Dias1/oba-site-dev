@@ -523,7 +523,7 @@ export default function FinalizePurchase() {
                 <Text style={styles.transferModalBody}>
                   A taxa de entrega é calculada de acordo com a distância
                     do endereço selecionado até nossa localização.{'\n\n'}
-                    Em compras acima de R$ 90,00 a taxa não é cobrada
+                    Em compras acima de R$90,00 a taxa não é cobrada
                     (não aplicável para compras feitas com vocher alimentação).
 
                   </Text>

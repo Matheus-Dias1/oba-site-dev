@@ -342,6 +342,10 @@ export default function Products() {
 
   function finalizePurchase() {
     if (loadingCart) return;
+    if (subtotalValue < 35){
+      Alert.alert('Valor mínimo não alcançado', 'Sua compra deve conter ao menos R$30,00 em produtos.')
+      return;
+    }
     setIsCartVisible(false);
     navigation.navigate('Produtos', {
       screen: 'FinalizePurchase',
