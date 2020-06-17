@@ -17,7 +17,7 @@ export default function NewShoppingCart() {
     }
     const [amount, setAmount] = useState('');
     const [selectedId, setSelectedId] = useState('default');
-    const [selectedUnit, setSelectedUnit] = useState('');
+    const [selectedUnit, setSelectedUnit] = useState('1');
     const [observation, setObservation] = useState('')
     const [totalValue, setTotalValue] = useState(0);
     const [productValue, setProductValue] = useState(0);
@@ -91,6 +91,7 @@ export default function NewShoppingCart() {
             setTotalValue(totalValue + res.data.value);
             setAmount('');
             setObservation('');
+            setSelectedUnit('1');
         } catch (err) {
             alert('Erro, confira os dados e tente novamente');
         }
@@ -130,10 +131,10 @@ export default function NewShoppingCart() {
                                 }
                             </select>
 
-                            {selectedId === 'default' && <select id="unit" disabled className="selectUnit" defaultValue="1" >
+                            {selectedId === 'default' && <select id="unit" disabled className="selectUnit" value="1" >
                                 <option value="1"></option>
                             </select>}
-                            {selectedId !== 'default' && <select id="unit" className="selectUnit" defaultValue="1" onChange={e => setSelectedUnit(e.target.value)}>
+                            {selectedId !== 'default' && <select id="unit" className="selectUnit" value={selectedUnit} onChange={e => setSelectedUnit(e.target.value)}>
                                 <option value="1"></option>
                                 <option value={products[findWithAttr(products, "id", parseInt(selectedId))].measurement_unit}>{products[findWithAttr(products, "id", parseInt(selectedId))].measurement_unit}</option>
                                 {products[findWithAttr(products, "id", parseInt(selectedId))].unit_price !== null && <option value="UN">UN</option>}
