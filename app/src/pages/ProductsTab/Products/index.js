@@ -343,7 +343,7 @@ export default function Products() {
   function finalizePurchase() {
     if (loadingCart) return;
     if (subtotalValue < 35){
-      Alert.alert('Valor mínimo não alcançado', 'Sua compra deve conter ao menos R$30,00 em produtos.')
+      Alert.alert('Valor mínimo não alcançado', 'Sua compra deve conter ao menos R$35,00 em produtos.')
       return;
     }
     setIsCartVisible(false);
@@ -521,6 +521,7 @@ export default function Products() {
                       'congelados',
                       'carnes',
                       'doces',
+                      'castanhas'
                     ]}
                     renderItem={({ item: category }) => (
                       <TouchableOpacity onPress={() => {
