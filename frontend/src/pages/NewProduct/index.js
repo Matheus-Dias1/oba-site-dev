@@ -100,9 +100,10 @@ export default function NewProduct() {
                 'congelados',
                 'carnes',
                 'doces',
-                'folhas'
+                'folhas',
+                'castanhas'
             ].includes(list[i])) {
-                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas');
+                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas, castanhas');
                 return 'FAIL'
             }
         }
