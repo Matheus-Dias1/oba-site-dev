@@ -79,15 +79,24 @@ module.exports = {
 
                 if (delivery_period === 'morning') {
                     await connection('schedule')
-                        .where('date', delivery_date)
+                        .where({
+                            date: delivery_date,
+                            city: ['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase()) ? 'uberlandia' : 'araguari'
+                        })
                         .update('morning_deliveries', selectedDate.morning_deliveries - 1);
                 } else if (delivery_period === 'afternoon') {
                     await connection('schedule')
-                        .where('date', delivery_date)
+                        .where({
+                            date: delivery_date,
+                            city: ['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase()) ? 'uberlandia' : 'araguari'
+                        })
                         .update('afternoon_deliveries', selectedDate.afternoon_deliveries - 1);
                 } else if (delivery_period === 'night') {
                     await connection('schedule')
-                        .where('date', delivery_date)
+                        .where({
+                            date: delivery_date,
+                            city: ['uberlandia', 'uberlândia', 'udi'].includes(city.toLowerCase()) ? 'uberlandia' : 'araguari'
+                        })
                         .update('night_deliveries', selectedDate.night_deliveries - 1);
                 }
 
