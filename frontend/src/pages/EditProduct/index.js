@@ -54,9 +54,11 @@ export default function EditProduct() {
                 'doces',
                 'folhas',
                 'ofertas',
-                'castanhas'
+                'castanhas',
+                'frutas secas',
+                'bebidas'
             ].includes(list[i])) {
-                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas, castanhas');
+                alert('"' + list[i] + '" não é uma categoria válida.\nAs categorias válidas são: verduras, frutas, ovos, temperos, queijos, congelados, carnes, doces, folhas, castanhas, frutas secas, bebidas');
                 return 'FAIL'
             }
         }
