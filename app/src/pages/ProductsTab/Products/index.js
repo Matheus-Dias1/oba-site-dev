@@ -521,7 +521,9 @@ export default function Products() {
                       'congelados',
                       'carnes',
                       'doces',
-                      'castanhas'
+                      'castanhas',
+                      'frutas secas',
+                      'bebidas'
                     ]}
                     renderItem={({ item: category }) => (
                       <TouchableOpacity onPress={() => {
