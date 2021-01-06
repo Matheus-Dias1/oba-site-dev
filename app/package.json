@@ -14,7 +14,7 @@
     "@react-navigation/native": "^5.1.6",
     "@react-navigation/stack": "^5.2.11",
     "@types/expo__vector-icons": "^9.0.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "expo": "~37.0.3",
     "expo-constants": "~9.0.0",
     "expo-location": "~8.1.0",
